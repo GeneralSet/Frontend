@@ -16,7 +16,7 @@ interface Props extends RouteComponentProps<{}> {
 
 interface ReduxProps extends Props {
   dispatch: Dispatch<Props>;
-  socket: SocketIOClient.Socket;
+  socket: WebSocket;
   users: User[];
   gameType: gameType;
   gameState: GameState;
@@ -43,18 +43,16 @@ class Lobby extends React.Component<ReduxProps, State> {
   }
 
   private onSlecet(gameType: gameType): void {
-    this.props.socket.emit(
-      'setGameType',
-      {roomName: this.props.match.params.roomName, gameType}
+    this.props.socket.send(
+      JSON.stringify({ eventType: 'setGameType', roomName: this.props.match.params.roomName, gameType})  
     );
     this.props.dispatch(actions.setGameType(gameType));
   }
 
   private play(event: React.MouseEvent<HTMLInputElement>): void {
     event.preventDefault();
-    this.props.socket.emit(
-      'startGame',
-      {roomName: this.props.match.params.roomName}
+    this.props.socket.send(
+      JSON.stringify({ eventType: 'startGame', roomName: this.props.match.params.roomName})  
     );
   }
 

@@ -16,7 +16,7 @@ interface Props extends RouteComponentProps<{}> {
 
 interface ReduxProps extends Props {
   dispatch: Dispatch<Props>;
-  socket: SocketIOClient.Socket;
+  socket: WebSocket;
   users: User[];
   gameType: gameType;
   gameState: GameState;
@@ -78,9 +78,8 @@ class Game extends React.Component<ReduxProps, State> {
     if (selected.length >= this.cardsForSet) {
       // TODO verify set on server and update game state
       this.clearSelection();
-      this.props.socket.emit(
-        'verifySet',
-        {roomName: this.props.match.params.roomName, selected}
+      this.props.socket.send(
+        JSON.stringify({ eventType: 'verifySet', roomName: this.props.match.params.roomName, selected})  
       );
 
     } else {

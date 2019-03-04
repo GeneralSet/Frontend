@@ -1,29 +1,29 @@
 import { Dispatch } from 'redux';
-import { actions } from './actions';
+// import { actions } from './actions';
 
-export function onUsers(socket: SocketIOClient.Socket) {
+export function onUsers(socket: WebSocket) {
   return (dispatch: Dispatch<{}>) => {
-    socket.on(
-      'users',
-      (users: User[]) => dispatch(actions.setUsers(users))
-    );
+    // socket.onmessage(
+    //   'users',
+    //   (users: User[]) => dispatch(actions.setUsers(users))
+    // );
   };
 }
 
-export function setGameType(socket: SocketIOClient.Socket) {
+export function setGameType(socket: WebSocket) {
   return (dispatch: Dispatch<{}>) => {
-    socket.on(
-      'setGameType',
-      (gameType: gameType) => dispatch(actions.setGameType(gameType))
-    );
+    // socket.onmessage(
+    //   'setGameType',
+    //   (gameType: gameType) => dispatch(actions.setGameType(gameType))
+    // );
   };
 }
 
-export function updateGame(socket: SocketIOClient.Socket) {
+export function updateGame(socket: WebSocket) {
   return (dispatch: Dispatch<{}>) => {
-    socket.on(
-      'updateGame',
-      (gameState: GameState) => dispatch(actions.setGameState(gameState))
-    );
+    // socket.onmessage(
+    //   'updateGame',
+    //   (gameState: GameState) => dispatch(actions.setGameState(gameState))
+    // );
   };
 }

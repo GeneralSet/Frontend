@@ -1,8 +1,9 @@
-import * as io from 'socket.io-client';
 import { Actions } from './actions';
 
+const serverLocation = process.env.NODE_ENV === 'development' ? 'ws://localhost:3001' : 'ws://generalset.io';
+
 export const initialState = {
-  socket: io(process.env.NODE_ENV === 'development' ? 'localhost:3001' : 'generalset.io'),
+  socket: new WebSocket(serverLocation),
   users: [] as User[],
   gameType: '',
   gameState: {},

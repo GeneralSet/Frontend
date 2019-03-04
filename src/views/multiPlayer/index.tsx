@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import { onUsers } from './api';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
-// import SetBox from 'components/layout/SetBox';
+import SetBox from 'components/layout/SetBox';
 import './index.css';
 
 interface Props extends RouteComponentProps<{}> {
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps<{}> {
 
 interface ReduxProps extends Props {
   dispatch: Dispatch<Props>;
-  socket: SocketIOClient.Socket;
+  socket: WebSocket;
   users: User[];
   gameType: string;
   gameState: GameState;
@@ -48,37 +48,36 @@ class MultiPlayer extends React.Component<ReduxProps, State> {
 
   host(event: React.MouseEvent<HTMLInputElement>): void {
     event.preventDefault();
-    this.props.socket.emit('joinRoom', {username: this.state.username, roomName: this.state.roomName});
+    this.props.socket.send(
+      JSON.stringify({eventType: 'joinRoom', username: this.state.username, roomName: this.state.roomName})
+    );
     this.props.history.push(`${this.props.match.url}/${this.state.roomName}`);
   }
 
   render() {
     return (
-      <div>Under Renovation</div>
+      <SetBox>
+        <div className="join-room-form">
+          <form>
+            <label htmlFor="RoomName">Room name</label>
+            <input
+              className="form-input"
+              id="RoomName"
+              value={this.state.roomName}
+              onChange={this.setRoomName}
+            />
+            <label htmlFor="Username">Username</label>
+            <input
+              className="form-input"
+              id="Username"
+              value={this.state.username}
+              onChange={this.setUsername}
+            />
+            <input className="submit" type="submit" value="Enter" onClick={this.host}/>
+          </form>
+        </div>
+      </SetBox>
     );
-    // return (
-    //   <SetBox>
-    //     <div className="join-room-form">
-    //       <form>
-    //         <label htmlFor="RoomName">Room name</label>
-    //         <input
-    //           className="form-input"
-    //           id="RoomName"
-    //           value={this.state.roomName}
-    //           onChange={this.setRoomName}
-    //         />
-    //         <label htmlFor="Username">Username</label>
-    //         <input
-    //           className="form-input"
-    //           id="Username"
-    //           value={this.state.username}
-    //           onChange={this.setUsername}
-    //         />
-    //         <input className="submit" type="submit" value="Enter" onClick={this.host}/>
-    //       </form>
-    //     </div>
-    //   </SetBox>
-    // );
   }
 }
 
