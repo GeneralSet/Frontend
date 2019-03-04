@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isProductionBuild = process.env.NODE_ENV === "production";
@@ -10,8 +11,8 @@ module.exports = {
     './src/index',
   ],
   output: {
-    pathinfo: true,
-    filename: 'static/js/bundle.js',
+    path: path.resolve(__dirname, './dist'),
+    filename: 'bundle.js'
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -48,8 +49,11 @@ module.exports = {
             ],
           },
           {
-            test: /\.svg$/,
-            loader: 'svg-inline-loader'
+            test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+            },
           }
         ],
       },
@@ -59,12 +63,17 @@ module.exports = {
     port: 3000,
   },
 
-  // plugins: [
-  //   // Generates an `index.html` file with the <script> injected.
-  //   new HtmlWebpackPlugin(),
-  //   // Perform type checking and linting in a separate process to speed up compilation
-  //   new ForkTsCheckerWebpackPlugin(),
-  // ],
+  plugins: [
+    // Generates an `index.html` file with the <script> injected.
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new CopyPlugin([
+      {from: 'src/static', to: 'static'}
+    ]),
+    // Perform type checking and linting in a separate process to speed up compilation
+    new ForkTsCheckerWebpackPlugin(),
+  ],
   node: {
     fs: 'empty'
   },

@@ -20,7 +20,7 @@ export default class Card extends React.Component<Props, {}> {
     } else {
       return (
         <img
-          src={`/decks/${this.props.gameType}/${this.props.features}.svg`}
+          src={`/static/decks/${this.props.gameType}/${this.props.features}.svg`}
           className="card-image"
         />
       );

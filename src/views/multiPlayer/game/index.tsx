@@ -52,8 +52,8 @@ class Game extends React.Component<ReduxProps, State> {
         message: ''
       },
     };
-    this.props.dispatch(onUsers(this.props.socket));
-    this.props.dispatch(updateGame(this.props.socket));
+    this.props.dispatch(onUsers(this.props.socket) as any);
+    this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public clearSelection(): void {

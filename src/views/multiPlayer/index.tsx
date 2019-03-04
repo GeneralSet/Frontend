@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import { onUsers } from './api';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
-import SetBox from 'components/layout/SetBox';
+// import SetBox from 'components/layout/SetBox';
 import './index.css';
 
 interface Props extends RouteComponentProps<{}> {
@@ -35,7 +35,7 @@ class MultiPlayer extends React.Component<ReduxProps, State> {
       roomName: '',
       username: '',
     };
-    this.props.dispatch(onUsers(this.props.socket));
+    this.props.dispatch(onUsers(this.props.socket) as any);
   }
 
   setRoomName(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -54,28 +54,31 @@ class MultiPlayer extends React.Component<ReduxProps, State> {
 
   render() {
     return (
-      <SetBox>
-        <div className="join-room-form">
-          <form>
-            <label htmlFor="RoomName">Room name</label>
-            <input
-              className="form-input"
-              id="RoomName"
-              value={this.state.roomName}
-              onChange={this.setRoomName}
-            />
-            <label htmlFor="Username">Username</label>
-            <input
-              className="form-input"
-              id="Username"
-              value={this.state.username}
-              onChange={this.setUsername}
-            />
-            <input className="submit" type="submit" value="Enter" onClick={this.host}/>
-          </form>
-        </div>
-      </SetBox>
+      <div>Under Renovation</div>
     );
+    // return (
+    //   <SetBox>
+    //     <div className="join-room-form">
+    //       <form>
+    //         <label htmlFor="RoomName">Room name</label>
+    //         <input
+    //           className="form-input"
+    //           id="RoomName"
+    //           value={this.state.roomName}
+    //           onChange={this.setRoomName}
+    //         />
+    //         <label htmlFor="Username">Username</label>
+    //         <input
+    //           className="form-input"
+    //           id="Username"
+    //           value={this.state.username}
+    //           onChange={this.setUsername}
+    //         />
+    //         <input className="submit" type="submit" value="Enter" onClick={this.host}/>
+    //       </form>
+    //     </div>
+    //   </SetBox>
+    // );
   }
 }
 

@@ -3,7 +3,8 @@ import autobind from 'autobind-decorator';
 import Board from 'components/game/board';
 import PreviousSelection from 'components/game/previousSelection';
 import { match } from 'react-router-dom';
-import { Set as GeneralSet } from 'set/pkg/web/set';
+let GeneralSet = {}
+import('set/pkg/set').then(s => GeneralSet = s.Set)
 import FullscreenPage from 'components/layout/FullscreenPage';
 import './index.css';
 
@@ -27,12 +28,12 @@ interface State {
 
 @autobind
 export default class Game extends React.Component<Props, State> {
-  private set: GeneralSet;
+  private set: any;
   private readonly cardsForSet = 3;
 
   constructor(props: Props) {
     super(props);
-    this.set = new (GeneralSet as any)(4, 3);
+    this.set = (GeneralSet as any).new(4, 3);
     const deck = this.set.init_deck();
     const updatedBoard = this.set.update_board(deck, '');
     this.state = {

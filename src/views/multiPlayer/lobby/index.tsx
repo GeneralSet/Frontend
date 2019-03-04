@@ -30,8 +30,8 @@ class Lobby extends React.Component<ReduxProps, State> {
 
   constructor(props: ReduxProps) {
     super(props);
-    this.props.dispatch(setGameType(this.props.socket));
-    this.props.dispatch(updateGame(this.props.socket));
+    this.props.dispatch(setGameType(this.props.socket) as any);
+    this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public componentWillUpdate(nextProps: ReduxProps, _nextState: State) {

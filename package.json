@@ -12,13 +12,14 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "autobind-decorator": "^2.1.0",
+    "copy-webpack-plugin": "^5.0.0",
     "css-loader": "0.28.7",
-    "fork-ts-checker-webpack-plugin": "^0.2.8",
+    "fork-ts-checker-webpack-plugin": "^0.5.2",
     "html-webpack-plugin": "^3.2.0",
     "jsx-to-html": "^1.1.0",
     "node": "^10.0.0",
     "react": "^16.2.0",
-    "react-dev-utils": "^5.0.1",
+    "react-dev-utils": "^7.0.3",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
@@ -35,15 +36,16 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.7.2",
     "typestyle": "^1.7.2",
+    "url-loader": "^1.1.2",
     "webpack": "4",
-    "webpack-cli": "^2.1.2",
-    "webpack-dev-server": "3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32"
   },
   "scripts": {
-    "build": "webpack -w",
-    "build-prod": "webpack -w false"
+    "serve": "webpack-dev-server",
+    "build": "webpack"
   }
 }
