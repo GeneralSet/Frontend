@@ -3,7 +3,6 @@ import autobind from 'autobind-decorator';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { WEBSOCKET_CONNECT, WEBSOCKET_SEND } from '@giantmachines/redux-websocket'
-// import { onUsers } from './api';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
 import SetBox from 'components/layout/SetBox';

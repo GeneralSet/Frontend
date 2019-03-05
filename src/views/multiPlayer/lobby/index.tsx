@@ -5,8 +5,9 @@ import { Dispatch } from 'redux';
 import { actions } from 'views/multiPlayer/actions';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
+import { WEBSOCKET_SEND } from '@giantmachines/redux-websocket'
+
 import SelectVarient from 'components/game/selectVarient';
-// import { setGameType, updateGame } from 'views/multiPlayer/api';
 import FullscreenPage from 'components/layout/FullscreenPage';
 import 'index.css';
 
@@ -29,8 +30,6 @@ class Lobby extends React.Component<ReduxProps, State> {
 
   constructor(props: ReduxProps) {
     super(props);
-    // this.props.dispatch(setGameType(this.props.socket) as any);
-    // this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public componentWillUpdate(nextProps: ReduxProps, _nextState: State) {
@@ -42,9 +41,14 @@ class Lobby extends React.Component<ReduxProps, State> {
   }
 
   private onSlecet(gameType: gameType): void {
-    // this.props.socket.send(
-    //   JSON.stringify({ eventType: 'setGameType', roomName: this.props.match.params.roomName, gameType})  
-    // );
+    this.props.dispatch({
+      type: WEBSOCKET_SEND,
+      payload: {
+        eventType: 'setGameType',
+        roomName: this.props.match.params.roomName,
+        gameType,
+      },
+    })
     this.props.dispatch(actions.setGameType(gameType));
   }
 

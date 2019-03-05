@@ -19,10 +19,12 @@ export function reducer(state: typeof initialState = initialState, action: Actio
       if (!(action.payload as any).data) {
         return state;
       }
-      var msg = JSON.parse((action.payload as any).data);
+      const msg = JSON.parse((action.payload as any).data);
       switch(msg.eventType) {
         case "users":
-        return {...state, users: msg.users };
+          return {...state, users: msg.users };
+        case "setGameType":
+          return {...state, gameType: msg.gameType };
       }
       return {...state};
     default:
