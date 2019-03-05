@@ -12,7 +12,7 @@ interface GameState {
   previousSelection?: {
     user: string;
     valid: boolean;
-    selection: string[];
+    selection: string;
   };
 }
 

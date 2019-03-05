@@ -8,6 +8,7 @@ import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
 import FullscreenPage from 'components/layout/FullscreenPage';
 import PreviousSelection from 'components/game/previousSelection';
+import { WEBSOCKET_SEND } from '@giantmachines/redux-websocket';
 
 interface Props extends RouteComponentProps<{}> {
   match: match<{roomName: string, gameType: gameType}>;
@@ -74,10 +75,14 @@ class Game extends React.Component<ReduxProps, State> {
     if (selected.length >= this.cardsForSet) {
       // TODO verify set on server and update game state
       this.clearSelection();
-      // this.props.socket.send(
-      //   JSON.stringify({ eventType: 'verifySet', roomName: this.props.match.params.roomName, selected})  
-      // );
-
+      this.props.dispatch({
+        type: WEBSOCKET_SEND,
+        payload: {
+          eventType: 'verifySet',
+          roomName: this.props.match.params.roomName,
+          selected: selected.join(",")
+        },
+      })
     } else {
       this.setState({selected});
     }
@@ -96,7 +101,7 @@ class Game extends React.Component<ReduxProps, State> {
     }
     return (
       <PreviousSelection
-        cards={selection.selection}
+        cards={selection.selection.split(",")}
         gameType={this.props.match.params.gameType}
         message={message}
         success={selection.valid}
