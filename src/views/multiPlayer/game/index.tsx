@@ -6,7 +6,6 @@ import { style } from 'typestyle';
 import Board from 'components/game/board';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
-// import { onUsers, updateGame } from 'views/multiPlayer/api';
 import FullscreenPage from 'components/layout/FullscreenPage';
 import PreviousSelection from 'components/game/previousSelection';
 
@@ -51,8 +50,6 @@ class Game extends React.Component<ReduxProps, State> {
         message: ''
       },
     };
-    // this.props.dispatch(onUsers(this.props.socket) as any);
-    // this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public clearSelection(): void {

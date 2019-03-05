@@ -25,6 +25,15 @@ export function reducer(state: typeof initialState = initialState, action: Actio
           return {...state, users: msg.users };
         case "setGameType":
           return {...state, gameType: msg.gameType };
+        case "updateGame":
+          return {
+            ...state,
+            gameState: {
+              ...msg.gameState,
+              deck: msg.gameState.deck.split(","),
+              board: msg.gameState.board.split(","),
+            }
+          };
       }
       return {...state};
     default:
