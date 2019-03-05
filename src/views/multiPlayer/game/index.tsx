@@ -84,11 +84,8 @@ class Game extends React.Component<ReduxProps, State> {
   }
 
   private previousSelection(): JSX.Element | void {
-    console.log(
-      this.props.gameState.previousSelection
-    );
     const selection = this.props.gameState.previousSelection;
-    if (selection === undefined) {
+    if (!selection) {
       return;
     }
     let message = '';
