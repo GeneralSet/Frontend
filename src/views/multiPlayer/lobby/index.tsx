@@ -54,9 +54,13 @@ class Lobby extends React.Component<ReduxProps, State> {
 
   private play(event: React.MouseEvent<HTMLInputElement>): void {
     event.preventDefault();
-    // this.props.socket.send(
-    //   JSON.stringify({ eventType: 'startGame', roomName: this.props.match.params.roomName})  
-    // );
+    this.props.dispatch({
+      type: WEBSOCKET_SEND,
+      payload: {
+        eventType: 'startGame',
+        roomName: this.props.match.params.roomName,
+      },
+    })
   }
 
   public render(): JSX.Element {
