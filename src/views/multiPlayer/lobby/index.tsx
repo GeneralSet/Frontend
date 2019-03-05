@@ -6,7 +6,7 @@ import { actions } from 'views/multiPlayer/actions';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
 import SelectVarient from 'components/game/selectVarient';
-import { setGameType, updateGame } from 'views/multiPlayer/api';
+// import { setGameType, updateGame } from 'views/multiPlayer/api';
 import FullscreenPage from 'components/layout/FullscreenPage';
 import 'index.css';
 
@@ -16,7 +16,6 @@ interface Props extends RouteComponentProps<{}> {
 
 interface ReduxProps extends Props {
   dispatch: Dispatch<Props>;
-  socket: WebSocket;
   users: User[];
   gameType: gameType;
   gameState: GameState;
@@ -30,8 +29,8 @@ class Lobby extends React.Component<ReduxProps, State> {
 
   constructor(props: ReduxProps) {
     super(props);
-    this.props.dispatch(setGameType(this.props.socket) as any);
-    this.props.dispatch(updateGame(this.props.socket) as any);
+    // this.props.dispatch(setGameType(this.props.socket) as any);
+    // this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public componentWillUpdate(nextProps: ReduxProps, _nextState: State) {
@@ -43,17 +42,17 @@ class Lobby extends React.Component<ReduxProps, State> {
   }
 
   private onSlecet(gameType: gameType): void {
-    this.props.socket.send(
-      JSON.stringify({ eventType: 'setGameType', roomName: this.props.match.params.roomName, gameType})  
-    );
+    // this.props.socket.send(
+    //   JSON.stringify({ eventType: 'setGameType', roomName: this.props.match.params.roomName, gameType})  
+    // );
     this.props.dispatch(actions.setGameType(gameType));
   }
 
   private play(event: React.MouseEvent<HTMLInputElement>): void {
     event.preventDefault();
-    this.props.socket.send(
-      JSON.stringify({ eventType: 'startGame', roomName: this.props.match.params.roomName})  
-    );
+    // this.props.socket.send(
+    //   JSON.stringify({ eventType: 'startGame', roomName: this.props.match.params.roomName})  
+    // );
   }
 
   public render(): JSX.Element {

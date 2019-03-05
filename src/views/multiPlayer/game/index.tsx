@@ -6,7 +6,7 @@ import { style } from 'typestyle';
 import Board from 'components/game/board';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReduxState } from 'reducers';
-import { onUsers, updateGame } from 'views/multiPlayer/api';
+// import { onUsers, updateGame } from 'views/multiPlayer/api';
 import FullscreenPage from 'components/layout/FullscreenPage';
 import PreviousSelection from 'components/game/previousSelection';
 
@@ -16,7 +16,6 @@ interface Props extends RouteComponentProps<{}> {
 
 interface ReduxProps extends Props {
   dispatch: Dispatch<Props>;
-  socket: WebSocket;
   users: User[];
   gameType: gameType;
   gameState: GameState;
@@ -52,8 +51,8 @@ class Game extends React.Component<ReduxProps, State> {
         message: ''
       },
     };
-    this.props.dispatch(onUsers(this.props.socket) as any);
-    this.props.dispatch(updateGame(this.props.socket) as any);
+    // this.props.dispatch(onUsers(this.props.socket) as any);
+    // this.props.dispatch(updateGame(this.props.socket) as any);
   }
 
   public clearSelection(): void {
@@ -78,9 +77,9 @@ class Game extends React.Component<ReduxProps, State> {
     if (selected.length >= this.cardsForSet) {
       // TODO verify set on server and update game state
       this.clearSelection();
-      this.props.socket.send(
-        JSON.stringify({ eventType: 'verifySet', roomName: this.props.match.params.roomName, selected})  
-      );
+      // this.props.socket.send(
+      //   JSON.stringify({ eventType: 'verifySet', roomName: this.props.match.params.roomName, selected})  
+      // );
 
     } else {
       this.setState({selected});

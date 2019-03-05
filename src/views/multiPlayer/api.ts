@@ -10,6 +10,18 @@ export function onUsers(socket: WebSocket) {
   };
 }
 
+
+
+
+// export function onUsers(socket: WebSocket) {
+//   return (dispatch: Dispatch<{}>) => {
+//     // socket.onmessage(
+//     //   'users',
+//     //   (users: User[]) => dispatch(actions.setUsers(users))
+//     // );
+//   };
+// }
+
 export function setGameType(socket: WebSocket) {
   return (dispatch: Dispatch<{}>) => {
     // socket.onmessage(
