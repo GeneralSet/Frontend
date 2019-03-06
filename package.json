@@ -1,33 +1,37 @@
 {
-  "name": "General_Set_Client",
+  "name": "GeneralSet-Client",
+  "description": "general set react frontend",
+  "repository": "https://github.com/GeneralSet/Frontend",
+  "license": "MIT",
   "version": "0.1.0",
   "homepage": "http://generalset.io",
   "dependencies": {
     "@giantmachines/redux-websocket": "^0.3.0",
+    "autobind-decorator": "^2.1.0",
+    "jsx-to-html": "^1.1.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "set": "https://github.com/GeneralSet/Set"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
+  "devDependencies": {
     "@types/node": "^9.4.7",
     "@types/react": "^16.0.40",
     "@types/react-dom": "^16.0.4",
     "@types/react-redux": "^5.0.15",
     "@types/react-router-dom": "^4.2.5",
     "@types/react-router-redux": "^5.0.12",
-    "@types/redux": "^3.6.0",
-    "@types/redux-thunk": "^2.1.0",
-    "autobind-decorator": "^2.1.0",
     "copy-webpack-plugin": "^5.0.0",
     "css-loader": "0.28.7",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
     "html-webpack-plugin": "^3.2.0",
-    "jsx-to-html": "^1.1.0",
-    "node": "^10.0.0",
-    "react": "^16.2.0",
     "react-dev-utils": "^7.0.3",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^4.0.8",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
-    "set": "https://github.com/GeneralSet/Set",
     "style-loader": "0.19.0",
     "svg-inline-loader": "^0.8.0",
     "ts-loader": "^4.2.0",
@@ -41,9 +45,10 @@
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"
   },
-  "devDependencies": {},
   "scripts": {
-    "serve": "webpack-dev-server",
-    "build": "webpack"
+    "start": "webpack-dev-server",
+    "build": "npm run build:prod",
+    "build:dev": "NODE_ENV='development' webpack",
+    "build:prod": "NODE_ENV='production' webpack"
   }
 }

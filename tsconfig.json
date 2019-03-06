@@ -22,7 +22,7 @@
   "exclude": [
     "node_modules",
     "webpack.config.js",
-    "dist/static/js/bundle.js"
+    "dist/**"
   ],
   "types": [
     "typePatches"

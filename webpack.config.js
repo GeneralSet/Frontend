@@ -4,7 +4,6 @@ const CopyPlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isProductionBuild = process.env.NODE_ENV === "production";
-// const nodeEnv = isProductionBuild ? "production" : "development";
 
 module.exports = {
   entry: [
@@ -14,6 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js'
   },
+  mode: isProductionBuild ? "production" : "development", 
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
