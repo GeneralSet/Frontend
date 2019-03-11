@@ -22,13 +22,10 @@ export function reducer(state: typeof initialState = initialState, action: Actio
       const msg = JSON.parse((action.payload as any).data);
       switch(msg.eventType) {
         case "users":
-          console.log()
           return {...state, users: msg.users };
         case "setGameType":
           return {...state, gameType: msg.gameType };
         case "updateGame":
-          console.log(msg.gameState)
-
           return {
             ...state,
             gameState: {
