@@ -24,7 +24,7 @@ interface State {
   username: string;
 }
 
-const serverLocation = process.env.NODE_ENV === 'production' ? 'ws://generalset.io' : 'ws://localhost:3001';
+const serverLocation = process.env.NODE_ENV === 'production' ? 'ws://multiplayer.generalset.io' : 'ws://localhost:3001';
 
 @autobind
 class MultiPlayer extends React.Component<ReduxProps, State> {
