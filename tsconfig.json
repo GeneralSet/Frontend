@@ -22,7 +22,8 @@
   "exclude": [
     "node_modules",
     "webpack.config.js",
-    "dist/**"
+    "dist/**",
+    "**/*.test.ts"
   ],
   "types": [
     "typePatches"
