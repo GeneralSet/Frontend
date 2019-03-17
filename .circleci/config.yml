@@ -58,6 +58,22 @@ jobs:
           paths:
             - dist
             - package.json
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y python-dev
+      - run: sudo pip install awscli
+      - run: aws --version
+      - run: aws s3 ls
+      - run:
+          name: "Deploy to S3"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              aws s3 sync dist/ s3://${PRODUCTION_BUCKET} --delete
+            fi
 workflows:
   version: 2
   build_and_test:
@@ -72,3 +88,7 @@ workflows:
       - build:
           requires:
             - install
+      - deploy:
+          requires:
+            - test
+            - build
