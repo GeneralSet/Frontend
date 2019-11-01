@@ -33,7 +33,7 @@ export default class Game extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    new (GeneralSet as any)();
+    // new (GeneralSet as any)();
     this.set = (GeneralSet as any).new(4, 3);
     const deck = this.set.init_deck();
     const updatedBoard = this.set.update_board(deck, '');
