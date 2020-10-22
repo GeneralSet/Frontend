@@ -37,7 +37,9 @@ export default class SelectVariant extends React.Component<Props, {}> {
     variant: SetVariant,
     index: number
   ): JSX.Element | null {
-    const linkClasses = ["game-selector"];
+    const linkClasses = [
+      "btn btn-outline-primary btn-lg btn-block game-selector",
+    ];
     if (this.props.selected === variant.gameType) {
       linkClasses.push("active");
     }
@@ -71,9 +73,9 @@ export default class SelectVariant extends React.Component<Props, {}> {
 
   render() {
     return (
-      <div className="game-options">
+      <nav style={{ maxWidth: "350px", margin: "0 auto" }}>
         {this.SetVariants.map(this.gamePreviewButton)}
-      </div>
+      </nav>
     );
   }
 }

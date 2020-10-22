@@ -9,25 +9,32 @@ import { Menu } from "./views/menu";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import "./index.css";
+import Layout from "components/Layout";
 
 const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
-        <Route exact={true} path="/" component={Menu} />
-        <Route exact={true} path="/single_player" component={SinglePlayer} />
-        <Route
-          exact={true}
-          path="/single_player/:gameType"
-          component={SinglePlayerGame}
-        />
-        <Route exact={true} path="/multi_player" component={MultiPlayer} />
-        <Route exact={true} path="/multi_player/:roomName" component={Lobby} />
-        <Route
-          exact={true}
-          path="/multi_player/:roomName/:gameType"
-          component={MultiPlayerGame}
-        />
+        <Layout>
+          <Route exact={true} path="/" component={Menu} />
+          <Route exact={true} path="/single_player" component={SinglePlayer} />
+          <Route
+            exact={true}
+            path="/single_player/:gameType"
+            component={SinglePlayerGame}
+          />
+          <Route exact={true} path="/multi_player" component={MultiPlayer} />
+          <Route
+            exact={true}
+            path="/multi_player/:roomName"
+            component={Lobby}
+          />
+          <Route
+            exact={true}
+            path="/multi_player/:roomName/:gameType"
+            component={MultiPlayerGame}
+          />
+        </Layout>
       </Switch>
     </BrowserRouter>
   </Provider>

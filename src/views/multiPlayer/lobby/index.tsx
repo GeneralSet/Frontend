@@ -8,7 +8,6 @@ import { ReduxState } from "reducers";
 import { WEBSOCKET_SEND } from "@giantmachines/redux-websocket";
 
 import SelectVariant from "components/game/selectVariant";
-import FullscreenPage from "components/layout/FullscreenPage";
 import "index.css";
 
 interface Props extends RouteComponentProps<{}> {
@@ -55,7 +54,7 @@ class Lobby extends React.Component<ReduxProps, {}> {
 
   public render(): JSX.Element {
     return (
-      <FullscreenPage>
+      <>
         <div>Users:</div>
         <ul>
           {this.props.users.map((user, index) => (
@@ -67,7 +66,7 @@ class Lobby extends React.Component<ReduxProps, {}> {
           selected={this.props.gameType}
         />
         <input type="button" value="Play" onClick={this.play} />
-      </FullscreenPage>
+      </>
     );
   }
 }

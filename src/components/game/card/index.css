@@ -4,9 +4,6 @@
   align-items: center;
   margin: 5px;
   padding: 10%;
-  border-radius: 5%;
-  background-color: #fff;
-  box-shadow: 0 1px 3px 0 #666;
 }
 
 .card.selected {
@@ -14,7 +11,7 @@
 }
 
 .card.hint {
-  box-shadow: 0 0 0 3px #573E8E;
+  box-shadow: 0 0 0 3px #573e8e;
 }
 
 .card-content {
