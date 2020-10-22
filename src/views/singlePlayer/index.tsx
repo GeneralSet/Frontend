@@ -1,23 +1,23 @@
-import * as React from 'react';
-import autobind from 'autobind-decorator';
-import SelectVarient from 'components/game/selectVarient';
-import { RouteComponentProps } from 'react-router-dom';
-import FullscreenPage from 'components/layout/FullscreenPage';
+import * as React from "react";
+import autobind from "autobind-decorator";
+import SelectVariant from "components/game/selectVariant";
+import { RouteComponentProps } from "react-router-dom";
+import FullscreenPage from "components/layout/FullscreenPage";
 
 @autobind
-export default class SinglePlayer extends React.Component<RouteComponentProps<{}>, {}> {
-  constructor(props: RouteComponentProps<{}>) {
-    super(props);
-  }
-
+export default class SinglePlayer extends React.Component<
+  RouteComponentProps<{}>,
+  {}
+> {
   private onClick(gameType: gameType) {
-    this.props.history.push(`${this.props.match.url}/${gameType}`);
+    const path = this.props.match.url.endsWith("/") ? gameType : `/${gameType}`;
+    this.props.history.push(`${this.props.match.url}${path}`);
   }
 
   public render() {
     return (
       <FullscreenPage>
-        <SelectVarient onSlecet={this.onClick}/>
+        <SelectVariant onSelect={this.onClick} />
       </FullscreenPage>
     );
   }

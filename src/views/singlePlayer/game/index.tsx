@@ -3,10 +3,11 @@ import autobind from 'autobind-decorator';
 import Board from 'components/game/board';
 import PreviousSelection from 'components/game/previousSelection';
 import { match } from 'react-router-dom';
-let GeneralSet = {}
-import('set/pkg/set').then(s => GeneralSet = s.Set)
 import FullscreenPage from 'components/layout/FullscreenPage';
 import './index.css';
+let GeneralSet = {}
+import('set/pkg/set').then(s => GeneralSet = s.Set)
+
 
 interface Props {
   match: match<{gameType: gameType}>;
@@ -121,7 +122,7 @@ export default class Game extends React.Component<Props, State> {
     return true;
   }
 
-  private hint(_event: React.MouseEvent<HTMLAnchorElement>): void {
+  private hint(_event: React.MouseEvent<HTMLButtonElement>): void {
     this.setState({
       hint: this.set.hint(this.state.board.join(',')).split(','),
     });
@@ -147,7 +148,7 @@ export default class Game extends React.Component<Props, State> {
                   <td>Sets on the Board</td>
                 </tr>
                 <tr>
-                  <td><a onClick={this.hint}>Hint</a></td>
+                  <td><button onClick={this.hint}>Hint</button></td>
                 </tr>
               </tbody>
             </table>

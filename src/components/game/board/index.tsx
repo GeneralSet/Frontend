@@ -137,7 +137,7 @@ export default class Board extends React.Component<Props, State> {
       <div className="board">
         {this.props.board.map((id: string, index: number) => {
           return (
-            <a
+            <button
               className="card-wrap"
               onClick={() => this.props.onSelect(id, index)}
               key={index}
@@ -149,7 +149,7 @@ export default class Board extends React.Component<Props, State> {
                 gameType={this.props.gameType}
                 svg={this.state && this.state.deck ? this.state.deck[id] : undefined}
               />
-            </a>
+            </button>
           );
         })}
       </div>

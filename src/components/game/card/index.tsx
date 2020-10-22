@@ -10,18 +10,15 @@ interface Props {
 }
 
 export default class Card extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   private image(): JSX.Element {
     if (this.props.svg) {
       return <div className="card-image">{this.props.svg}</div>;
     } else {
       return (
         <img
-          src={`/static/decks/${this.props.gameType}/${this.props.features}.svg`}
+          src={`/decks/${this.props.gameType}/${this.props.features}.svg`}
           className="card-image"
+          alt=""
         />
       );
     }

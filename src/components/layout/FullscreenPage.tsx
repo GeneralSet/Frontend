@@ -1,18 +1,12 @@
-import * as React from 'react';
-import Topbar from './Topbar';
-import './fullscreenPage.css';
+import React from "react";
+import Topbar from "./Topbar";
+import "./fullscreenPage.css";
 
-export default class FullscreenPage extends React.Component<{}, {}> {
-  constructor(props: {}) {
-    super(props);
-  }
+const FullscreenPage: React.FC = (props) => (
+  <div className="fullscreen-page">
+    <Topbar />
+    {props.children}
+  </div>
+);
 
-  public render() {
-    return (
-      <div className="fullscreen-page">
-        <Topbar/>
-        {this.props.children}
-      </div>
-    );
-  }
-}
+export default FullscreenPage;

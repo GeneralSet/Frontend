@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps<{}> {
 }
 
 interface ReduxProps extends Props {
-  dispatch: Dispatch<Props>;
+  dispatch: Dispatch<any>;
   users: User[];
   gameType: string;
   gameState: GameState;
@@ -24,7 +24,10 @@ interface State {
   username: string;
 }
 
-const serverLocation = process.env.NODE_ENV === 'production' ? 'ws://multiplayer.generalset.io' : 'ws://localhost:3001';
+const serverLocation = process.env.NODE_ENV === 'production' ?
+  'ws://multiplayer.generalset.io' :
+  'ws://192.168.99.100:30570/'
+;
 
 @autobind
 class MultiPlayer extends React.Component<ReduxProps, State> {
@@ -92,8 +95,8 @@ function mapStateToProps(state: ReduxState, _ownProps: Props) {
   return state.multiPlayer;
 }
 
-function mapDispatchToProps(dispatch: Dispatch<Props>) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
   return { dispatch };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MultiPlayer) as any);
+export default connect(mapStateToProps, mapDispatchToProps as any)(withRouter(MultiPlayer) as any);

@@ -1,6 +1,6 @@
 type gameType = 'original' | 'triangles' | 'filters' | 'animations' | 'custom';
 
-interface SetVarient {
+interface SetVariant {
   gameType: gameType;
   name: string;
 }

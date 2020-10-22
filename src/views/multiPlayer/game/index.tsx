@@ -15,7 +15,7 @@ interface Props extends RouteComponentProps<{}> {
 }
 
 interface ReduxProps extends Props {
-  dispatch: Dispatch<Props>;
+  dispatch: Dispatch<any>;
   users: User[];
   gameType: gameType;
   gameState: GameState;
@@ -151,8 +151,8 @@ function mapStateToProps(state: ReduxState, _ownProps: Props) {
   return state.multiPlayer;
 }
 
-function mapDispatchToProps(dispatch: Dispatch<Props>) {
+function mapDispatchToProps(dispatch: Dispatch<any>) {
   return { dispatch };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game) as any);
+export default connect(mapStateToProps, mapDispatchToProps as any)(withRouter(Game) as any);

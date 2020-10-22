@@ -1,6 +1,6 @@
-var fs = require('fs');
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
+var fs = require('fs');
 
 export default class GeometricDeckGenerator {
   private deckData: DeckData;
@@ -25,16 +25,16 @@ export default class GeometricDeckGenerator {
         return;
       }
       if (featureOptions.length !== this.featureOptionsLength) {
-        throw `
+        throw new Error(`
           Invalid deck data.
           All attributes must have ${this.featureOptionsLength} options.
           ${feature} has ${featureOptions.length} options.
-        `;
+        `);
       }
       features.push(feature);
     });
     if (features.length !== this.numFeatures) {
-      throw `Invalid deck data. Given ${this.numFeatures} features`;
+      throw new Error(`Invalid deck data. Given ${this.numFeatures} features`);
     }
     return features;
   }
@@ -43,10 +43,10 @@ export default class GeometricDeckGenerator {
     for (let i = 0; i < this.numFeatures; i++) {
       const value = featureOptions[i];
       if (!(value && (value >= 0) && (value < this.featureOptionsLength))) {
-        throw `
+        throw new Error(`
           Invalid value given for attribute.
           Attributes must be in the range of 0 - ${this.featureOptionsLength - 1}
-        `;
+        `);
       }
     }
   }
@@ -104,7 +104,7 @@ export default class GeometricDeckGenerator {
     const shape = cardData.shapes;
     const num = cardData.numbers;
     if (!(color && shading && shape && num)) {
-      throw 'error attributes does not exist when it should :(';
+      throw new Error('error attributes does not exist when it should :(');
     }
     const shapePattern = shading(shape.shape, color, shape.fillScale);
     const shapePatternColor = this.addStrokeStyle(shapePattern, color, shape.strokeScale);
@@ -119,7 +119,7 @@ export default class GeometricDeckGenerator {
       const optionValue = features[i];
       const f = this.deckData[feature];
       if (!f) {
-        throw 'error attributes does not exist when it should :(';
+        throw new Error('error attributes does not exist when it should :(');
       }
       (cardData[feature] as any) = f[optionValue];
     }

@@ -13,10 +13,6 @@ interface Props {
 @autobind
 export default class PreviousSelection extends React.Component<Props, {}> {
 
-  constructor(props: Props) {
-    super(props);
-  }
-
   private cardDisplay(card: string, index: number): JSX.Element | null {
     return (
       <Card

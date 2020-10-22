@@ -1,22 +1,13 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import './topbar.css';
+import * as React from "react";
+import { Link } from "react-router-dom";
+import "./topbar.css";
 
-export default class Topbar extends React.Component<{}, {}> {
-  constructor(props: {}) {
-    super(props);
-  }
+const Topbar: React.FC = (props) => (
+  <div className="topbar-title">
+    <Link to="/" className="logo">
+      GeneralSet.io
+    </Link>
+  </div>
+);
 
-  public render() {
-    return (
-      <div className="topbar-title">
-        <Link
-          to="/"
-          className="logo"
-        >
-          GeneralSet.io
-        </Link>
-      </div>
-    );
-  }
-}
+export default Topbar;
