@@ -29,14 +29,14 @@ function getRandColors(): string[] {
 
 const validNumbers = [1, 2, 3, 4, 5];
 const validShapes = Object.values(shapes);
-const validShaddings = Object.values(patterns);
+const validShadings = Object.values(patterns);
 const validColors = getRandColors();
 
 for (let i = 0; i < NUM_DECKS; i++) {
   const DECK_DATA = {
     shapes: getRand(validShapes),
     colors: getRand(validColors),
-    shadings: getRand(validShaddings),
+    shadings: getRand(validShadings),
     numbers: getRand(validNumbers),
   };
 

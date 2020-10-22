@@ -121,7 +121,7 @@ export default class GeometricDeckGenerator {
       if (!f) {
         throw 'error attributes does not exist when it should :(';
       }
-      cardData[feature] = f[optionValue];
+      (cardData[feature] as any) = f[optionValue];
     }
     return cardData;
   }
