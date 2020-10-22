@@ -3,8 +3,7 @@ import autobind from "autobind-decorator";
 import Board from "components/game/board";
 import PreviousSelection from "components/game/previousSelection";
 import { match } from "react-router-dom";
-let GeneralSet = {};
-import("set/pkg/set").then((s) => (GeneralSet = s.Set));
+const GeneralSet = import("set/pkg/set");
 
 interface Props {
   match: match<{ gameType: gameType }>;
@@ -31,13 +30,27 @@ export default class Game extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    // new (GeneralSet as any)();
-    this.set = (GeneralSet as any).new(4, 3);
-    const deck = this.set.init_deck();
-    const updatedBoard = this.set.update_board(deck, "");
+    GeneralSet.then((s) => {
+      this.set = s.Set.new(4, 3);
+      const deck = this.set.init_deck();
+      const updatedBoard = this.set.update_board(deck, "");
+      this.setState({
+        deck: updatedBoard.get_deck().split(","),
+        board: updatedBoard.get_board().split(","),
+        selected: [],
+        hint: [],
+        previousSelection: [],
+        alert: {
+          isError: false,
+          message: "",
+        },
+        numberOfSets: updatedBoard.sets,
+        points: 0,
+      });
+    });
     this.state = {
-      deck: updatedBoard.get_deck().split(","),
-      board: updatedBoard.get_board().split(","),
+      deck: [],
+      board: [],
       selected: [],
       hint: [],
       previousSelection: [],
@@ -45,7 +58,7 @@ export default class Game extends React.Component<Props, State> {
         isError: false,
         message: "",
       },
-      numberOfSets: updatedBoard.sets,
+      numberOfSets: 0,
       points: 0,
     };
   }
