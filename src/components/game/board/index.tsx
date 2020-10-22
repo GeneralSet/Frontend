@@ -1,8 +1,8 @@
-import * as React from 'react';
-import autobind from 'autobind-decorator';
-import Card from 'components/game/card';
-import GeometricDeckGenerator from 'deckBuilder/GeometricDeckGenerator';
-import './index.css';
+import * as React from "react";
+import autobind from "autobind-decorator";
+import Card from "components/game/card";
+import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
+import "./index.css";
 
 interface Props {
   board: string[];
@@ -18,41 +18,44 @@ interface State {
 
 @autobind
 export default class Board extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
-    if (props.gameType === 'custom') {
+    if (props.gameType === "custom") {
       const BORDER = 3;
-      const HEIGHT = (250 - (BORDER * 2));
-      const WIDTH = (100 - (BORDER * 2));
+      const HEIGHT = 250 - BORDER * 2;
+      const WIDTH = 100 - BORDER * 2;
 
-      const open = (shape: JSX.Element, _color: string, _scale: number | null) => {
-        return (
-          <g style={{fill: 'transparent'}}>
-            {shape}
-          </g>
-        );
+      const open = (
+        shape: JSX.Element,
+        _color: string,
+        _scale: number | null
+      ) => {
+        return <g style={{ fill: "transparent" }}>{shape}</g>;
       };
 
-      const solid = (shape: JSX.Element, color: string, _scale: number | null) => {
-        return (
-          <g style={{fill: color}}>
-            {shape}
-          </g>
-        );
+      const solid = (
+        shape: JSX.Element,
+        color: string,
+        _scale: number | null
+      ) => {
+        return <g style={{ fill: color }}>{shape}</g>;
       };
 
-      const striped = (shape: JSX.Element, color: string, scale: number | null) => {
+      const striped = (
+        shape: JSX.Element,
+        color: string,
+        scale: number | null
+      ) => {
         return (
-          <g style={{fill: `url(#pattern_${color})`}}>
+          <g style={{ fill: `url(#pattern_${color})` }}>
             <pattern
               id={`pattern_${color}`}
               width="8"
               height="10"
               patternUnits="userSpaceOnUse"
-              patternTransform={`rotate(90) ${scale ? `scale(${scale})` : ''}`}
+              patternTransform={`rotate(90) ${scale ? `scale(${scale})` : ""}`}
             >
-              <line stroke={color} strokeWidth="5px" y2="15"/>
+              <line stroke={color} strokeWidth="5px" y2="15" />
             </pattern>
             {shape}
           </g>
@@ -120,9 +123,9 @@ export default class Board extends React.Component<Props, State> {
             border: BORDER + 3,
           },
         ],
-        colors: ['red', 'green', 'purple'],
+        colors: ["red", "green", "purple"],
         shadings: [open, solid, striped],
-        numbers: [1, 2, 3]
+        numbers: [1, 2, 3],
       };
 
       const generator = new GeometricDeckGenerator(DECK_DATA);
@@ -134,20 +137,26 @@ export default class Board extends React.Component<Props, State> {
 
   public render() {
     return (
-      <div className="board">
+      <div className="board container">
         {this.props.board.map((id: string, index: number) => {
           return (
             <button
-              className="card-wrap"
+              className="btn btn-link m-1 p-0"
               onClick={() => this.props.onSelect(id, index)}
               key={index}
             >
               <Card
                 features={id}
                 selected={this.props.selected.includes(id)}
-                hint={this.props.hint ? this.props.hint.includes(id) : undefined}
+                hint={
+                  this.props.hint ? this.props.hint.includes(id) : undefined
+                }
                 gameType={this.props.gameType}
-                svg={this.state && this.state.deck ? this.state.deck[id] : undefined}
+                svg={
+                  this.state && this.state.deck
+                    ? this.state.deck[id]
+                    : undefined
+                }
               />
             </button>
           );

@@ -2,8 +2,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   justify-content: center;
-  width: 840px;
-  margin: auto;
 }
 @media only screen and (max-width: 860px) {
   .board {
@@ -14,9 +12,4 @@
   .board {
     grid-template-columns: 1fr 1fr 1fr;
   }
-}
-
-
-.card-wrap: {
-  width: 25vh;
 }

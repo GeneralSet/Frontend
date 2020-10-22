@@ -144,34 +144,38 @@ export default class Game extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <div>
-          <table className="table table-borderless">
-            <tbody>
-              <tr>
-                <td>Points</td>
-                <td>{this.state.points}</td>
-              </tr>
-              <tr>
-                <td>Cards Remaining</td>
-                <td>{this.state.deck.length}</td>
-              </tr>
-              <tr>
-                <td>Sets on the Board</td>
-                <td>{this.state.numberOfSets}</td>
-              </tr>
-              <tr>
-                <td>
-                  <button onClick={this.hint}>Hint</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <PreviousSelection
-            cards={this.state.previousSelection}
-            gameType={this.props.match.params.gameType}
-            message={this.state.alert.message}
-            success={!this.state.alert.isError}
-          />
+        <div className="container mb-1">
+          <div className="row">
+            <div className="col-sm">
+              <table className="table table-borderless w-auto">
+                <tbody>
+                  <tr>
+                    <td className="text-left">Points</td>
+                    <td>{this.state.points}</td>
+                  </tr>
+                  <tr>
+                    <td className="text-left">Cards Remaining</td>
+                    <td>{this.state.deck.length}</td>
+                  </tr>
+                  <tr>
+                    <td className="text-left">Sets on the Board</td>
+                    <td>{this.state.numberOfSets}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="col-sm text-right">
+              <button onClick={this.hint} className="btn btn-primary btn-sm">
+                Hint
+              </button>
+              <PreviousSelection
+                cards={this.state.previousSelection}
+                gameType={this.props.match.params.gameType}
+                message={this.state.alert.message}
+                success={!this.state.alert.isError}
+              />
+            </div>
+          </div>
         </div>
         <Board
           board={this.state.board}

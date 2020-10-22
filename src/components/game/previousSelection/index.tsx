@@ -1,7 +1,7 @@
-import * as React from 'react';
-import autobind from 'autobind-decorator';
-import Card from 'components/game/card';
-import './index.css';
+import * as React from "react";
+import autobind from "autobind-decorator";
+import Card from "components/game/card";
+import "./index.css";
 
 interface Props {
   cards: string[];
@@ -12,7 +12,6 @@ interface Props {
 
 @autobind
 export default class PreviousSelection extends React.Component<Props, {}> {
-
   private cardDisplay(card: string, index: number): JSX.Element | null {
     return (
       <Card
@@ -29,11 +28,13 @@ export default class PreviousSelection extends React.Component<Props, {}> {
       return null;
     }
     return (
-      <div className={`previous-selection ${this.props.success ? 'success' : 'error'}`}>
-        <div className="message">{this.props.message}</div>
-        <div className="cards">
-          {this.props.cards.map(this.cardDisplay)}
-        </div>
+      <div
+        className={`previous-selection ${
+          this.props.success ? "success" : "error"
+        }`}
+      >
+        <div className="message text-left">{this.props.message}</div>
+        <div className="cards">{this.props.cards.map(this.cardDisplay)}</div>
       </div>
     );
   }
