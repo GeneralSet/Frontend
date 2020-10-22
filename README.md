@@ -2,8 +2,8 @@
 
 ## Run Locally
 ```
-npm install
-npm start
+yarn
+yarn start
 ```
 
 ## Run With Docker
