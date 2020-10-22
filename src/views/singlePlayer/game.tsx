@@ -131,6 +131,7 @@ export default class Game extends React.Component<Props, State> {
       deck: updatedBoard.get_deck().split(","),
       numberOfSets: updatedBoard.sets,
       previousSelection: selected,
+      hint: [],
     });
     return true;
   }
