@@ -9916,7 +9916,7 @@ set-value@^2.0.0, set-value@^2.0.1:
 
 "set@https://github.com/GeneralSet/Set":
   version "1.0.5"
-  resolved "https://github.com/GeneralSet/Set#b507033c7537e00f3690c1d509ad787fc9055427"
+  resolved "https://github.com/GeneralSet/Set#d74984686139bb8450da85a1c9289e65ab705f6f"
 
 setimmediate@^1.0.4:
   version "1.0.5"

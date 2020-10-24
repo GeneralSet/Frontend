@@ -32,11 +32,9 @@ export default class Game extends React.Component<Props, State> {
     super(props);
     GeneralSet.then((s) => {
       this.set = s.Set.new(4, 3);
-      const deck = this.set.init_deck();
-      const updatedBoard = this.set.update_board(deck, "");
       this.setState({
-        deck: updatedBoard.get_deck().split(","),
-        board: updatedBoard.get_board().split(","),
+        deck: this.set.get_deck().split(","),
+        board: this.set.get_board().split(","),
         selected: [],
         hint: [],
         previousSelection: [],
@@ -44,7 +42,7 @@ export default class Game extends React.Component<Props, State> {
           isError: false,
           message: "",
         },
-        numberOfSets: updatedBoard.sets,
+        numberOfSets: this.set.sets,
         points: 0,
       });
     });
@@ -114,22 +112,13 @@ export default class Game extends React.Component<Props, State> {
     }
 
     // Set found
-    const board = this.state.board;
-    const deck = this.state.deck;
-    selected.forEach((id) => {
-      board.splice(board.indexOf(id), 1);
-    });
-
-    const updatedBoard = this.set.update_board(
-      deck.join(","),
-      this.state.board.join(",")
-    );
+    this.set = this.set.update_board(selected.join(","));
     this.setState({
       alert: { isError: false, message: "+1 Set!" },
       points: this.state.points + 1,
-      board: updatedBoard.get_board().split(","),
-      deck: updatedBoard.get_deck().split(","),
-      numberOfSets: updatedBoard.sets,
+      board: this.set.get_board().split(","),
+      deck: this.set.get_deck().split(","),
+      numberOfSets: this.set.sets,
       previousSelection: selected,
       hint: [],
     });
@@ -145,7 +134,8 @@ export default class Game extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <div className="container mb-1">
+        <p>is end? {this.set && this.set.is_end() ? "yes" : "no"}</p>
+        <div className="container mb-2">
           <div className="row">
             <div className="col-sm">
               <table className="table table-borderless w-auto">
