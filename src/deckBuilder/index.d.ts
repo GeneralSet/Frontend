@@ -7,21 +7,17 @@ interface Shape {
 type ShadingFunction = (shape: JSX.Element, color: string) => JSX.Element;
 
 interface DeckData {
-  shapes?: Shape[];
-  colors?: string[];
-  shadings?: ShadingFunction[];
-  numbers?: number[];
-  animation?: JSX.Element[];
+  colors: string[];
+  unicode: string[];
+  numbers: number[];
 }
 
-type ValidFeatures = 'shapes' | 'colors' | 'shadings' | 'numbers' | 'animation';
+type ValidFeatures = 'colors' | 'numbers' | 'unicode';
 
 interface CardData {
-  shapes?: Shape;
-  colors?: string;
-  shadings?: ShadingFunction;
-  numbers?: number;
-  animation?: JSX.Element;
+  colors: string;
+  unicode: string;
+  numbers: number;
 }
 
 // jsx types hack

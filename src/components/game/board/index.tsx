@@ -1,11 +1,7 @@
 import * as React from "react";
 import autobind from "autobind-decorator";
 import Card from "components/game/card";
-import GeometricDeckGenerator, {
-  HEIGHT,
-  WIDTH,
-  BORDER,
-} from "deckBuilder/GeometricDeckGenerator";
+import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import "./index.css";
 
 interface Props {
@@ -25,78 +21,10 @@ export default class Board extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     if (props.gameType === "custom") {
-      const open = (shape: JSX.Element, color: string) => {
-        return <g style={{ fill: "transparent" }}>{shape}</g>;
-      };
-
-      const solid = (shape: JSX.Element, color: string) => {
-        return <g style={{ fill: color }}>{shape}</g>;
-      };
-
-      const gradient = (shape: JSX.Element, color: string) => {
-        return (
-          <g style={{ fill: `url(#Gradient${color})` }}>
-            <defs>
-              <linearGradient
-                id={`Gradient${color}`}
-                x1="0"
-                x2="0"
-                y1="0"
-                y2="1"
-              >
-                <stop offset="0%" stopColor={color} />
-                <stop offset="100%" stopColor="#fff" />
-              </linearGradient>
-            </defs>
-            {shape}
-          </g>
-        );
-      };
-
       const DECK_DATA: DeckData = {
-        shapes: [
-          {
-            // name: 'oval',
-            shape: (
-              <rect
-                x={BORDER}
-                y={BORDER}
-                width={WIDTH}
-                height={HEIGHT}
-                rx={WIDTH / 2}
-                ry={WIDTH / 2}
-              />
-            ),
-          },
-          {
-            // name: 'diamond',
-            shape: (
-              <polygon
-                points={`
-                  0,${HEIGHT / 2}
-                  ${WIDTH / 2},0
-                  ${WIDTH},${HEIGHT / 2}
-                  ${WIDTH / 2},${HEIGHT}
-                `}
-              />
-            ),
-          },
-          {
-            // name: 'triangle',
-            shape: (
-              <polygon
-                points={`
-                0,0
-                ${WIDTH},${HEIGHT / 2}
-                0,${HEIGHT}
-              `}
-              />
-            ),
-          },
-        ],
+        unicode: ["★", "5", "M"],
         colors: ["red", "green", "purple"],
-        shadings: [open, solid, gradient],
-        numbers: [1, 2, 3],
+        numbers: [3, 9, 2],
       };
 
       const generator = new GeometricDeckGenerator(DECK_DATA);

@@ -2,22 +2,17 @@ import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 var fs = require("fs");
 
-export const BORDER = 3;
-export const HEIGHT = 250 - BORDER * 2;
-export const WIDTH = 100 - BORDER * 2;
+export const VIEWPORT_SIZE = 100;
 
 export default class GeometricDeckGenerator {
   private deckData: DeckData;
   private features: ValidFeatures[];
-  private readonly numFeatures = 4;
+  private readonly numFeatures = 3;
   private readonly featureOptionsLength = 3;
-  private readonly symbolGap = 20;
   private readonly validFeatures: ValidFeatures[] = [
-    "shapes",
     "colors",
-    "shadings",
     "numbers",
-    "animation",
+    "unicode",
   ];
 
   constructor(deckData: DeckData) {
@@ -41,85 +36,58 @@ export default class GeometricDeckGenerator {
       }
       features.push(feature);
     });
-    if (features.length !== this.numFeatures) {
-      throw new Error(`Invalid deck data. Given ${this.numFeatures} features`);
-    }
     return features;
   }
 
-  private validateFeatureOptions(featureOptions: number[]): void {
-    for (let i = 0; i < this.numFeatures; i++) {
-      const value = featureOptions[i];
-      if (!(value && value >= 0 && value < this.featureOptionsLength)) {
-        throw new Error(`
-          Invalid value given for attribute.
-          Attributes must be in the range of 0 - ${
-            this.featureOptionsLength - 1
-          }
-        `);
-      }
-    }
-  }
-
-  private addStrokeStyle(shape: JSX.Element, color: string) {
-    const style = {
-      stroke: color,
-      strokeWidth: BORDER,
-    };
-    return <g style={style}>{shape}</g>;
-  }
-
-  private listSymbols(
-    symbol: JSX.Element,
-    length: number,
-    shape: Shape
-  ): JSX.Element[] {
+  private listSymbols(cardData: CardData) {
     const symbolList: JSX.Element[] = [];
-    for (let i = 0; i < length; i++) {
+    const size = VIEWPORT_SIZE / 3;
+    const start = 0;
+    const middle = VIEWPORT_SIZE / 2 - size / 2;
+    const end = VIEWPORT_SIZE - size;
+    const position = [
+      { x: middle, y: middle },
+      { x: start, y: end },
+      { x: end, y: start },
+      { x: end, y: end },
+      { x: start, y: start },
+      { x: end, y: middle },
+      { x: start, y: middle },
+      { x: middle, y: start },
+      { x: middle, y: end },
+    ];
+    for (let i = 0; i < cardData.numbers; i++) {
+      const offset = cardData.numbers % 2 ? 0 : 1;
+      const x = position[i + offset].x;
+      const y = position[i + offset].y;
       symbolList.push(
-        <g
-          transform={`translate(${i * (WIDTH + this.symbolGap) + BORDER})`}
-          key={i}
-        >
-          {symbol}
-        </g>
+        <svg x={x} y={y} viewBox="0 0 30 30" width={size} height={size}>
+          <g style={{ fill: cardData.colors }} key={i}>
+            <text dominant-baseline="hanging" text-anchor="start" fontSize={30}>
+              {cardData.unicode}
+            </text>
+          </g>
+        </svg>
       );
     }
     return symbolList;
   }
 
-  private symbolsToSVG(shapes: JSX.Element[], shape: Shape): JSX.Element {
-    const numShapes: number = shapes.length;
-    const width = numShapes * (WIDTH + this.symbolGap) + BORDER * numShapes;
-    const height = HEIGHT + BORDER * 2;
+  private createSvg(cardData: CardData): JSX.Element {
     return (
       <svg
         height="100%"
         width="100%"
-        viewBox={`0 0 ${width} ${height}`}
+        viewBox={`0 0 ${VIEWPORT_SIZE} ${VIEWPORT_SIZE}`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        {shapes}
+        {this.listSymbols(cardData)}
       </svg>
     );
   }
 
-  private createSvg(cardData: CardData): JSX.Element {
-    const color = cardData.colors;
-    const shading = cardData.shadings;
-    const shape = cardData.shapes;
-    const num = cardData.numbers;
-    if (!(color && shading && shape && num)) {
-      throw new Error("error attributes does not exist when it should :(");
-    }
-    const shapePattern = shading(shape.shape, color);
-    const shapePatternColor = this.addStrokeStyle(shapePattern, color);
-    const shapes = this.listSymbols(shapePatternColor, num, shape);
-    return this.symbolsToSVG(shapes, shape);
-  }
-
   private createCardData(features: number[]): CardData {
-    const cardData: CardData = {};
+    const cardData: CardData = {} as any;
     for (let i = 0; i < this.numFeatures; i++) {
       const feature = this.features[i];
       const optionValue = features[i];
@@ -136,16 +104,14 @@ export default class GeometricDeckGenerator {
     for (let i = 0; i < this.featureOptionsLength; i++) {
       for (let j = 0; j < this.featureOptionsLength; j++) {
         for (let k = 0; k < this.featureOptionsLength; k++) {
-          for (let l = 0; l < this.featureOptionsLength; l++) {
-            const filename = `${i}_${j}_${k}_${l}`;
-            const cardData = this.createCardData([i, j, k, l]);
-            const symbol = this.createSvg(cardData);
-            const svg = ReactDOMServer.renderToStaticMarkup(symbol);
-            if (!fs.existsSync(path)) {
-              fs.mkdirSync(path);
-            }
-            fs.writeFile(`${path}${filename}.svg`, svg, () => null);
+          const filename = `${i}_${j}_${k}`;
+          const cardData = this.createCardData([i, j, k]);
+          const symbol = this.createSvg(cardData);
+          const svg = ReactDOMServer.renderToStaticMarkup(symbol);
+          if (!fs.existsSync(path)) {
+            fs.mkdirSync(path);
           }
+          fs.writeFile(`${path}${filename}.svg`, svg, () => null);
         }
       }
     }
@@ -156,12 +122,10 @@ export default class GeometricDeckGenerator {
     for (let i = 0; i < this.featureOptionsLength; i++) {
       for (let j = 0; j < this.featureOptionsLength; j++) {
         for (let k = 0; k < this.featureOptionsLength; k++) {
-          for (let l = 0; l < this.featureOptionsLength; l++) {
-            const filename = `${i}_${j}_${k}_${l}`;
-            const cardData = this.createCardData([i, j, k, l]);
-            const symbol = this.createSvg(cardData);
-            deck[filename] = symbol;
-          }
+          const filename = `${i}_${j}_${k}`;
+          const cardData = this.createCardData([i, j, k]);
+          const symbol = this.createSvg(cardData);
+          deck[filename] = symbol;
         }
       }
     }
@@ -169,7 +133,6 @@ export default class GeometricDeckGenerator {
   }
 
   public createSymbol(features: number[]): JSX.Element {
-    this.validateFeatureOptions(features);
     return this.createSvg(this.createCardData(features));
   }
 }

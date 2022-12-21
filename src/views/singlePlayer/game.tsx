@@ -31,7 +31,10 @@ export default class Game extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     GeneralSet.then((s) => {
-      this.set = s.Set.new(4, 3);
+      this.set = s.Set.new(
+        this.props.match.params.gameType === "custom" ? 3 : 4,
+        3
+      );
       this.setState({
         deck: this.set.get_deck().split(","),
         board: this.set.get_board().split(","),
