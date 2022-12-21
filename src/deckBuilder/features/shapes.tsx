@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
 const BORDER = 3;
-const HEIGHT = (250 - (BORDER * 2));
-const WIDTH = (100 - (BORDER * 2));
+const HEIGHT = 250 - BORDER * 2;
+const WIDTH = 100 - BORDER * 2;
 
 export const shapes = {
   oval: {
@@ -16,11 +16,9 @@ export const shapes = {
         ry={WIDTH / 2}
       />
     ),
-    fillScale: 2,
-    strokeScale: 2,
     height: HEIGHT,
     width: WIDTH,
-    border: BORDER
+    border: BORDER,
   },
   diamond: {
     shape: (
@@ -33,8 +31,6 @@ export const shapes = {
         `}
       />
     ),
-    fillScale: 2,
-    strokeScale: 2,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -54,14 +50,12 @@ export const shapes = {
         />
       </g>
     ),
-    fillScale: 30,
-    strokeScale: 30,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER + 3,
   },
   rightSideUp: {
-    name: 'rightSideUp',
+    name: "rightSideUp",
     shape: (
       <polygon
         points={`
@@ -71,8 +65,6 @@ export const shapes = {
         `}
       />
     ),
-    fillScale: 4,
-    strokeScale: 3,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -87,8 +79,6 @@ export const shapes = {
         `}
       />
     ),
-    fillScale: 4,
-    strokeScale: 3,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -103,8 +93,6 @@ export const shapes = {
         `}
       />
     ),
-    fillScale: 4,
-    strokeScale: 3,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -130,8 +118,6 @@ export const shapes = {
         />
       </rect>
     ) as JSX.Element,
-    fillScale: 2,
-    strokeScale: 2,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -164,9 +150,6 @@ export const shapes = {
         />
       </rect>
     ) as JSX.Element,
-
-    fillScale: 2,
-    strokeScale: 2,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER,
@@ -191,8 +174,6 @@ export const shapes = {
         />
       </rect>
     ) as JSX.Element,
-    fillScale: 2,
-    strokeScale: 2,
     height: HEIGHT,
     width: WIDTH,
     border: BORDER + 3,

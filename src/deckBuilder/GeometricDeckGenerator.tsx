@@ -1,6 +1,10 @@
-import * as React from 'react';
-import * as ReactDOMServer from 'react-dom/server';
-var fs = require('fs');
+import * as React from "react";
+import * as ReactDOMServer from "react-dom/server";
+var fs = require("fs");
+
+export const BORDER = 3;
+export const HEIGHT = 250 - BORDER * 2;
+export const WIDTH = 100 - BORDER * 2;
 
 export default class GeometricDeckGenerator {
   private deckData: DeckData;
@@ -9,7 +13,11 @@ export default class GeometricDeckGenerator {
   private readonly featureOptionsLength = 3;
   private readonly symbolGap = 20;
   private readonly validFeatures: ValidFeatures[] = [
-    'shapes', 'colors', 'shadings', 'numbers', 'animation'
+    "shapes",
+    "colors",
+    "shadings",
+    "numbers",
+    "animation",
   ];
 
   constructor(deckData: DeckData) {
@@ -21,7 +29,7 @@ export default class GeometricDeckGenerator {
     const features: ValidFeatures[] = [];
     this.validFeatures.forEach((feature) => {
       const featureOptions = deckData[feature];
-      if (typeof featureOptions === 'undefined') {
+      if (typeof featureOptions === "undefined") {
         return;
       }
       if (featureOptions.length !== this.featureOptionsLength) {
@@ -42,33 +50,35 @@ export default class GeometricDeckGenerator {
   private validateFeatureOptions(featureOptions: number[]): void {
     for (let i = 0; i < this.numFeatures; i++) {
       const value = featureOptions[i];
-      if (!(value && (value >= 0) && (value < this.featureOptionsLength))) {
+      if (!(value && value >= 0 && value < this.featureOptionsLength)) {
         throw new Error(`
           Invalid value given for attribute.
-          Attributes must be in the range of 0 - ${this.featureOptionsLength - 1}
+          Attributes must be in the range of 0 - ${
+            this.featureOptionsLength - 1
+          }
         `);
       }
     }
   }
 
-  private addStrokeStyle(shape: JSX.Element, color: string, scale: number) {
+  private addStrokeStyle(shape: JSX.Element, color: string) {
     const style = {
       stroke: color,
-      strokeWidth: 3 * scale,
+      strokeWidth: BORDER,
     };
-    return (
-      <g style={style}>
-        {shape}
-      </g>
-    );
+    return <g style={style}>{shape}</g>;
   }
 
-  private listSymbols(symbol: JSX.Element, length: number, shape: Shape): JSX.Element[] {
+  private listSymbols(
+    symbol: JSX.Element,
+    length: number,
+    shape: Shape
+  ): JSX.Element[] {
     const symbolList: JSX.Element[] = [];
     for (let i = 0; i < length; i++) {
       symbolList.push(
         <g
-          transform={`translate(${i * (shape.width + this.symbolGap)})`}
+          transform={`translate(${i * (WIDTH + this.symbolGap) + BORDER})`}
           key={i}
         >
           {symbol}
@@ -78,14 +88,10 @@ export default class GeometricDeckGenerator {
     return symbolList;
   }
 
-  private symbolsToSVG(
-    shapes: JSX.Element[],
-    scale: number | null,
-    shape: Shape,
-  ): JSX.Element {
+  private symbolsToSVG(shapes: JSX.Element[], shape: Shape): JSX.Element {
     const numShapes: number = shapes.length;
-    const width = ((numShapes * (shape.width + this.symbolGap ))) + (shape.border * numShapes);
-    const height = shape.height + (shape.border * 2);
+    const width = numShapes * (WIDTH + this.symbolGap) + BORDER * numShapes;
+    const height = HEIGHT + BORDER * 2;
     return (
       <svg
         height="100%"
@@ -104,12 +110,12 @@ export default class GeometricDeckGenerator {
     const shape = cardData.shapes;
     const num = cardData.numbers;
     if (!(color && shading && shape && num)) {
-      throw new Error('error attributes does not exist when it should :(');
+      throw new Error("error attributes does not exist when it should :(");
     }
-    const shapePattern = shading(shape.shape, color, shape.fillScale);
-    const shapePatternColor = this.addStrokeStyle(shapePattern, color, shape.strokeScale);
+    const shapePattern = shading(shape.shape, color);
+    const shapePatternColor = this.addStrokeStyle(shapePattern, color);
     const shapes = this.listSymbols(shapePatternColor, num, shape);
-    return this.symbolsToSVG(shapes, shape.fillScale, shape);
+    return this.symbolsToSVG(shapes, shape);
   }
 
   private createCardData(features: number[]): CardData {
@@ -119,7 +125,7 @@ export default class GeometricDeckGenerator {
       const optionValue = features[i];
       const f = this.deckData[feature];
       if (!f) {
-        throw new Error('error attributes does not exist when it should :(');
+        throw new Error("error attributes does not exist when it should :(");
       }
       (cardData[feature] as any) = f[optionValue];
     }
@@ -136,7 +142,7 @@ export default class GeometricDeckGenerator {
             const symbol = this.createSvg(cardData);
             const svg = ReactDOMServer.renderToStaticMarkup(symbol);
             if (!fs.existsSync(path)) {
-                fs.mkdirSync(path);
+              fs.mkdirSync(path);
             }
             fs.writeFile(`${path}${filename}.svg`, svg, () => null);
           }

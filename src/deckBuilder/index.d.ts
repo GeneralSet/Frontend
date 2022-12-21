@@ -2,14 +2,9 @@
 interface Shape {
   name?: string;
   shape: JSX.Element;
-  width: number;
-  height: number;
-  border: number;
-  fillScale: number | null;
-  strokeScale: number;
 }
 
-type ShadingFunction = (shape: JSX.Element, color: string,  scale: number | null) => JSX.Element;
+type ShadingFunction = (shape: JSX.Element, color: string) => JSX.Element;
 
 interface DeckData {
   shapes?: Shape[];

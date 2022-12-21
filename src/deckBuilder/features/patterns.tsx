@@ -1,53 +1,56 @@
-import * as React from 'react';
+import * as React from "react";
 
 export const patterns = {
-  open: (shape: JSX.Element, _color: string, _scale: number | null) => (
-    <g style={{fill: 'transparent'}}>
-      {shape}
-    </g>
+  open: (shape: JSX.Element, _color: string) => (
+    <g style={{ fill: "transparent" }}>{shape}</g>
   ),
-  solid: (shape: JSX.Element, color: string, _scale: number | null) => (
-    <g style={{fill: color}}>
-      {shape}
-    </g>
+  solid: (shape: JSX.Element, color: string) => (
+    <g style={{ fill: color }}>{shape}</g>
   ),
-  striped: (shape: JSX.Element, color: string, scale: number | null) => (
-    <g style={{fill: `url(#pattern)`}}>
+  striped: (shape: JSX.Element, color: string) => (
+    <g style={{ fill: `url(#pattern)` }}>
       <pattern
         id={`pattern`}
         width="8"
         height="10"
         patternUnits="userSpaceOnUse"
-        patternTransform={`rotate(90) ${scale ? `scale(${scale})` : ''}`}
+        patternTransform={`rotate(90)`}
       >
-        <line stroke={color} strokeWidth="5px" y2="15"/>
+        <line stroke={color} strokeWidth="5px" y2="15" />
       </pattern>
       {shape}
     </g>
   ),
-  gradient: (shape: JSX.Element, color: string, _scale: number | null) => (
-    <g style={{fill: `url(#Gradient2)`}}>
+  gradient: (shape: JSX.Element, color: string) => (
+    <g style={{ fill: `url(#Gradient2)` }}>
       <defs>
         <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={color}/>
-          <stop offset="100%" stopColor="#fff"/>
+          <stop offset="0%" stopColor={color} />
+          <stop offset="100%" stopColor="#fff" />
         </linearGradient>
       </defs>
       {shape}
     </g>
   ),
-  triangles: (shape: JSX.Element, color: string, scale: number | null) => (
-    <g style={{fill: `url(#pattern)`}}>
+  triangles: (shape: JSX.Element, color: string) => (
+    <g style={{ fill: `url(#pattern)` }}>
       <defs>
-        <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-          <polygon points="15,10 25,10 20,20"/>
+        <pattern
+          id="pattern"
+          x="0"
+          y="0"
+          width="40"
+          height="40"
+          patternUnits="userSpaceOnUse"
+        >
+          <polygon points="15,10 25,10 20,20" />
         </pattern>
       </defs>
       {shape}
     </g>
   ),
-  crinkle: (shape: JSX.Element, color: string, _scale: number | null) => (
-    <g style={{filter: `url(#turbuMap)`, fill: color}}>
+  crinkle: (shape: JSX.Element, color: string) => (
+    <g style={{ filter: `url(#turbuMap)`, fill: color }}>
       <defs>
         <filter id="turbuMap">
           <feTurbulence
@@ -69,21 +72,26 @@ export const patterns = {
       {shape}
     </g>
   ),
-  blur: (shape: JSX.Element, color: string, _scale: number | null) => (
-    <g style={{filter: `url(#blurMe)`, fill: color}}>
+  blur: (shape: JSX.Element, color: string) => (
+    <g style={{ filter: `url(#blurMe)`, fill: color }}>
       <defs>
         <filter id="blurMe">
-         <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
         </filter>
       </defs>
       {shape}
     </g>
   ),
-  ink: (shape: JSX.Element, color: string, scale: number | null) => (
-    <g style={{filter: `url(#displacementFilter)`, fill: color}}>
+  ink: (shape: JSX.Element, color: string) => (
+    <g style={{ filter: `url(#displacementFilter)`, fill: color }}>
       <defs>
         <filter id="displacementFilter">
-          <feTurbulence type="turbulence" baseFrequency="0.1" numOctaves="2" result="turbulence"/>
+          <feTurbulence
+            type="turbulence"
+            baseFrequency="0.1"
+            numOctaves="2"
+            result="turbulence"
+          />
           <feDisplacementMap
             in2="turbulence"
             in="SourceGraphic"
@@ -95,5 +103,5 @@ export const patterns = {
       </defs>
       {shape}
     </g>
-  )
+  ),
 };

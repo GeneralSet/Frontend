@@ -27,10 +27,10 @@ export default class SelectVariant extends React.Component<Props, {}> {
       gameType: "animations",
       name: "Animations",
     },
-    // {
-    //   gameType: 'custom',
-    //   name: 'Custom',
-    // },
+    {
+      gameType: 'custom',
+      name: 'Custom',
+    },
   ];
 
   private gamePreviewButton(
