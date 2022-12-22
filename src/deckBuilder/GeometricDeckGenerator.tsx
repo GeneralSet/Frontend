@@ -63,7 +63,7 @@ export default class GeometricDeckGenerator {
       symbolList.push(
         <svg x={x} y={y} viewBox="0 0 30 30" width={size} height={size}>
           <g style={{ fill: cardData.colors }} key={i}>
-            <text dominant-baseline="hanging" text-anchor="start" fontSize={30}>
+            <text dominantBaseline="hanging" textAnchor="start" fontSize={30}>
               {cardData.unicode}
             </text>
           </g>

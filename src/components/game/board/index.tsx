@@ -24,7 +24,7 @@ export default class Board extends React.Component<Props, State> {
       const DECK_DATA: DeckData = {
         unicode: ["★", "5", "M"],
         colors: ["red", "green", "purple"],
-        numbers: [3, 9, 2],
+        numbers: [3, 2, 1],
       };
 
       const generator = new GeometricDeckGenerator(DECK_DATA);

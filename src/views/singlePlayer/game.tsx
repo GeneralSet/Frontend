@@ -33,7 +33,8 @@ export default class Game extends React.Component<Props, State> {
     GeneralSet.then((s) => {
       this.set = s.Set.new(
         this.props.match.params.gameType === "custom" ? 3 : 4,
-        3
+        3,
+        this.props.match.params.gameType === "custom" ? 9 : 12
       );
       this.setState({
         deck: this.set.get_deck().split(","),
@@ -120,7 +121,7 @@ export default class Game extends React.Component<Props, State> {
       alert: { isError: false, message: "+1 Set!" },
       points: this.state.points + 1,
       board: this.set.get_board().split(","),
-      deck: this.set.get_deck().split(","),
+      deck: this.set.get_deck() ? this.set.get_deck().split(",") : [],
       numberOfSets: this.set.sets,
       previousSelection: selected,
       hint: [],
