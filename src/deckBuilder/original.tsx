@@ -1,13 +1,14 @@
-import GeometricDeckGenerator from './GeometricDeckGenerator';
-import { shapes } from './features/shapes';
-import { patterns } from './features/patterns';
+import GeometricDeckGenerator from "./GeometricDeckGenerator";
+import { shapes } from "./features/shapes";
+import { patterns } from "./features/patterns";
 
 const DECK_DATA: DeckData = {
-  shapes: [shapes.oval, shapes.diamond, shapes.squiggle],
-  colors: ['red', 'green', 'purple'],
-  shadings: [patterns.open, patterns.striped, patterns.solid],
-  numbers: [1, 2, 3]
+  // shapes: [shapes.oval, shapes.diamond, shapes.squiggle],
+  colors: ["red", "green", "purple"],
+  // shadings: [patterns.open, patterns.striped, patterns.solid],
+  numbers: [1, 2, 3],
+  unicode: ["a", "b", "c"],
 };
 
 const generator = new GeometricDeckGenerator(DECK_DATA);
-generator.exportDeck('../../dist/decks/original/');
+generator.exportDeck("../../dist/decks/original/");
