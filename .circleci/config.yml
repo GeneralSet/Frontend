@@ -27,7 +27,10 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: "Install"
+          name: "Install Python"
+          command: apk add python3.11
+      - run:
+          name: "Install Dependencies"
           command: yarn
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
