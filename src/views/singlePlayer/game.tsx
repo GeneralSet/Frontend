@@ -3,7 +3,8 @@ import autobind from "autobind-decorator";
 import Board from "components/game/board";
 import PreviousSelection from "components/game/previousSelection";
 import { match } from "react-router-dom";
-const GeneralSet = import("set/pkg/set");
+const GeneralSet =
+  process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
 interface Props {
   match: match<{ gameType: gameType }>;
@@ -30,7 +31,7 @@ export default class Game extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    GeneralSet.then((s) => {
+    GeneralSet.then((s: any) => {
       this.set = s.Set.new(
         this.props.match.params.gameType === "custom" ? 3 : 4,
         3,
