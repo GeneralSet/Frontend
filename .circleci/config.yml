@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/repo
   docker:
-    - image: cimg/python:3.11.1-node
+    - image: cimg/node:19.3.0
 version: 2
 jobs:
   checkout_code:
