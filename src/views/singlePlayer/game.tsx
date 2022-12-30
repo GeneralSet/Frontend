@@ -1,6 +1,6 @@
 import * as React from "react";
 import autobind from "autobind-decorator";
-import Board from "components/game/board";
+import { Board } from "components/game/board";
 import PreviousSelection from "components/game/previousSelection";
 import { match } from "react-router-dom";
 const GeneralSet =

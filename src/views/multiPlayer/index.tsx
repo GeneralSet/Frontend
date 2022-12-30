@@ -2,10 +2,10 @@ import * as React from "react";
 import autobind from "autobind-decorator";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  WEBSOCKET_CONNECT,
-  WEBSOCKET_SEND,
-} from "@giantmachines/redux-websocket";
+// import {
+//   WEBSOCKET_CONNECT,
+//   WEBSOCKET_SEND,
+// } from "@giantmachines/redux-websocket";
 import { match, withRouter, RouteComponentProps } from "react-router-dom";
 import { ReduxState } from "reducers";
 import "./index.css";
@@ -39,12 +39,12 @@ class MultiPlayer extends React.Component<ReduxProps, State> {
       roomName: "",
       username: "",
     };
-    this.props.dispatch({
-      type: WEBSOCKET_CONNECT,
-      payload: {
-        url: serverLocation,
-      },
-    });
+    // this.props.dispatch({
+    //   type: WEBSOCKET_CONNECT,
+    //   payload: {
+    //     url: serverLocation,
+    //   },
+    // });
   }
 
   setRoomName(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -57,14 +57,14 @@ class MultiPlayer extends React.Component<ReduxProps, State> {
 
   host(event: React.MouseEvent<HTMLInputElement>): void {
     event.preventDefault();
-    this.props.dispatch({
-      type: WEBSOCKET_SEND,
-      payload: {
-        eventType: "joinRoom",
-        username: this.state.username,
-        roomName: this.state.roomName,
-      },
-    });
+    // this.props.dispatch({
+    //   type: WEBSOCKET_SEND,
+    //   payload: {
+    //     eventType: "joinRoom",
+    //     username: this.state.username,
+    //     roomName: this.state.roomName,
+    //   },
+    // });
     this.props.history.push(`${this.props.match.url}/${this.state.roomName}`);
   }
 

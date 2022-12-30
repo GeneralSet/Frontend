@@ -26,5 +26,5 @@ interface FeatureDeck {
 }
 
 declare module 'set';
-declare module '@giantmachines/redux-websocket';
+// declare module '@giantmachines/redux-websocket';
 

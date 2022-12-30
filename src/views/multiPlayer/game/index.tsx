@@ -3,11 +3,11 @@ import autobind from "autobind-decorator";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { style } from "typestyle";
-import Board from "components/game/board";
+import { Board } from "components/game/board";
 import { match, withRouter, RouteComponentProps } from "react-router-dom";
 import { ReduxState } from "reducers";
 import PreviousSelection from "components/game/previousSelection";
-import { WEBSOCKET_SEND } from "@giantmachines/redux-websocket";
+// import { WEBSOCKET_SEND } from "@giantmachines/redux-websocket";
 
 interface Props extends RouteComponentProps<{}> {
   match: match<{ roomName: string; gameType: gameType }>;
@@ -74,14 +74,14 @@ class Game extends React.Component<ReduxProps, State> {
     if (selected.length >= this.cardsForSet) {
       // TODO verify set on server and update game state
       this.clearSelection();
-      this.props.dispatch({
-        type: WEBSOCKET_SEND,
-        payload: {
-          eventType: "verifySet",
-          roomName: this.props.match.params.roomName,
-          selected: selected.join(","),
-        },
-      });
+      // this.props.dispatch({
+      //   type: WEBSOCKET_SEND,
+      //   payload: {
+      //     eventType: "verifySet",
+      //     roomName: this.props.match.params.roomName,
+      //     selected: selected.join(","),
+      //   },
+      // });
     } else {
       this.setState({ selected });
     }

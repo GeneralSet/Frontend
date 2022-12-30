@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { ReduxState } from "reducers";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Card from "components/game/card";
 import "./gameEditor.css";
 import Form from "react-bootstrap/Form";
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
+import { actions } from "views/actions";
 
 export const GameEditor = () => {
-  const golobalDeckData = useSelector(
+  const globalDeckData = useSelector(
     (state: ReduxState) => state.singlePlayer.deckData
   );
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
-  const [deckData, setDeckData] = useState(golobalDeckData);
+  const [deckData, setDeckData] = useState(globalDeckData);
   const deck = new GeometricDeckGenerator(deckData).arrayDeck();
 
   const onDeckDataChange = (
@@ -24,14 +24,18 @@ export const GameEditor = () => {
     feature: ValidFeatures,
     event: any
   ) => {
-    console.log(event);
     const newArray = [...deckData[feature]];
     newArray[cardNumber] = event.target.value;
     setDeckData({ ...deckData, [feature]: newArray });
   };
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleSave = () => {
+    dispatch(actions.updateDeck(deckData));
+    setShow(false);
+  };
+
   return (
     <>
       {show}
@@ -100,7 +104,7 @@ export const GameEditor = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSave}>
             Save Changes
           </Button>
         </Modal.Footer>
