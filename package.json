@@ -22,7 +22,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
     "set": "https://github.com/GeneralSet/Set",
-    "typescript": "~3.7.2",
+    "typescript": "~3.8.2",
     "typestyle": "^2.1.0"
   },
   "scripts": {
