@@ -161,7 +161,7 @@ export default class Game extends React.Component<Props, State> {
               </table>
             </div>
             <div className="col-sm text-right">
-              <button onClick={this.hint} className="btn btn-primary btn-sm">
+              <button onClick={this.hint} className="btn btn-secondary btn-sm">
                 Hint
               </button>
               <PreviousSelection
