@@ -44,6 +44,7 @@ export const ColorSelect = ({value, selection, onChange}: Props) => {
             disabled={selectionSet.has(color)}
             value={color}
             style={{backgroundColor: color}}
+            key={name}
           >
             {name}
           </option>

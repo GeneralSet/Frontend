@@ -6,7 +6,7 @@ import { style } from "typestyle";
 import { Board } from "components/game/board";
 import { match, withRouter, RouteComponentProps } from "react-router-dom";
 import { ReduxState } from "reducers";
-import PreviousSelection from "components/game/previousSelection";
+import {PreviousSelection} from "components/game/previousSelection";
 // import { WEBSOCKET_SEND } from "@giantmachines/redux-websocket";
 
 interface Props extends RouteComponentProps<{}> {

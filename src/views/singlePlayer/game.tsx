@@ -1,7 +1,7 @@
 import * as React from "react";
 import autobind from "autobind-decorator";
 import { Board } from "components/game/board";
-import PreviousSelection from "components/game/previousSelection";
+import {PreviousSelection} from "components/game/previousSelection";
 import { match } from "react-router-dom";
 const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
@@ -140,30 +140,30 @@ export default class Game extends React.Component<Props, State> {
     return (
       <div>
         <p>is end? {this.set && this.set.is_end() ? "yes" : "no"}</p>
+        <button onClick={this.hint} className="btn btn-secondary btn-sm">
+          Hint
+        </button>
         <div className="container mb-2">
           <div className="row">
             <div className="col-sm">
-              <table className="table table-borderless w-auto">
+              <table className="table table-borderless w-auto" style={{color: "white"}}>
                 <tbody>
                   <tr>
-                    <td className="text-left">Points</td>
+                    <td style={{textAlign: "left"}}>Points</td>
                     <td>{this.state.points}</td>
                   </tr>
                   <tr>
-                    <td className="text-left">Cards Remaining</td>
+                    <td style={{textAlign: "left"}}>Cards Remaining</td>
                     <td>{this.state.deck.length}</td>
                   </tr>
                   <tr>
-                    <td className="text-left">Sets on the Board</td>
+                    <td style={{textAlign: "left"}}>Sets on the Board</td>
                     <td>{this.state.numberOfSets}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div className="col-sm text-right">
-              <button onClick={this.hint} className="btn btn-secondary btn-sm">
-                Hint
-              </button>
+            <div className="col-sm">
               <PreviousSelection
                 cards={this.state.previousSelection}
                 gameType={this.props.match.params.gameType}

@@ -19,7 +19,13 @@ export const NumberSelect = ({value, selection, onChange}: Props) => {
         value={value}
       >
         {NUMBERS.map((number) => (
-          <option disabled={selectionSet.has(number)} value={number}>{number}</option>
+          <option
+            disabled={selectionSet.has(number)}
+            value={number}
+            key={number}
+          >
+            {number}
+          </option>
         ))}
       </Form.Select>
     </>

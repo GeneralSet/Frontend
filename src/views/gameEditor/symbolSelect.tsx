@@ -19,7 +19,13 @@ export const SymbolSelect = ({value, selection, onChange}: Props) => {
         value={value}
       >
         {SYMBOLS.map((symbol) => (
-          <option disabled={selectionSet.has(symbol)} value={symbol}>{symbol}</option>
+          <option
+            disabled={selectionSet.has(symbol)}
+            value={symbol}
+            key={symbol}
+          >
+            {symbol}
+          </option>
         ))}
       </Form.Select>
     </>

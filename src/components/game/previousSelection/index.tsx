@@ -1,5 +1,6 @@
 import * as React from "react";
-import autobind from "autobind-decorator";
+import { useSelector } from "react-redux";
+import { ReduxState } from "reducers";
 import Card from "components/game/card";
 import "./index.css";
 
@@ -10,32 +11,31 @@ interface Props {
   success: boolean;
 }
 
-@autobind
-export default class PreviousSelection extends React.Component<Props, {}> {
-  private cardDisplay(card: string, index: number): JSX.Element | null {
-    return (
-      <Card
-        key={index}
-        features={card}
-        selected={false}
-        gameType={this.props.gameType}
-      />
-    );
+export const PreviousSelection = ({cards, gameType, message, success}: Props) => {
+  const customDeck = useSelector(
+    (state: ReduxState) => state.singlePlayer.deck
+  );
+  if (cards.length <= 0) {
+    return null;
   }
-
-  render() {
-    if (this.props.cards.length <= 0) {
-      return null;
-    }
-    return (
-      <div
-        className={`previous-selection ${
-          this.props.success ? "success" : "error"
-        }`}
-      >
-        <div className="message text-left">{this.props.message}</div>
-        <div className="cards">{this.props.cards.map(this.cardDisplay)}</div>
+  return (
+    <div
+      className={`previous-selection ${
+        success ? "success" : "error"
+      }`}
+    >
+      <div style={{color: "white"}}>{message}</div>
+      <div className="cards">
+        {cards.map((card, index) => (
+          <Card
+            key={index}
+            features={card}
+            selected={false}
+            gameType={gameType}
+            svg={customDeck[card]}
+          />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
