@@ -2,7 +2,6 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 
 export const COLORS = {
-  Black: "#000000",
   Red: "#e6194B",
   Green: "#3cb44b",
   Yellow: "#ffe119",
@@ -12,7 +11,17 @@ export const COLORS = {
   Cyan: "#42d4f4",
   Magenta: "#f032e6",
   Lime: "#bfef45",
-  Pink: "#fabed4"
+  Pink: "#fabed4",
+  Teal: "#469990",
+  Lavender: "#dcbeff",
+  Brown: "#9a6324",
+  Beige: "#fffac8",
+  Maroon: "#800000",
+  Mint: "#aaffc3",
+  Olive: "#808000",
+  Apricot: "#ffd8b1",
+  Navy: "#000075",
+  Black: "#000000",
 };
 
 interface Props {
