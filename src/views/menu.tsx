@@ -25,7 +25,8 @@ export const Menu: React.FC = () => {
         </Link> */}
         <Link
           to="/single_player/custom"
-          className="btn btn-warning btn-lg btn-block"
+          className="btn btn-warning"
+          style={{marginRight: "10px"}}
         >
           Play
         </Link>

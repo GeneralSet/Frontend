@@ -8,6 +8,9 @@ import "./gameEditor.css";
 import Form from "react-bootstrap/Form";
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import { actions } from "views/actions";
+import { SymbolSelect } from "./symbolSelect";
+import { NumberSelect } from "./numberSelect";
+import { ColorSelect } from "./colorSelect";
 
 export const GameEditor = () => {
   const globalDeckData = useSelector(
@@ -22,10 +25,10 @@ export const GameEditor = () => {
   const onDeckDataChange = (
     cardNumber: number,
     feature: ValidFeatures,
-    event: any
+    value: string
   ) => {
     const newArray = [...deckData[feature]];
-    newArray[cardNumber] = event.target.value;
+    newArray[cardNumber] = value;
     setDeckData({ ...deckData, [feature]: newArray });
   };
 
@@ -40,9 +43,8 @@ export const GameEditor = () => {
     <>
       {show}
       <Button variant="light" onClick={handleShow}>
-        Custom
+        Edit
       </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit</Modal.Title>
@@ -72,32 +74,20 @@ export const GameEditor = () => {
               />
             </button>
           </div>
-          <Form.Label>Color</Form.Label>
-          <Form.Control
-            type="color"
-            onChange={(value) => onDeckDataChange(card, "colors", value)}
+          <ColorSelect
             value={deckData.colors[card]}
+            selection={deckData.colors}
+            onChange={(value) => onDeckDataChange(card, "colors", value)}
           />
-          <Form.Label>Number</Form.Label>
-          <Form.Select
-            onChange={(value) => onDeckDataChange(card, "numbers", value)}
+          <NumberSelect
             value={deckData.numbers[card]}
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-          </Form.Select>
-          <Form.Label>Symbol</Form.Label>
-          <Form.Control
-            type="text"
-            onChange={(value) => onDeckDataChange(card, "unicode", value)}
+            selection={deckData.numbers}
+            onChange={(value) => onDeckDataChange(card, "numbers", value)}
+          />
+          <SymbolSelect 
             value={deckData.unicode[card]}
+            selection={deckData.unicode}
+            onChange={(value) => onDeckDataChange(card, "unicode", value)}
           />
         </Modal.Body>
         <Modal.Footer>

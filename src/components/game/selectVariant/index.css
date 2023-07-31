@@ -10,8 +10,8 @@
   width: 65px;
   padding: 10px;
 }
-.game-selector .card img {
-  height: 32px;
+.game-selector .card .card-image {
+  height: 45px;
 }
 
 .game-selector .card:nth-child(1) {
