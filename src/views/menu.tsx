@@ -11,9 +11,9 @@ export const Menu: React.FC = () => {
     <>
       <div className="game-selector">
         <div className="cards">
-          <Card features="2_2_2" selected={false} svg={deck["2_2_2"]} />
-          <Card features="1_1_1" selected={false} svg={deck["1_1_1"]} />
-          <Card features="0_0_0" selected={false} svg={deck["0_0_0"]} />
+          <Card selected={false} svg={deck["2_2_2"]} />
+          <Card selected={false} svg={deck["1_1_1"]} />
+          <Card selected={false} svg={deck["0_0_0"]} />
         </div>
       </div>
       <nav style={{ maxWidth: "350px", margin: "0 auto" }}>
@@ -24,7 +24,7 @@ export const Menu: React.FC = () => {
           Random
         </Link> */}
         <Link
-          to="/single_player/custom"
+          to="/single_player"
           className="btn btn-warning"
           style={{marginRight: "10px"}}
         >

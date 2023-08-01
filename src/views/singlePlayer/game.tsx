@@ -3,11 +3,13 @@ import autobind from "autobind-decorator";
 import { Board } from "components/game/board";
 import {PreviousSelection} from "components/game/previousSelection";
 import { match } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
 const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
 interface Props {
-  match: match<{ gameType: gameType }>;
 }
 
 interface State {
@@ -32,11 +34,7 @@ export default class Game extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     GeneralSet.then((s: any) => {
-      this.set = s.Set.new(
-        this.props.match.params.gameType === "custom" ? 3 : 4,
-        3,
-        this.props.match.params.gameType === "custom" ? 9 : 12
-      );
+      this.set = s.Set.new(3, 3, 9);
       this.setState({
         deck: this.set.get_deck().split(","),
         board: this.set.get_board().split(","),
@@ -139,7 +137,17 @@ export default class Game extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <p>is end? {this.set && this.set.is_end() ? "yes" : "no"}</p>
+        <Modal show={this.set && this.set.is_end()}>
+          <Modal.Header>
+            <Modal.Title>Game Over</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Score: {this.state.points}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => window.location.reload()}>Play Again</Button>
+          </Modal.Footer>
+        </Modal>
         <button onClick={this.hint} className="btn btn-secondary btn-sm">
           Hint
         </button>
@@ -149,7 +157,7 @@ export default class Game extends React.Component<Props, State> {
               <table className="table table-borderless w-auto" style={{color: "white"}}>
                 <tbody>
                   <tr>
-                    <td style={{textAlign: "left"}}>Points</td>
+                    <td style={{textAlign: "left"}}>Score</td>
                     <td>{this.state.points}</td>
                   </tr>
                   <tr>
@@ -166,7 +174,6 @@ export default class Game extends React.Component<Props, State> {
             <div className="col-sm">
               <PreviousSelection
                 cards={this.state.previousSelection}
-                gameType={this.props.match.params.gameType}
                 message={this.state.alert.message}
                 success={!this.state.alert.isError}
               />
@@ -177,7 +184,6 @@ export default class Game extends React.Component<Props, State> {
           board={this.state.board}
           selected={this.state.selected}
           hint={this.state.hint}
-          gameType={this.props.match.params.gameType}
           onSelect={this.selectCard}
         />
       </div>

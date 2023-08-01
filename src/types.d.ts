@@ -1,10 +1,3 @@
-type gameType = 'original' | 'triangles' | 'filters' | 'animations' | 'custom';
-
-interface SetVariant {
-  gameType: gameType;
-  name: string;
-}
-
 interface GameState {
   deck: string[];
   board: string[];

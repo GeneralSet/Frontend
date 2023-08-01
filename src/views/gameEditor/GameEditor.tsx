@@ -54,21 +54,18 @@ export const GameEditor = () => {
           <div className="cardSelector">
             <button className="btn btn-link m-1 p-0" onClick={() => setCard(0)}>
               <Card
-                features="0_0_0"
                 selected={card === 0}
                 svg={deck["0_0_0"]}
               />
             </button>
             <button className="btn btn-link m-1 p-0" onClick={() => setCard(1)}>
               <Card
-                features="1_1_1"
                 selected={card === 1}
                 svg={deck["1_1_1"]}
               />
             </button>
             <button className="btn btn-link m-1 p-0" onClick={() => setCard(2)}>
               <Card
-                features="2_2_2"
                 selected={card === 2}
                 svg={deck["2_2_2"]}
               />

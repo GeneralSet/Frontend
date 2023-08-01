@@ -8,12 +8,7 @@ interface Props {
   board: string[];
   selected: string[];
   hint?: string[];
-  gameType: gameType;
   onSelect: (id: string, index: number) => void;
-}
-
-interface State {
-  deck?: FeatureDeck;
 }
 
 export const Board = (props: Props) => {
@@ -31,11 +26,9 @@ export const Board = (props: Props) => {
             key={index}
           >
             <Card
-              features={id}
               selected={props.selected.includes(id)}
               hint={props.hint ? props.hint.includes(id) : undefined}
-              gameType={props.gameType}
-              svg={props.gameType === "custom" ? customDeck[id] : undefined}
+              svg={customDeck[id]}
             />
           </button>
         );

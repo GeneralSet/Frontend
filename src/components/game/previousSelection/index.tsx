@@ -6,12 +6,11 @@ import "./index.css";
 
 interface Props {
   cards: string[];
-  gameType: gameType;
   message: string;
   success: boolean;
 }
 
-export const PreviousSelection = ({cards, gameType, message, success}: Props) => {
+export const PreviousSelection = ({cards, message, success}: Props) => {
   const customDeck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
@@ -29,9 +28,7 @@ export const PreviousSelection = ({cards, gameType, message, success}: Props) =>
         {cards.map((card, index) => (
           <Card
             key={index}
-            features={card}
             selected={false}
-            gameType={gameType}
             svg={customDeck[card]}
           />
         ))}
