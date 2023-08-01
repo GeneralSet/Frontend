@@ -8,7 +8,7 @@ interface Props {
   board: string[];
   selected: string[];
   hint?: string[];
-  onSelect: (id: string, index: number) => void;
+  onSelect: (id: string) => void;
 }
 
 export const Board = (props: Props) => {
@@ -18,12 +18,12 @@ export const Board = (props: Props) => {
 
   return (
     <div className="board container">
-      {props.board.map((id: string, index: number) => {
+      {props.board.map((id: string) => {
         return (
           <button
             className="btn btn-link m-1 p-0"
-            onClick={() => props.onSelect(id, index)}
-            key={index}
+            onClick={() => props.onSelect(id)}
+            key={id}
           >
             <Card
               selected={props.selected.includes(id)}

@@ -2,7 +2,6 @@ import * as React from "react";
 import autobind from "autobind-decorator";
 import { Board } from "components/game/board";
 import {PreviousSelection} from "components/game/previousSelection";
-import { match } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
@@ -33,6 +32,23 @@ export default class Game extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.restartGame();
+    this.state = {
+      deck: [],
+      board: [],
+      selected: [],
+      hint: [],
+      previousSelection: [],
+      alert: {
+        isError: false,
+        message: "",
+      },
+      numberOfSets: 0,
+      points: 0,
+    };
+  }
+
+  restartGame() {
     GeneralSet.then((s: any) => {
       this.set = s.Set.new(3, 3, 9);
       this.setState({
@@ -49,22 +65,9 @@ export default class Game extends React.Component<Props, State> {
         points: 0,
       });
     });
-    this.state = {
-      deck: [],
-      board: [],
-      selected: [],
-      hint: [],
-      previousSelection: [],
-      alert: {
-        isError: false,
-        message: "",
-      },
-      numberOfSets: 0,
-      points: 0,
-    };
   }
 
-  selectCard(id: string, selectedIndex: number) {
+  selectCard(id: string) {
     const board = this.state.board;
     const selected = this.state.selected;
 
@@ -145,7 +148,7 @@ export default class Game extends React.Component<Props, State> {
             Score: {this.state.points}
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => window.location.reload()}>Play Again</Button>
+            <Button onClick={this.restartGame}>Play Again</Button>
           </Modal.Footer>
         </Modal>
         <button onClick={this.hint} className="btn btn-secondary btn-sm">
