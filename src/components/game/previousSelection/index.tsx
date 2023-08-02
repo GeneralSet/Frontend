@@ -7,10 +7,9 @@ import "./index.css";
 interface Props {
   cards: string[];
   message: string;
-  success: boolean;
 }
 
-export const PreviousSelection = ({cards, message, success}: Props) => {
+export const PreviousSelection = ({cards, message}: Props) => {
   const customDeck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
@@ -18,11 +17,7 @@ export const PreviousSelection = ({cards, message, success}: Props) => {
     return null;
   }
   return (
-    <div
-      className={`previous-selection ${
-        success ? "success" : "error"
-      }`}
-    >
+    <div className="previous-selection">
       <div style={{color: "white"}}>{message}</div>
       <div className="cards">
         {cards.map((card, index) => (

@@ -16,7 +16,11 @@ export const initialState = {
 export function reducer(state: typeof initialState = initialState, action: Actions) {
   switch (action.type) {
     case 'UPDATE_DECK':
-      return {...state, deck: new GeometricDeckGenerator(action.payload).arrayDeck(), deckData: action.payload };
+      return {
+        ...state,
+        deck: new GeometricDeckGenerator(action.payload).arrayDeck(),
+        deckData: action.payload
+      };
     default:
       return state;
   }
