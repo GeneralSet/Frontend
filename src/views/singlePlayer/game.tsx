@@ -8,7 +8,9 @@ import Button from "react-bootstrap/Button";
 const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
-const cardsForSet = 3;
+const features = 3;
+const options = 3;
+const boardSize = 3;
 
 const Game = () => {
   const [set, setSet] = useState<any>();
@@ -20,9 +22,9 @@ const Game = () => {
   useEffect(() => {
     GeneralSet.then((s: any) => {
       setSet(s.Set.new(
-        3, // features
-        3, // options
-        9  // board size
+        features,
+        options,
+        boardSize
       ));
     });
   },[]);
@@ -30,9 +32,9 @@ const Game = () => {
   const restartGame = () => {
     GeneralSet.then((s: any) => {
       setSet(s.Set.new(
-        3, // features
-        3, // options
-        9  // board size
+        features,
+        options,
+        boardSize
       ));
     })
   };
@@ -60,7 +62,7 @@ const Game = () => {
     } else {
       selectedClone.push(id);
     }
-    if (selectedClone.length < cardsForSet) {
+    if (selectedClone.length < options) {
       setSelected(selectedClone);
       return;
     }

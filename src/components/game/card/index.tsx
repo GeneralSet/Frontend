@@ -7,17 +7,14 @@ interface Props {
   svg: JSX.Element;
 }
 
-export default class Card extends React.Component<Props, {}> {
-  render() {
-    const selected = this.props.selected ? 'selected' : '';
-    const hint = this.props.hint ? 'hint' : '';
-
-    return (
-      <div className={`card ${selected} ${hint}`}>
-        <div className="card-content">
-          <div className="card-image">{this.props.svg}</div>
-        </div>
+const Card = ({selected, hint, svg}: Props) => {
+  return (
+    <div className={`card ${selected ? 'selected' : ''} ${hint ? 'hint' : ''}`}>
+      <div className="card-content">
+        <div className="card-image">{svg}</div>
       </div>
-    );
+    </div>
+  );
   }
-}
+
+export default Card;
