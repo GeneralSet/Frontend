@@ -75,15 +75,19 @@ export default class GeometricDeckGenerator {
   }
 
   private createSvg(features: number[]): JSX.Element {
-    const cardData: Partial<CardData> = {};
+    const cardData = {
+      colors: "#000",
+      unicode: "✖",
+      numbers: 1
+    } as any;
     for (let i = 0; i < this.numFeatures; i++) {
       const feature = this.features[i];
       const optionValue = features[i];
       const f = this.deckData[feature];
       if (!f) {
-        throw new Error("error attributes does not exist when it should :(");
+        throw new Error(`Error attribute for ${feature} does not exist`);
       }
-      (cardData[feature] as any) = f[optionValue];
+      cardData[feature] = f[optionValue];
     }
     return (
       <svg

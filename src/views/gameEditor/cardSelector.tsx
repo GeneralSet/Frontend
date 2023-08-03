@@ -24,9 +24,13 @@ const featureOptions = {
 export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, setCard}: Props) => {
   const removeCard = (index: number) => {
     const newDeckData: any = {...deckData};
-    Object.keys(deckData).forEach(feature => {
+    Object.keys(deckData).forEach((feature) => {
       newDeckData[feature].splice(index, 1);
-    })
+    });
+    const lastCard = Object.values(newDeckData as DeckData)[0].length -1;
+    if (card >= lastCard) {
+      setCard(lastCard);
+    }
     setDeckData(newDeckData);
   }
 
@@ -40,7 +44,10 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
       newDeckData[feature].push(getAvailableValue(feature as ValidFeatures, newDeckData[feature]));
-    })
+    });
+    const newCard = Object.values(newDeckData as DeckData)[0].length -1;
+    setCard(newCard);
+
     setDeckData(newDeckData);
   }
 
