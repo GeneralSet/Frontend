@@ -3,14 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ReduxState } from "reducers";
 import { useSelector, useDispatch } from "react-redux";
-import Card from "components/game/card";
 import "./gameEditor.css";
-import Form from "react-bootstrap/Form";
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import { actions } from "views/actions";
 import { SymbolSelect } from "./symbolSelect";
 import { NumberSelect } from "./numberSelect";
 import { ColorSelect } from "./colorSelect";
+import { CardSelector } from "./cardSelector";
 
 export const GameEditor = () => {
   const globalDeckData = useSelector(
@@ -32,24 +31,6 @@ export const GameEditor = () => {
     setDeckData({ ...deckData, [feature]: newArray });
   };
 
-  const removeCard = (index: number) => {
-    const newDeckData: any = {...deckData};
-    Object.keys(deckData).forEach(feature => {
-      newDeckData[feature].splice(index, 1);
-    })
-    setDeckData(newDeckData);
-  }
-
-  const addCard = () => {
-    const newDeckData: any = {...deckData};
-    Object.keys(deckData).forEach(feature => {
-       // fix me - this should be an available value. not the first one ;)
-      newDeckData[feature].push(newDeckData[feature][0]);
-    })
-    setDeckData(newDeckData);
-  }
-
-
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleSave = () => {
@@ -68,35 +49,14 @@ export const GameEditor = () => {
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Label>Select Card to Edit</Form.Label>
-          <div className="cardSelector">
-            {[...Array(numberOfCards)].map((_, i) => (
-              <div key={i}>
-                <div className="cardSelector-container">
-                {numberOfCards > 2 ? 
-                  <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(i)}>
-                    x
-                  </Button>
-                : null}
-                  <Button variant="link" className="cardSelector-button" onClick={() => setCard(i)}>
-                    <Card
-                      selected={card === i}
-                      svg={deck[`${i}_${i}_${i}`]}
-                    />
-                  </Button>
-                </div>
-              </div>
-
-            ))}
-            {numberOfCards < 4 ? 
-            <Button variant="link" className="cardSelector-add" onClick={addCard}>
-              <Card
-                selected={false}
-                svg={<div>✚</div>}
-              />
-            </Button>
-            : null}
-          </div>
+          <CardSelector
+            numberOfCards={numberOfCards}
+            deckData={deckData}
+            setDeckData={setDeckData}
+            deck={deck}
+            card={card}
+            setCard={setCard}
+          />
           <ColorSelect
             value={deckData.colors[card]}
             selection={deckData.colors}
