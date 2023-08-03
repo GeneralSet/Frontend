@@ -70,20 +70,30 @@ export const GameEditor = () => {
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Button variant="secondary" onClick={addCard}>Add Card</Button>
           <Form.Label>Select Card to Edit</Form.Label>
           <div className="cardSelector">
             {[...Array(numberOfCards)].map((_, i) => (
-              <>
-                <a onClick={() => removeCard(i)}>Remove Card</a>
-                <button className="btn btn-link m-1 p-0" onClick={() => setCard(i)}>
-                  <Card
-                    selected={card === i}
-                    svg={deck[`${i}_${i}_${i}`]}
-                  />
-                </button>
-              </>
+              <div key={i}>
+                <div className="cardSelector-container">
+                  <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(i)}>
+                    x
+                  </Button>
+                  <Button variant="link" className="cardSelector-button" onClick={() => setCard(i)}>
+                    <Card
+                      selected={card === i}
+                      svg={deck[`${i}_${i}_${i}`]}
+                    />
+                  </Button>
+                </div>
+              </div>
+
             ))}
+            <Button variant="link" className="cardSelector-add" onClick={addCard}>
+              <Card
+                selected={false}
+                svg={<div>+</div>}
+              />
+            </Button>
           </div>
           <ColorSelect
             value={deckData.colors[card]}
