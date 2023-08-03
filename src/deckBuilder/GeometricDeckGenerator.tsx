@@ -8,7 +8,7 @@ export default class GeometricDeckGenerator {
   private deckData: DeckData;
   private features: ValidFeatures[];
   private readonly numFeatures = 3;
-  private readonly featureOptionsLength = 3;
+  private featureOptionsLength: number;
   private readonly validFeatures: ValidFeatures[] = [
     "colors",
     "numbers",
@@ -16,6 +16,7 @@ export default class GeometricDeckGenerator {
   ];
 
   constructor(deckData: DeckData) {
+    this.featureOptionsLength = Object.values(deckData)[0].length;
     this.features = this.getFeatures(deckData);
     this.deckData = deckData;
   }

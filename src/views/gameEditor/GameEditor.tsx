@@ -21,16 +21,37 @@ export const GameEditor = () => {
   const [card, setCard] = useState(0);
   const [deckData, setDeckData] = useState(globalDeckData);
   const deck = new GeometricDeckGenerator(deckData).arrayDeck();
-
+  console.log(deck)
+  const numberOfCards = Object.values(deckData)[0].length;
   const onDeckDataChange = (
     cardNumber: number,
     feature: ValidFeatures,
-    value: string
+    value: string | number
   ) => {
     const newArray = [...deckData[feature]];
     newArray[cardNumber] = value;
     setDeckData({ ...deckData, [feature]: newArray });
   };
+
+  const removeCard = (index: number) => {
+    // TODO: set a min number of options
+    const newDeckData: any = {...deckData};
+    Object.keys(deckData).forEach(feature => {
+      newDeckData[feature].splice(index, 1);
+    })
+    setDeckData(newDeckData);
+  }
+
+  const addCard = () => {
+    // TODO: set a max number of options
+    const newDeckData: any = {...deckData};
+    Object.keys(deckData).forEach(feature => {
+       // fix me - this should be an available value. not the first one ;)
+      newDeckData[feature].push(newDeckData[feature][0]);
+    })
+    setDeckData(newDeckData);
+  }
+
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -50,26 +71,20 @@ export const GameEditor = () => {
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <Button variant="secondary" onClick={addCard}>Add Card</Button>
           <Form.Label>Select Card to Edit</Form.Label>
           <div className="cardSelector">
-            <button className="btn btn-link m-1 p-0" onClick={() => setCard(0)}>
-              <Card
-                selected={card === 0}
-                svg={deck["0_0_0"]}
-              />
-            </button>
-            <button className="btn btn-link m-1 p-0" onClick={() => setCard(1)}>
-              <Card
-                selected={card === 1}
-                svg={deck["1_1_1"]}
-              />
-            </button>
-            <button className="btn btn-link m-1 p-0" onClick={() => setCard(2)}>
-              <Card
-                selected={card === 2}
-                svg={deck["2_2_2"]}
-              />
-            </button>
+            {[...Array(numberOfCards)].map((_, i) => (
+              <>
+                <a onClick={() => removeCard(i)}>Remove Card</a>
+                <button className="btn btn-link m-1 p-0" onClick={() => setCard(i)}>
+                  <Card
+                    selected={card === i}
+                    svg={deck[`${i}_${i}_${i}`]}
+                  />
+                </button>
+              </>
+            ))}
           </div>
           <ColorSelect
             value={deckData.colors[card]}

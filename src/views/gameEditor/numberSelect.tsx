@@ -6,7 +6,7 @@ const NUMBERS = [1,2,3,4,5,6,7,8,9];
 interface Props {
   value: number;
   selection: number[];
-  onChange: (value: string) => void; 
+  onChange: (value: number) => void; 
 }
 
 export const NumberSelect = ({value, selection, onChange}: Props) => {
@@ -15,7 +15,7 @@ export const NumberSelect = ({value, selection, onChange}: Props) => {
     <>
       <Form.Label>Number</Form.Label>
       <Form.Select
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(Number(e.target.value))}
         value={value}
       >
         {NUMBERS.map((number) => (

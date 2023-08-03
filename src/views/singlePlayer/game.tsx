@@ -4,13 +4,13 @@ import { Board } from "components/game/board";
 import {PreviousSelection} from "components/game/previousSelection";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { useSelector } from "react-redux";
+import { ReduxState } from "reducers";
 
 const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
-const features = 3;
-const options = 3;
-const boardSize = 3;
+
 
 const Game = () => {
   const [set, setSet] = useState<any>();
@@ -19,6 +19,13 @@ const Game = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [previousSelection, setPreviousSelection] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
+  const deckData = useSelector(
+    (state: ReduxState) => state.singlePlayer.deckData
+  );
+  const features = Object.keys(deckData).length;
+  const options = Object.values(deckData)[0].length;
+  const boardSize = features * options;
+
   useEffect(() => {
     GeneralSet.then((s: any) => {
       setSet(s.Set.new(
