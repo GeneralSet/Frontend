@@ -33,7 +33,6 @@ export const GameEditor = () => {
   };
 
   const removeCard = (index: number) => {
-    // TODO: set a min number of options
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
       newDeckData[feature].splice(index, 1);
@@ -42,7 +41,6 @@ export const GameEditor = () => {
   }
 
   const addCard = () => {
-    // TODO: set a max number of options
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
        // fix me - this should be an available value. not the first one ;)
@@ -75,9 +73,11 @@ export const GameEditor = () => {
             {[...Array(numberOfCards)].map((_, i) => (
               <div key={i}>
                 <div className="cardSelector-container">
+                {numberOfCards > 2 ? 
                   <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(i)}>
                     x
                   </Button>
+                : null}
                   <Button variant="link" className="cardSelector-button" onClick={() => setCard(i)}>
                     <Card
                       selected={card === i}
@@ -88,12 +88,14 @@ export const GameEditor = () => {
               </div>
 
             ))}
+            {numberOfCards < 4 ? 
             <Button variant="link" className="cardSelector-add" onClick={addCard}>
               <Card
                 selected={false}
-                svg={<div>+</div>}
+                svg={<div>✚</div>}
               />
             </Button>
+            : null}
           </div>
           <ColorSelect
             value={deckData.colors[card]}
