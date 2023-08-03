@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "components/game/card";
 import Form from "react-bootstrap/Form";
+import { COLORS } from "./colorSelect";
+import { NUMBERS } from "./numberSelect";
+import { SYMBOLS } from "./symbolSelect";
 
 interface Props {
   numberOfCards: number
@@ -10,7 +13,12 @@ interface Props {
   deck: FeatureDeck
   card: number;
   setCard: (value: number) => void;
+}
 
+const featureOptions = {
+  colors: Object.values(COLORS),
+  unicode: SYMBOLS,
+  numbers: NUMBERS
 }
 
 export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, setCard}: Props) => {
@@ -22,11 +30,16 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
     setDeckData(newDeckData);
   }
 
+  const getAvailableValue = (feature: ValidFeatures, used: string[]) => {
+    const options = featureOptions[feature];
+    const difference = (options as string[]).filter(x => !used.includes(x));
+    return difference[Math.floor(Math.random()*difference.length)];
+  }
+
   const addCard = () => {
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
-       // fix me - this should be an available value. not the first one ;)
-      newDeckData[feature].push(newDeckData[feature][0]);
+      newDeckData[feature].push(getAvailableValue(feature as ValidFeatures, newDeckData[feature]));
     })
     setDeckData(newDeckData);
   }
