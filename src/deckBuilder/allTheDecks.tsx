@@ -41,5 +41,5 @@ for (let i = 0; i < NUM_DECKS; i++) {
   };
 
   const generator = new GeometricDeckGenerator(DECK_DATA as any);
-  generator.exportDeck(`./decks/${i}/`);
+  generator.createDeck(`./decks/${i}/`);
 }

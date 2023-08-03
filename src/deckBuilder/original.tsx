@@ -11,4 +11,4 @@ const DECK_DATA: DeckData = {
 };
 
 const generator = new GeometricDeckGenerator(DECK_DATA);
-generator.exportDeck("../../dist/decks/original/");
+generator.createDeck("../../dist/decks/original/");

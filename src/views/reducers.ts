@@ -10,7 +10,7 @@ const DECK_DATA: DeckData = {
 
 export const initialState = {
   deckData: DECK_DATA,
-  deck: new GeometricDeckGenerator(DECK_DATA).arrayDeck()
+  deck: new GeometricDeckGenerator(DECK_DATA).createDeck()
 };
 
 export function reducer(state: typeof initialState = initialState, action: Actions) {
@@ -18,7 +18,7 @@ export function reducer(state: typeof initialState = initialState, action: Actio
     case 'UPDATE_DECK':
       return {
         ...state,
-        deck: new GeometricDeckGenerator(action.payload).arrayDeck(),
+        deck: new GeometricDeckGenerator(action.payload).createDeck(),
         deckData: action.payload
       };
     default:

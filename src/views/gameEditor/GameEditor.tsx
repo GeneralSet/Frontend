@@ -20,8 +20,7 @@ export const GameEditor = () => {
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
   const [deckData, setDeckData] = useState(globalDeckData);
-  const deck = new GeometricDeckGenerator(deckData).arrayDeck();
-  console.log(deck)
+  const deck = new GeometricDeckGenerator(deckData).createDeck();
   const numberOfCards = Object.values(deckData)[0].length;
   const onDeckDataChange = (
     cardNumber: number,
