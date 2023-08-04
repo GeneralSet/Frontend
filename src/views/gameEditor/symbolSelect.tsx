@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-
-export const SYMBOLS = ["★", "✚", "⎈", "▲", "■", "⬥", "●", "⬟", "⬢", "✖", "♥"];
+import { SYMBOLS } from "./utils";
 
 interface Props {
   value: string;

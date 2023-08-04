@@ -2,9 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "components/game/card";
 import Form from "react-bootstrap/Form";
-import { COLORS } from "./colorSelect";
-import { NUMBERS } from "./numberSelect";
-import { SYMBOLS } from "./symbolSelect";
+import { getAvailableValue } from "./utils";
 
 interface Props {
   numberOfCards: number
@@ -15,11 +13,6 @@ interface Props {
   setCard: (value: number) => void;
 }
 
-const featureOptions = {
-  colors: Object.values(COLORS),
-  unicode: SYMBOLS,
-  numbers: NUMBERS
-}
 
 export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, setCard}: Props) => {
   const removeCard = (index: number) => {
@@ -34,12 +27,6 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
     setDeckData(newDeckData);
   }
 
-  const getAvailableValue = (feature: ValidFeatures, used: string[]) => {
-    const options = featureOptions[feature];
-    const difference = (options as string[]).filter(x => !used.includes(x));
-    return difference[Math.floor(Math.random()*difference.length)];
-  }
-
   const addCard = () => {
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
@@ -47,8 +34,14 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
     });
     const newCard = Object.values(newDeckData as DeckData)[0].length -1;
     setCard(newCard);
-
     setDeckData(newDeckData);
+  }
+
+  const numFeatures = Object.keys(deckData).length;
+  const getId = (i: number): string => {
+    const temp = [];
+    for (let j = 0; j < numFeatures; j++) temp.push(i);
+    return temp.join('_')
   }
 
   return (
@@ -66,7 +59,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
             <Button variant="link" className="cardSelector-button" onClick={() => setCard(i)}>
               <Card
                 selected={card === i}
-                svg={deck[`${i}_${i}_${i}`]}
+                svg={deck[getId(i)]}
               />
             </Button>
           </div>

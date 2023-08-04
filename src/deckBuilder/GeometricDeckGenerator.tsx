@@ -7,24 +7,27 @@ export const VIEWPORT_SIZE = 100;
 export default class GeometricDeckGenerator {
   private deckData: DeckData;
   private features: ValidFeatures[];
-  private readonly numFeatures = 3;
   private numOptions: number;
-  private readonly validFeatures: ValidFeatures[] = [
-    "colors",
-    "numbers",
-    "unicode",
-  ];
+  private defaultCardData: CardData = {
+    colors: "#000",
+    unicode: "✖",
+    numbers: 1
+  };
 
-  constructor(deckData: DeckData) {
+  constructor(deckData: DeckData, defaultCardData?: CardData) {
     this.numOptions = Object.values(deckData)[0].length;
     this.features = this.getFeatures(deckData);
     this.deckData = deckData;
+    if (defaultCardData) {
+      this.defaultCardData = defaultCardData
+    }
   }
 
   private getFeatures(deckData: DeckData): ValidFeatures[] {
     const features: ValidFeatures[] = [];
-    this.validFeatures.forEach((feature) => {
-      const featureOptions = deckData[feature];
+    Object.keys(deckData).forEach((f: any) => {
+      const featureOptions = (deckData as any)[f];
+      console.log(typeof featureOptions)
       if (typeof featureOptions === "undefined") {
         return;
       }
@@ -32,10 +35,11 @@ export default class GeometricDeckGenerator {
         throw new Error(`
           Invalid deck data.
           All attributes must have ${this.numOptions} options.
-          ${feature} has ${featureOptions.length} options.
+          ${f} has ${featureOptions.length} options.
+          type: ${typeof featureOptions}
         `);
       }
-      features.push(feature);
+      features.push(f);
     });
     return features;
   }
@@ -75,19 +79,15 @@ export default class GeometricDeckGenerator {
   }
 
   private createSvg(features: number[]): JSX.Element {
-    const cardData = {
-      colors: "#000",
-      unicode: "✖",
-      numbers: 1
-    } as any;
-    for (let i = 0; i < this.numFeatures; i++) {
+    const cardData = {...this.defaultCardData};
+    for (let i = 0; i < this.features.length; i++) {
       const feature = this.features[i];
       const optionValue = features[i];
       const f = this.deckData[feature];
       if (!f) {
         throw new Error(`Error attribute for ${feature} does not exist`);
       }
-      cardData[feature] = f[optionValue];
+      (cardData as any)[feature] = f[optionValue] ;
     }
     return (
       <svg
@@ -107,7 +107,7 @@ export default class GeometricDeckGenerator {
     const indexes: number[] = [];
     const looper = (loopNumber: number) => {  
       for (indexes[loopNumber] = 0; indexes[loopNumber] < this.numOptions; indexes[loopNumber]++) {
-         if (loopNumber < this.numFeatures - 1) {
+         if (loopNumber < this.features.length - 1) {
           looper(loopNumber + 1);
          } else {
           const id = indexes.join('_');

@@ -7,9 +7,9 @@ interface Shape {
 type ShadingFunction = (shape: JSX.Element, color: string) => JSX.Element;
 
 interface DeckData {
-  colors: string[];
-  unicode: string[];
-  numbers: number[];
+  colors?: string[];
+  unicode?: string[];
+  numbers?: number[];
 }
 
 type ValidFeatures = 'colors' | 'numbers' | 'unicode';

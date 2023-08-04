@@ -10,6 +10,14 @@ import { SymbolSelect } from "./symbolSelect";
 import { NumberSelect } from "./numberSelect";
 import { ColorSelect } from "./colorSelect";
 import { CardSelector } from "./cardSelector";
+import { Form } from "react-bootstrap";
+import { getAvailableValue } from "./utils";
+
+export const DECK_DEFAULTS: CardData = {
+  colors: "#000",
+  unicode: "✖",
+  numbers: 1
+};
 
 export const GameEditor = () => {
   const globalDeckData = useSelector(
@@ -18,17 +26,47 @@ export const GameEditor = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
+  const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
   const [deckData, setDeckData] = useState(globalDeckData);
-  const deck = new GeometricDeckGenerator(deckData).createDeck();
+  const deck = new GeometricDeckGenerator(deckData, deckDefaults).createDeck();
   const numberOfCards = Object.values(deckData)[0].length;
   const onDeckDataChange = (
     cardNumber: number,
     feature: ValidFeatures,
     value: string | number
   ) => {
-    const newArray = [...deckData[feature]];
-    newArray[cardNumber] = value;
-    setDeckData({ ...deckData, [feature]: newArray });
+    const values = deckData[feature];
+    if (Array.isArray(values)) {
+      const newArray = [...values];
+      newArray[cardNumber] = value;
+      setDeckData({ ...deckData, [feature]: newArray });
+    } else {
+      setDeckDefaults({ ...deckDefaults, [feature]: value });
+    }
+  };
+
+  const onFeatureSelect = (
+    feature: ValidFeatures,
+    card: number,
+    selected: boolean
+  ) => {
+    if (!selected) {
+      setDeckDefaults({ ...deckDefaults, [feature]: (deckData as any)[feature][card] });
+      const temp = { ...deckData };
+      delete temp[feature];
+      setDeckData(temp);
+    } else {
+      const temp: (string | number)[] = [];
+      for (let i = 0; i < numberOfCards; i++) {
+        if (i === card) {
+          temp.push(deckDefaults[feature])
+        } else {
+          temp.push(getAvailableValue(feature, temp))
+
+        }
+      }
+      setDeckData({ ...deckData, [feature]: temp});
+    }
   };
 
   const handleShow = () => setShow(true);
@@ -57,20 +95,25 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
+          <SymbolSelect 
+            value={deckData.unicode? deckData.unicode[card] : deckDefaults.unicode}
+            selection={deckData.unicode || [deckDefaults.unicode]}
+            onChange={(value) => onDeckDataChange(card, "unicode", value)}
+          />
+          <Form.Switch
+            label={"Enabled"}
+            onChange={(e) => onFeatureSelect("colors", card, e.target.checked )}
+            checked={Array.isArray(deckData.colors)}
+          />
           <ColorSelect
-            value={deckData.colors[card]}
-            selection={deckData.colors}
+            value={deckData.colors? deckData.colors[card] : deckDefaults.colors}
+            selection={deckData.colors || [deckDefaults.colors]}
             onChange={(value) => onDeckDataChange(card, "colors", value)}
           />
           <NumberSelect
-            value={deckData.numbers[card]}
-            selection={deckData.numbers}
+            value={deckData.numbers? deckData.numbers[card] : deckDefaults.numbers}
+            selection={deckData.numbers || [deckDefaults.numbers]}
             onChange={(value) => onDeckDataChange(card, "numbers", value)}
-          />
-          <SymbolSelect 
-            value={deckData.unicode[card]}
-            selection={deckData.unicode}
-            onChange={(value) => onDeckDataChange(card, "unicode", value)}
           />
         </Modal.Body>
         <Modal.Footer>

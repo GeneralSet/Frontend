@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-
-export const NUMBERS = [1,2,3,4,5,6,7,8,9];
+import { NUMBERS } from "./utils";
 
 interface Props {
   value: number;
