@@ -69,7 +69,7 @@ jobs:
       - run:
           name: "Deploy to S3"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
               aws s3 sync dist/ s3://${PRODUCTION_BUCKET} --delete
             fi
 workflows:
