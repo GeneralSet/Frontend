@@ -10,7 +10,6 @@ import { SymbolSelect } from "./symbolSelect";
 import { NumberSelect } from "./numberSelect";
 import { ColorSelect } from "./colorSelect";
 import { CardSelector } from "./cardSelector";
-import { Form } from "react-bootstrap";
 import { getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
 

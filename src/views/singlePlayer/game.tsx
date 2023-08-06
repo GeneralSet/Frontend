@@ -34,7 +34,7 @@ const Game = () => {
         boardSize
       ));
     });
-  },[]);
+  },[features, options, boardSize]);
 
   const restartGame = () => {
     GeneralSet.then((s: any) => {
