@@ -29,7 +29,6 @@ export default class GeometricDeckGenerator {
     const features: ValidFeatures[] = [];
     Object.keys(deckData).forEach((f: any) => {
       const featureOptions = (deckData as any)[f];
-      console.log(typeof featureOptions)
       if (typeof featureOptions === "undefined") {
         return;
       }
