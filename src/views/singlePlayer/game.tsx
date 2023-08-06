@@ -43,7 +43,9 @@ const Game = () => {
         options,
         boardSize
       ));
-    })
+    });
+    setPreviousSelection([]);
+    setPoints(0);
   };
 
   if (!set) {
