@@ -1,5 +1,9 @@
-type UpdateDeck = { type: 'UPDATE_DECK', payload: DeckData };
-function updateDeck(payload: DeckData): UpdateDeck {
+interface Payload {
+  deckData: DeckData,
+  deckDefaults?: CardData
+}
+type UpdateDeck = { type: 'UPDATE_DECK', payload: Payload };
+function updateDeck(payload: Payload): UpdateDeck {
   return { type: 'UPDATE_DECK', payload };
 }
 

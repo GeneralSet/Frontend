@@ -5,22 +5,24 @@ var fs = require("fs");
 export const VIEWPORT_SIZE = 100;
 
 export default class GeometricDeckGenerator {
-  private deckData: DeckData;
-  private features: ValidFeatures[];
-  private numOptions: number;
+  deckData: DeckData;
+  features: ValidFeatures[];
+  numOptions: number;
   private defaultCardData: CardData = {
     colors: "#000",
     unicode: "✖",
     numbers: 1
   };
+  cards: FeatureDeck;
 
-  constructor(deckData: DeckData, defaultCardData?: CardData) {
+  constructor(deckData: DeckData, defaultCardData?: CardData, exportPath?: string) {
     this.numOptions = Object.values(deckData)[0].length;
     this.features = this.getFeatures(deckData);
     this.deckData = deckData;
     if (defaultCardData) {
       this.defaultCardData = defaultCardData
     }
+    this.cards = this.createDeck(exportPath);
   }
 
   private getFeatures(deckData: DeckData): ValidFeatures[] {
@@ -102,7 +104,7 @@ export default class GeometricDeckGenerator {
     );
   }
 
-  public createDeck(exportPath?: string): FeatureDeck {
+  private createDeck(exportPath?: string): FeatureDeck {
     const deck: FeatureDeck = {};
     const indexes: number[] = [];
     const looper = (loopNumber: number) => {  

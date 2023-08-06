@@ -20,10 +20,10 @@ const Game = () => {
   const [previousSelection, setPreviousSelection] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
   const deckData = useSelector(
-    (state: ReduxState) => state.singlePlayer.deckData
+    (state: ReduxState) => state.singlePlayer.deck
   );
-  const features = Object.keys(deckData).length;
-  const options = Object.values(deckData)[0].length;
+  const features = deckData.features.length;
+  const options = deckData.numOptions;
   const boardSize = features * options;
 
   useEffect(() => {

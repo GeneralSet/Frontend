@@ -28,7 +28,7 @@ export const Board = (props: Props) => {
             <Card
               selected={props.selected.includes(id)}
               hint={props.hint ? props.hint.includes(id) : undefined}
-              svg={customDeck[id]}
+              svg={customDeck.cards[id]}
             />
           </button>
         );

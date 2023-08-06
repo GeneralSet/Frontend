@@ -12,6 +12,7 @@ import { ColorSelect } from "./colorSelect";
 import { CardSelector } from "./cardSelector";
 import { Form } from "react-bootstrap";
 import { getAvailableValue } from "./utils";
+import { EnableFeature } from "./enableFeature";
 
 export const DECK_DEFAULTS: CardData = {
   colors: "#000",
@@ -20,16 +21,19 @@ export const DECK_DEFAULTS: CardData = {
 };
 
 export const GameEditor = () => {
-  const globalDeckData = useSelector(
-    (state: ReduxState) => state.singlePlayer.deckData
-  );
   const dispatch = useDispatch();
+  const globalDeck = useSelector(
+    (state: ReduxState) => state.singlePlayer.deck
+  );
+  const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
+  const [deckData, setDeckData] = useState(globalDeck.deckData);
+  const localDeck = new GeometricDeckGenerator(deckData, deckDefaults);
+  const deck = localDeck.cards
+  const numberOfCards = localDeck.numOptions;
+
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
-  const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
-  const [deckData, setDeckData] = useState(globalDeckData);
-  const deck = new GeometricDeckGenerator(deckData, deckDefaults).createDeck();
-  const numberOfCards = Object.values(deckData)[0].length;
+
   const onDeckDataChange = (
     cardNumber: number,
     feature: ValidFeatures,
@@ -47,7 +51,6 @@ export const GameEditor = () => {
 
   const onFeatureSelect = (
     feature: ValidFeatures,
-    card: number,
     selected: boolean
   ) => {
     if (!selected) {
@@ -72,7 +75,7 @@ export const GameEditor = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleSave = () => {
-    dispatch(actions.updateDeck(deckData));
+    dispatch(actions.updateDeck({deckData, deckDefaults}));
     setShow(false);
   };
 
@@ -95,21 +98,19 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
+          <EnableFeature feature="unicode" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <SymbolSelect 
             value={deckData.unicode? deckData.unicode[card] : deckDefaults.unicode}
             selection={deckData.unicode || [deckDefaults.unicode]}
             onChange={(value) => onDeckDataChange(card, "unicode", value)}
           />
-          <Form.Switch
-            label={"Enabled"}
-            onChange={(e) => onFeatureSelect("colors", card, e.target.checked )}
-            checked={Array.isArray(deckData.colors)}
-          />
+          <EnableFeature feature="colors" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <ColorSelect
             value={deckData.colors? deckData.colors[card] : deckDefaults.colors}
             selection={deckData.colors || [deckDefaults.colors]}
             onChange={(value) => onDeckDataChange(card, "colors", value)}
           />
+          <EnableFeature feature="numbers" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <NumberSelect
             value={deckData.numbers? deckData.numbers[card] : deckDefaults.numbers}
             selection={deckData.numbers || [deckDefaults.numbers]}

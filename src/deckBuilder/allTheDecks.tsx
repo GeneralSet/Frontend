@@ -40,6 +40,5 @@ for (let i = 0; i < NUM_DECKS; i++) {
     numbers: getRand(validNumbers),
   };
 
-  const generator = new GeometricDeckGenerator(DECK_DATA as any);
-  generator.createDeck(`./decks/${i}/`);
+  new GeometricDeckGenerator(DECK_DATA, undefined, `./decks/${i}/`);
 }

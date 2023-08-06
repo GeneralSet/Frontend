@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const PreviousSelection = ({cards, message}: Props) => {
-  const customDeck = useSelector(
+  const deck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
   if (cards.length <= 0) {
@@ -24,7 +24,7 @@ export const PreviousSelection = ({cards, message}: Props) => {
           <Card
             key={index}
             selected={false}
-            svg={customDeck[card]}
+            svg={deck.cards[card]}
           />
         ))}
       </div>

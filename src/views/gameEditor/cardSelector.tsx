@@ -2,7 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "components/game/card";
 import Form from "react-bootstrap/Form";
-import { getAvailableValue } from "./utils";
+import { getASet, getAvailableValue } from "./utils";
 
 interface Props {
   numberOfCards: number
@@ -38,33 +38,27 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
   }
 
   const numFeatures = Object.keys(deckData).length;
-  const getId = (i: number): string => {
-    const temp = [];
-    for (let j = 0; j < numFeatures; j++) temp.push(i);
-    return temp.join('_')
-  }
 
   return (
     <>
       <Form.Label>Select Card to Edit</Form.Label>
       <div className="cardSelector">
-      {[...Array(numberOfCards)].map((_, i) => (
-        <div key={i}>
-          <div className="cardSelector-container">
-          {numberOfCards > 2 ? 
-            <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(i)}>
-              x
-            </Button>
-          : null}
-            <Button variant="link" className="cardSelector-button" onClick={() => setCard(i)}>
-              <Card
-                selected={card === i}
-                svg={deck[getId(i)]}
-              />
-            </Button>
-          </div>
+      {getASet(numberOfCards, numFeatures).map((id, index) => (
+        <div key={index}>
+        <div className="cardSelector-container">
+        {numberOfCards > 2 ? 
+          <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(index)}>
+            x
+          </Button>
+        : null}
+          <Button variant="link" className="cardSelector-button" onClick={() => setCard(index)}>
+            <Card
+              selected={card === index}
+              svg={deck[id]}
+            />
+          </Button>
         </div>
-
+      </div>
       ))}
       {numberOfCards < 4 ? 
       <Button variant="link" className="cardSelector-add" onClick={addCard}>

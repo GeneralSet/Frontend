@@ -4,25 +4,21 @@ import { Link } from "react-router-dom";
 import { ReduxState } from "reducers";
 import { GameEditor } from "./gameEditor/GameEditor";
 import Card from "components/game/card";
+import { getASet } from "./gameEditor/utils";
 
 export const Menu: React.FC = () => {
   const deck = useSelector((state: ReduxState) => state.singlePlayer.deck);
+
   return (
     <>
       <div className="game-selector">
         <div className="cards">
-          <Card selected={false} svg={deck["2_2_2"]} />
-          <Card selected={false} svg={deck["1_1_1"]} />
-          <Card selected={false} svg={deck["0_0_0"]} />
+          {getASet(deck.numOptions, deck.features.length).map((id) => (
+            <Card key={id} selected={false} svg={deck.cards[id]} />
+          ))}
         </div>
       </div>
       <nav style={{ maxWidth: "350px", margin: "0 auto" }}>
-        {/* <Link
-          to="/single_player/custom"
-          className="btn btn-light btn-lg btn-block"
-        >
-          Random
-        </Link> */}
         <Link
           to="/single_player"
           className="btn btn-warning"
