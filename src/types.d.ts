@@ -1,10 +1,3 @@
-type gameType = 'original' | 'triangles' | 'filters' | 'animations' | 'custom';
-
-interface SetVariant {
-  gameType: gameType;
-  name: string;
-}
-
 interface GameState {
   deck: string[];
   board: string[];
@@ -26,5 +19,5 @@ interface FeatureDeck {
 }
 
 declare module 'set';
-declare module '@giantmachines/redux-websocket';
+// declare module '@giantmachines/redux-websocket';
 

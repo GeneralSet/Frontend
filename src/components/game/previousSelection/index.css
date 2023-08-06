@@ -1,7 +1,3 @@
-.previous-selection {
-
-}
-
 .previous-selection .cards {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -10,7 +6,6 @@
   border-radius: 4px;
 }
 
-.previous-selection .cards .card svg,
-.previous-selection .cards .card img {
+.previous-selection .cards .card-image {
   height: 30px;
 }

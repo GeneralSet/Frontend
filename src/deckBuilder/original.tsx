@@ -10,5 +10,4 @@ const DECK_DATA: DeckData = {
   unicode: ["a", "b", "c"],
 };
 
-const generator = new GeometricDeckGenerator(DECK_DATA);
-generator.exportDeck("../../dist/decks/original/");
+new GeometricDeckGenerator(DECK_DATA, undefined, "../../dist/decks/original/");

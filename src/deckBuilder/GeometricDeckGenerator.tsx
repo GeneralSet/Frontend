@@ -5,36 +5,42 @@ var fs = require("fs");
 export const VIEWPORT_SIZE = 100;
 
 export default class GeometricDeckGenerator {
-  private deckData: DeckData;
-  private features: ValidFeatures[];
-  private readonly numFeatures = 3;
-  private readonly featureOptionsLength = 3;
-  private readonly validFeatures: ValidFeatures[] = [
-    "colors",
-    "numbers",
-    "unicode",
-  ];
+  deckData: DeckData;
+  features: ValidFeatures[];
+  numOptions: number;
+  private defaultCardData: CardData = {
+    colors: "#000",
+    unicode: "✖",
+    numbers: 1
+  };
+  cards: FeatureDeck;
 
-  constructor(deckData: DeckData) {
+  constructor(deckData: DeckData, defaultCardData?: CardData, exportPath?: string) {
+    this.numOptions = Object.values(deckData)[0].length;
     this.features = this.getFeatures(deckData);
     this.deckData = deckData;
+    if (defaultCardData) {
+      this.defaultCardData = defaultCardData
+    }
+    this.cards = this.createDeck(exportPath);
   }
 
   private getFeatures(deckData: DeckData): ValidFeatures[] {
     const features: ValidFeatures[] = [];
-    this.validFeatures.forEach((feature) => {
-      const featureOptions = deckData[feature];
+    Object.keys(deckData).forEach((f: any) => {
+      const featureOptions = (deckData as any)[f];
       if (typeof featureOptions === "undefined") {
         return;
       }
-      if (featureOptions.length !== this.featureOptionsLength) {
+      if (featureOptions.length !== this.numOptions) {
         throw new Error(`
           Invalid deck data.
-          All attributes must have ${this.featureOptionsLength} options.
-          ${feature} has ${featureOptions.length} options.
+          All attributes must have ${this.numOptions} options.
+          ${f} has ${featureOptions.length} options.
+          type: ${typeof featureOptions}
         `);
       }
-      features.push(feature);
+      features.push(f);
     });
     return features;
   }
@@ -61,7 +67,7 @@ export default class GeometricDeckGenerator {
       const x = position[i + offset].x;
       const y = position[i + offset].y;
       symbolList.push(
-        <svg x={x} y={y} viewBox="0 0 30 30" width={size} height={size}>
+        <svg x={x} y={y} viewBox="0 0 30 30" width={size} height={size} key={`${x}${y}`}>
           <g style={{ fill: cardData.colors }} key={i}>
             <text dominantBaseline="hanging" textAnchor="start" fontSize={30}>
               {cardData.unicode}
@@ -73,66 +79,52 @@ export default class GeometricDeckGenerator {
     return symbolList;
   }
 
-  private createSvg(cardData: CardData): JSX.Element {
+  private createSvg(features: number[]): JSX.Element {
+    const cardData = {...this.defaultCardData};
+    for (let i = 0; i < this.features.length; i++) {
+      const feature = this.features[i];
+      const optionValue = features[i];
+      const f = this.deckData[feature];
+      if (!f) {
+        throw new Error(`Error attribute for ${feature} does not exist`);
+      }
+      (cardData as any)[feature] = f[optionValue] ;
+    }
     return (
       <svg
         height="100%"
         width="100%"
         viewBox={`0 0 ${VIEWPORT_SIZE} ${VIEWPORT_SIZE}`}
         xmlns="http://www.w3.org/2000/svg"
+        key={features.join('_')}
       >
-        {this.listSymbols(cardData)}
+        {this.listSymbols(cardData as CardData)}
       </svg>
     );
   }
 
-  private createCardData(features: number[]): CardData {
-    const cardData: CardData = {} as any;
-    for (let i = 0; i < this.numFeatures; i++) {
-      const feature = this.features[i];
-      const optionValue = features[i];
-      const f = this.deckData[feature];
-      if (!f) {
-        throw new Error("error attributes does not exist when it should :(");
-      }
-      (cardData[feature] as any) = f[optionValue];
-    }
-    return cardData;
-  }
-
-  public exportDeck(path: string): void {
-    for (let i = 0; i < this.featureOptionsLength; i++) {
-      for (let j = 0; j < this.featureOptionsLength; j++) {
-        for (let k = 0; k < this.featureOptionsLength; k++) {
-          const filename = `${i}_${j}_${k}`;
-          const cardData = this.createCardData([i, j, k]);
-          const symbol = this.createSvg(cardData);
-          const svg = ReactDOMServer.renderToStaticMarkup(symbol);
-          if (!fs.existsSync(path)) {
-            fs.mkdirSync(path);
-          }
-          fs.writeFile(`${path}${filename}.svg`, svg, () => null);
-        }
-      }
-    }
-  }
-
-  public arrayDeck(): FeatureDeck {
+  private createDeck(exportPath?: string): FeatureDeck {
     const deck: FeatureDeck = {};
-    for (let i = 0; i < this.featureOptionsLength; i++) {
-      for (let j = 0; j < this.featureOptionsLength; j++) {
-        for (let k = 0; k < this.featureOptionsLength; k++) {
-          const filename = `${i}_${j}_${k}`;
-          const cardData = this.createCardData([i, j, k]);
-          const symbol = this.createSvg(cardData);
-          deck[filename] = symbol;
-        }
+    const indexes: number[] = [];
+    const looper = (loopNumber: number) => {  
+      for (indexes[loopNumber] = 0; indexes[loopNumber] < this.numOptions; indexes[loopNumber]++) {
+         if (loopNumber < this.features.length - 1) {
+          looper(loopNumber + 1);
+         } else {
+          const id = indexes.join('_');
+          const symbol = this.createSvg(indexes);
+          if (exportPath) {
+            const svg = ReactDOMServer.renderToStaticMarkup(symbol);
+            if (!fs.existsSync(exportPath)) {
+              fs.mkdirSync(exportPath);
+            }
+            fs.writeFile(`${exportPath}${id}.svg`, svg, () => null);
+          }
+          deck[id] = symbol;
+         }
       }
     }
+    looper(0);
     return deck;
-  }
-
-  public createSymbol(features: number[]): JSX.Element {
-    return this.createSvg(this.createCardData(features));
   }
 }
