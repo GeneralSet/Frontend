@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SinglePlayerGame from "./views/singlePlayer/game";
 import { Menu } from "./views/menu";
 import { Provider } from "react-redux";
@@ -8,16 +8,19 @@ import "./index.css";
 import Layout from "components/Layout";
 
 const App = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Layout>
-          <Route exact={true} path="/" component={Menu} />
-          <Route exact={true} path="/single_player" component={SinglePlayerGame} />
+  <>
+    <Provider store={store}>
+      <BrowserRouter>
+         <Layout>
+          <Routes>
+            <Route path="/" element={<Menu/>} />
+            <Route path="/single_player" element={<SinglePlayerGame/>} />
+          </Routes>
         </Layout>
-      </Switch>
-    </BrowserRouter>
-  </Provider>
+      </BrowserRouter>
+    </Provider>
+  </>
+
 );
 
 export default App;

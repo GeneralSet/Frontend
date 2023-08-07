@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Layout: React.FC = (props) => (
+interface Props {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<Props> = (props) => (
   <div
     className="text-center"
     style={{ backgroundColor: "#4A3665", height: "100%" }}
