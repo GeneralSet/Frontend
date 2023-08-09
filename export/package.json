@@ -1,0 +1,17 @@
+{
+  "name": "generalset-generator",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "set": "https://github.com/GeneralSet/Set"
+  },
+  "scripts": {
+    "export": "ts-node --project tsconfig.json export.ts"
+  },
+  "devDependencies": {
+    "typescript": "~5.1.6",
+    "ts-node": "^10.9.1"
+  }
+}

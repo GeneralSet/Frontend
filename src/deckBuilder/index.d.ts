@@ -1,11 +1,4 @@
 
-interface Shape {
-  name?: string;
-  shape: JSX.Element;
-}
-
-type ShadingFunction = (shape: JSX.Element, color: string) => JSX.Element;
-
 interface DeckData {
   colors?: string[];
   unicode?: string[];
@@ -19,6 +12,11 @@ interface CardData {
   unicode: string;
   numbers: number;
 }
+
+interface FeatureDeck {
+  [id: string]: JSX.Element;
+}
+
 
 // jsx types hack
 

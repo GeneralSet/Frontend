@@ -1,4 +1,4 @@
-import GeometricDeckGenerator from './GeometricDeckGenerator';
+import GeometricDeckGenerator from "./GeometricDeckGenerator";
 import { patterns } from './features/patterns';
 import { shapes } from './features/shapes';
 
