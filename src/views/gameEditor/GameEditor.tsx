@@ -74,7 +74,7 @@ export const GameEditor = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleSave = () => {
-    dispatch(actions.updateDeck({deckData, deckDefaults}));
+    dispatch(actions.updateDeck({ deck: new GeometricDeckGenerator(deckData, deckDefaults)}));
     setShow(false);
   };
 

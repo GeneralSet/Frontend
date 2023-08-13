@@ -17,7 +17,7 @@ export function reducer(state: typeof initialState = initialState, action: Actio
     case 'UPDATE_DECK':
       return {
         ...state,
-        deck: new GeometricDeckGenerator(action.payload.deckData, action.payload.deckDefaults),
+        deck: action.payload.deck,
       };
     default:
       return state;

@@ -25,8 +25,6 @@ const Game = () => {
   const [previousSelection, setPreviousSelection] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
 
-
-
   useEffect(() => {
     GeneralSet.then(({Set}: any) => {
       setSet(Set.new(
