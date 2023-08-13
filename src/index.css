@@ -33,6 +33,10 @@ code {
 }
 .game-selector .card .card-image {
   height: 45px;
+  display: flex;
+}
+.card .card-image img{
+  height: 100%;
 }
 
 .game-selector .card:nth-child(1) {

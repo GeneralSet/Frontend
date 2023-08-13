@@ -12,6 +12,7 @@ import { ColorSelect } from "./colorSelect";
 import { CardSelector } from "./cardSelector";
 import { getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
+import { DECK_DATA } from "views/reducers";
 
 export const DECK_DEFAULTS: CardData = {
   colors: "#000",
@@ -25,7 +26,7 @@ export const GameEditor = () => {
     (state: ReduxState) => state.singlePlayer.deck
   );
   const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
-  const [deckData, setDeckData] = useState(globalDeck.deckData);
+  const [deckData, setDeckData] = useState(globalDeck.deckData || DECK_DATA);
   const localDeck = new GeometricDeckGenerator(deckData, deckDefaults);
   const deck = localDeck.cards
   const numberOfCards = localDeck.numOptions;

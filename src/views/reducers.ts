@@ -2,7 +2,7 @@ import { Actions } from './actions';
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import { COLORS } from './gameEditor/utils';
 
-const DECK_DATA: DeckData = {
+export const DECK_DATA: DeckData = {
   unicode: ["★", "✚", "⎈"],
   colors: [COLORS.Red, COLORS.Yellow, COLORS.Blue],
   numbers: [9, 3, 4],

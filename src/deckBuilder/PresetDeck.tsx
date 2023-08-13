@@ -21,7 +21,7 @@ export default class PresetDeck {
          } else {
           const id = indexes.join('_');
           const symbol = (
-            <img src={`${process.env.PUBLIC_URL}/decks/${path}/${id}.${ext}`} width={100}/>
+            <img src={`${process.env.PUBLIC_URL}/decks/${path}/${id}.${ext}`}/>
           );
 
           deck[id] = symbol;
