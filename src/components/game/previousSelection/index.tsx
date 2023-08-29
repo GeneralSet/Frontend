@@ -24,7 +24,7 @@ export const PreviousSelection = ({cards, message}: Props) => {
           <Card
             key={index}
             selected={false}
-            svg={deck.cards[card]}
+            image={deck.cards[card]}
           />
         ))}
       </div>

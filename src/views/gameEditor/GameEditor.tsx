@@ -83,7 +83,7 @@ export const GameEditor = () => {
     <>
       {show}
       <Button variant="light" onClick={handleShow}>
-        Edit
+        Build Your Own
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

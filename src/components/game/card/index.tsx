@@ -4,14 +4,14 @@ import './index.css';
 interface Props {
   selected: boolean;
   hint?: boolean;
-  svg: JSX.Element;
+  image: JSX.Element;
 }
 
-const Card = ({selected, hint, svg}: Props) => {
+const Card = ({selected, hint, image}: Props) => {
   return (
     <div className={`card ${selected ? 'selected' : ''} ${hint ? 'hint' : ''}`}>
       <div className="card-content">
-        <div className="card-image">{svg}</div>
+        {image}
       </div>
     </div>
   );

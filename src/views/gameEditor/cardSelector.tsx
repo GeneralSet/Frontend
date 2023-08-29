@@ -54,7 +54,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
           <Button variant="link" className="cardSelector-button" onClick={() => setCard(index)}>
             <Card
               selected={card === index}
-              svg={deck[id]}
+              image={deck[id]}
             />
           </Button>
         </div>
@@ -64,7 +64,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
       <Button variant="link" className="cardSelector-add" onClick={addCard}>
         <Card
           selected={false}
-          svg={<div>✚</div>}
+          image={<div>✚</div>}
         />
       </Button>
       : null}

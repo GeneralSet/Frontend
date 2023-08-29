@@ -1,8 +1,18 @@
 
 
-html, body, #root {
+html, body {
   height: 100%;
   margin: 0;
+  color: #fff;
+  background-color: #4A3665;
+}
+
+#root {
+  min-height: 100%;
+}
+
+.modal {
+  color: #000;
 }
 
 body {
@@ -19,38 +29,3 @@ code {
     monospace;
 }
 
-.game-selector .cards {
-  width: 125px;
-  height: 170px;
-  position: relative;
-  margin: 0 auto;
-}
-
-.game-selector .card {
-  position: absolute;
-  width: 65px;
-  padding: 10px;
-}
-.game-selector .card .card-image {
-  height: 45px;
-  display: flex;
-}
-.card .card-image img{
-  height: 100%;
-}
-
-.game-selector .card:nth-child(1) {
-  left: 0px;
-  top: 0px;
-  transform: rotate(7deg);
-}
-.game-selector .card:nth-child(2) {
-  left: 50px;
-  top: 25px;
-  transform: rotate(-14deg);
-}
-.game-selector .card:nth-child(3) {
-  left: 1px;
-  top: 55px;
-  transform: rotate(26deg);
-}

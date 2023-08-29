@@ -8,7 +8,7 @@ interface Props {
 const Layout: React.FC<Props> = (props) => (
   <div
     className="text-center"
-    style={{ backgroundColor: "#4A3665", height: "100%" }}
+    style={{ height: "100%" }}
   >
     <h1 style={{ padding: "1rem 0" }}>
       <Link to="/" style={{ color: "#fff", textDecoration: "none" }}>
