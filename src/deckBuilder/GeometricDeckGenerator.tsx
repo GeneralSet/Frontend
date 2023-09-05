@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
+import { SHAPES, VIEW_BOX } from "./features/shapes";
 var fs = require("fs");
 
-export const VIEWPORT_SIZE = 100;
+export const MAIN_VIEWPORT_SIZE = 120;
 
 export default class GeometricDeckGenerator {
   deckData: DeckData;
@@ -10,7 +11,7 @@ export default class GeometricDeckGenerator {
   numOptions: number;
   private defaultCardData: CardData = {
     colors: "#000",
-    unicode: "✖",
+    shapes: SHAPES["Three Quarter Circle"],
     numbers: 1
   };
   cards: FeatureDeck;
@@ -47,10 +48,10 @@ export default class GeometricDeckGenerator {
 
   private listSymbols(cardData: CardData) {
     const symbolList: JSX.Element[] = [];
-    const size = VIEWPORT_SIZE / 3;
+    const size = MAIN_VIEWPORT_SIZE / 3;
     const start = 0;
-    const middle = VIEWPORT_SIZE / 2 - size / 2;
-    const end = VIEWPORT_SIZE - size;
+    const middle = MAIN_VIEWPORT_SIZE / 2 - size / 2;
+    const end = MAIN_VIEWPORT_SIZE - size;
     const position = [
       { x: middle, y: middle },
       { x: start, y: end },
@@ -67,11 +68,15 @@ export default class GeometricDeckGenerator {
       const x = position[i + offset].x;
       const y = position[i + offset].y;
       symbolList.push(
-        <svg x={x} y={y} viewBox="0 0 30 30" width={size} height={size} key={`${x}${y}`}>
-          <g style={{ fill: cardData.colors }} key={i}>
-            <text dominantBaseline="hanging" textAnchor="start" fontSize={30}>
-              {cardData.unicode}
-            </text>
+        <svg x={x} y={y} viewBox={VIEW_BOX} width={size} height={size} key={`${x}${y}`}>
+          <g 
+            stroke="none"
+            stroke-width="1"
+            fill={cardData.colors}
+            fill-rule="evenodd"
+            key={i}
+          >
+            <path d={cardData.shapes} stroke={cardData.colors}></path>
           </g>
         </svg>
       );
@@ -94,7 +99,7 @@ export default class GeometricDeckGenerator {
       <svg
         height="100%"
         width="100%"
-        viewBox={`0 0 ${VIEWPORT_SIZE} ${VIEWPORT_SIZE}`}
+        viewBox={`0 0 ${MAIN_VIEWPORT_SIZE} ${MAIN_VIEWPORT_SIZE}`}
         xmlns="http://www.w3.org/2000/svg"
         key={features.join('_')}
       >

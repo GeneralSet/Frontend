@@ -1,15 +1,15 @@
 
 interface DeckData {
   colors?: string[];
-  unicode?: string[];
+  shapes?: string[];
   numbers?: number[];
 }
 
-type ValidFeatures = 'colors' | 'numbers' | 'unicode';
+type ValidFeatures = 'colors' | 'numbers' | 'shapes';
 
 interface CardData {
   colors: string;
-  unicode: string;
+  shapes: string;
   numbers: number;
 }
 

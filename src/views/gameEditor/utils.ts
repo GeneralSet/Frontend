@@ -1,3 +1,4 @@
+import { SHAPES } from "deckBuilder/features/shapes";
 
 export const COLORS = {
   Red: "#e6194B",
@@ -23,12 +24,11 @@ export const COLORS = {
 };
 
 export const NUMBERS = [1,2,3,4,5,6,7,8,9];
-export const SYMBOLS = ["★", "✚", "⎈", "▲", "■", "⬥", "●", "⬟", "⬢", "✖", "♥"];
 
 
 const featureOptions = {
   colors: Object.values(COLORS),
-  unicode: SYMBOLS,
+  shapes: Object.values(SHAPES),
   numbers: NUMBERS
 }
 

@@ -1,6 +1,6 @@
+import { SHAPES } from "deckBuilder/features/shapes";
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { SYMBOLS } from "./utils";
 
 interface Props {
   value: string;
@@ -17,13 +17,13 @@ export const SymbolSelect = ({value, selection, onChange}: Props) => {
         onChange={(e) => onChange(e.target.value)}
         value={value}
       >
-        {SYMBOLS.map((symbol) => (
+        {Object.entries(SHAPES).map(([name, shape]) => (
           <option
-            disabled={selectionSet.has(symbol)}
-            value={symbol}
-            key={symbol}
+            disabled={selectionSet.has(name)}
+            value={shape}
+            key={shape}
           >
-            {symbol}
+            {name}
           </option>
         ))}
       </Form.Select>

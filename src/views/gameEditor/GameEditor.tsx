@@ -13,10 +13,11 @@ import { CardSelector } from "./cardSelector";
 import { getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
 import { DECK_DATA } from "views/reducers";
+import { SHAPES } from "deckBuilder/features/shapes";
 
 export const DECK_DEFAULTS: CardData = {
   colors: "#000",
-  unicode: "✖",
+  shapes: SHAPES["Semi Circle"],
   numbers: 1
 };
 
@@ -98,11 +99,11 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
-          <EnableFeature feature="unicode" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
+          <EnableFeature feature="shapes" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <SymbolSelect 
-            value={deckData.unicode? deckData.unicode[card] : deckDefaults.unicode}
-            selection={deckData.unicode || [deckDefaults.unicode]}
-            onChange={(value) => onDeckDataChange(card, "unicode", value)}
+            value={deckData.shapes? deckData.shapes[card] : deckDefaults.shapes}
+            selection={deckData.shapes || [deckDefaults.shapes]}
+            onChange={(value) => onDeckDataChange(card, "shapes", value)}
           />
           <EnableFeature feature="colors" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <ColorSelect

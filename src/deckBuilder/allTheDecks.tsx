@@ -1,6 +1,6 @@
-import GeometricDeckGenerator from "./GeometricDeckGenerator";
+// import GeometricDeckGenerator from "./GeometricDeckGenerator";
 import { patterns } from './features/patterns';
-import { shapes } from './features/shapes';
+// import { shapes } from './features/shapes';
 
 const NUM_DECKS = 1;
 const OPTIONS = 3;
@@ -28,17 +28,17 @@ function getRandColors(): string[] {
 }
 
 const validNumbers = [1, 2, 3, 4, 5];
-const validShapes = Object.values(shapes);
+// const validShapes = Object.values(shapes);
 const validShadings = Object.values(patterns);
 const validColors = getRandColors();
 
 for (let i = 0; i < NUM_DECKS; i++) {
   const DECK_DATA = {
-    shapes: getRand(validShapes),
+    // shapes: getRand(validShapes),
     colors: getRand(validColors),
     shadings: getRand(validShadings),
     numbers: getRand(validNumbers),
   };
 
-  new GeometricDeckGenerator(DECK_DATA, undefined, `./decks/${i}/`);
+  // new GeometricDeckGenerator(DECK_DATA, undefined, `./decks/${i}/`);
 }
