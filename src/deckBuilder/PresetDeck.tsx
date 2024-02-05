@@ -13,8 +13,8 @@ export default class PresetDeck {
 
   constructor(metaData: DeckMetaData, path: string, ext: "png" | "svg") {
     this.metaData = metaData;
-    this.numOptions = Object.keys(metaData).length;
-    this.features = Object.values(metaData)[0];//Object.values(options)[0].length;
+    this.numOptions = Object.values(metaData)[0].length;
+    this.features = Object.keys(metaData);//Object.values(options)[0].length;
     this.cards = this.createDeck(path, ext);
   }
 
