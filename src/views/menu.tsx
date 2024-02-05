@@ -10,23 +10,23 @@ import { actions } from "views/actions";
 import PresetDeck from "deckBuilder/PresetDeck";
 
 interface GeneratedDeck {
-  options: number;
-  features: string[];
+  options: {[feature: string]: string[]};
   path: string;
   ext: "svg" | "png";
   name: string;
 }
 
 const StableDiffusion: GeneratedDeck[] = [
-  {options: 3, features: ["Animal", "hat", "color"], path: 'SD-XL/animal-hat-color', ext: "png", name: "Animal-Hat-Color"},
-  {options: 3, features: ["artist", "fruit", "landscape"], path: 'SD-XL/style-fruit-landscape', ext: "png", name: "Artist-Fruit-Landscape"},
-  {options: 3, features: ["Train", "Season", "Setting"], path: 'SD-XL/train-season-setting', ext: "png", name: "Train-Season-Setting"},
+  {options: {"Animal": ['Cat', 'Dog', 'Bird'], "Hat": ['Top Hat', 'Beret', 'Hard Hat'], "Color": ['Black', 'Orange', 'White']}, path: 'SD-XL/animal-hat-color', ext: "png", name: "Cute Animals"},
+  {options: {"Breed": ['Golden retriever ', 'Corgi', 'Poodle'], "Accessory": ['Sun Glasses', 'Top Hat', 'Bow Tie'], "Location": ['Beach', 'Mountains', 'Forest']}, path: 'SD-XL/breed-accessory-setting', ext: "png", name: "Dogs"},
+  {options: {"Train": ['Steam train', 'Trolly', 'Bullet train'], "Season": ['Winter', 'Spring', 'Fall'], "Setting": ['Forest', 'Field', 'City']}, path: 'SD-XL/train-season-setting', ext: "png", name: "Trains"},
+  {options: {"Color": ['Green', 'Red', 'White and gold'], "Style": ['Real', 'Pixel', 'Origami'], "Setting": ['Forest', 'Mountains', 'Cave']}, path: 'SD-XL/style-color-location', ext: "png", name: "Dragons"},
 ]
 const Legacy: GeneratedDeck[] = [
-  {options: 3, features: ["1", "1", "1", "1"], path: 'original', ext: "svg", name: "Original"},
-  {options: 3, features: ["1", "1", "1", "1"], path: 'filters', ext: "svg", name: "Filters"},
-  {options: 3, features: ["1", "1", "1", "1"], path: 'triangles', ext: "svg", name: "Triangle"},
-  {options: 3, features: ["1", "1", "1", "1"], path: 'animations', ext: "svg", name: "Animations"},
+  {options: {"Shape": ['oval', 'squiggle', 'Diamond'], "Color": ['red', 'purple', 'green'], "Number": ['one', 'two', 'tree'], "Shading": ['solid', 'stripped', 'outlined']}, path: 'original', ext: "svg", name: "Original"},
+  {options: {"Direction": ['Down', 'Right', 'Up'], "Color": ['Light', 'Medium', 'Dark'], "Number": ['one', 'two', 'tree'], "Filter": ['Cringle', 'Ink', 'Blur']}, path: 'filters', ext: "svg", name: "Filters"},
+  {options: {"Direction": ['Down', 'Right', 'Up'], "Color": ['red', 'yellow', 'black'], "Number": ['one', 'three', 'five'], "Shading": ['outlined', 'triangle', 'gradient']}, path: 'triangles', ext: "svg", name: "Triangle"},
+  {options: {"Animations": ['fade', 'corner', 'center'], "Color": ['red', 'purple', 'green'], "Number": ['one', 'two', 'tree'], "Shading": ['triangle', 'stripped', 'outlined']}, path: 'animations', ext: "svg", name: "Animations"},
 ]
 
 export const Menu: React.FC = () => {
@@ -35,8 +35,10 @@ export const Menu: React.FC = () => {
   const deck = useSelector((state: ReduxState) => state.singlePlayer.deck);
 
   const setPreSetDeck = (d: GeneratedDeck) => {
-    dispatch(actions.updateDeck({deck: new PresetDeck(d.options, d.features, d.path, d.ext)}));
+    dispatch(actions.updateDeck({deck: new PresetDeck(d.options, d.path, d.ext)}));
   }
+
+  console.log(deck);
 
   return (
     <>

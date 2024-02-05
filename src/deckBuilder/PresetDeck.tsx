@@ -1,13 +1,20 @@
 import * as React from "react";
 
+export interface DeckMetaData {
+  [feature: string]: string[]
+}
+
+
 export default class PresetDeck {
-  features: string[];
+  metaData: DeckMetaData;
   numOptions: number;
+  features: string[];
   cards: FeatureDeck;
 
-  constructor(options: number, features: string[], path: string, ext: "png" | "svg") {
-    this.numOptions = options;
-    this.features = features;
+  constructor(metaData: DeckMetaData, path: string, ext: "png" | "svg") {
+    this.metaData = metaData;
+    this.numOptions = Object.keys(metaData).length;
+    this.features = Object.values(metaData)[0];//Object.values(options)[0].length;
     this.cards = this.createDeck(path, ext);
   }
 
@@ -21,9 +28,8 @@ export default class PresetDeck {
          } else {
           const id = indexes.join('_');
           const symbol = (
-            <img src={`${process.env.PUBLIC_URL}/decks/${path}/${id}.${ext}`}/>
+            <img src={`${process.env.PUBLIC_URL}/decks/${path}/${id}.${ext}`} alt="id"/>
           );
-
           deck[id] = symbol;
          }
       }

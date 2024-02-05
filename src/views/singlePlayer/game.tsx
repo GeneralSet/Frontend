@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import { ReduxState } from "reducers";
 import { Set } from "set/pkg/set";
+import { RulesModal } from "views/rules/rulesModal";
 
 const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
@@ -108,9 +109,10 @@ const Game = () => {
           <Button onClick={restartGame}>Play Again</Button>
         </Modal.Footer>
       </Modal>
-      <button onClick={giveHint} className="btn btn-secondary btn-sm">
+      <button onClick={giveHint} className="btn btn-secondary">
         Hint
       </button>
+      <RulesModal/>
       <div className="container mb-2">
         <div className="row">
           <div className="col-sm">

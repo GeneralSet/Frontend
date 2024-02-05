@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { SHAPES, VIEW_BOX } from "./features/shapes";
+import { DeckMetaData } from "./PresetDeck";
 var fs = require("fs");
 
 export const MAIN_VIEWPORT_SIZE = 120;
 
 export default class GeometricDeckGenerator {
+  metaData: DeckMetaData;
   deckData: DeckData;
   features: ValidFeatures[];
   numOptions: number;
@@ -17,6 +19,7 @@ export default class GeometricDeckGenerator {
   cards: FeatureDeck;
 
   constructor(deckData: DeckData, defaultCardData?: CardData, exportPath?: string) {
+    this.metaData = {}// TODO
     this.numOptions = Object.values(deckData)[0].length;
     this.features = this.getFeatures(deckData);
     this.deckData = deckData;
