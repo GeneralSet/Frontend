@@ -9,8 +9,17 @@
   filter: brightness(0.7);
 }
 
+@keyframes wiggle {
+  0%   { transform: rotate(0deg); }
+  5%   { transform: rotate(2deg); }
+  10%  { transform: rotate(-2deg); }
+  15%  { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
 .card.hint {
-  box-shadow: 0 0 0 3px #FCB900;
+  box-shadow: 0 0 0 3px #FF0;
+  animation: wiggle 5s infinite;
 }
 
 .card-content {
