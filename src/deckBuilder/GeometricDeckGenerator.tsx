@@ -2,14 +2,15 @@ import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { SHAPES, VIEW_BOX } from "./features/shapes";
 import { DeckMetaData } from "./PresetDeck";
+import { COLORS } from "views/gameEditor/utils";
 var fs = require("fs");
 
 export const MAIN_VIEWPORT_SIZE = 120;
 
 export default class GeometricDeckGenerator {
   metaData: DeckMetaData;
-  deckData: DeckData;
-  features: ValidFeatures[];
+  // deckData: DeckData;
+  features: string[];
   numOptions: number;
   private defaultCardData: CardData = {
     colors: "#000",
@@ -18,36 +19,36 @@ export default class GeometricDeckGenerator {
   };
   cards: FeatureDeck;
 
-  constructor(deckData: DeckData, defaultCardData?: CardData, exportPath?: string) {
-    this.metaData = {}// TODO
-    this.numOptions = Object.values(deckData)[0].length;
-    this.features = this.getFeatures(deckData);
-    this.deckData = deckData;
+  constructor(metaData: DeckMetaData, defaultCardData?: CardData, exportPath?: string) {
+    this.metaData = metaData;
+    this.numOptions = Object.values(metaData)[0].length;
+    this.features = Object.keys(metaData);//Object.values(options)[0].length;
+    // this.deckData = deckData;
     if (defaultCardData) {
       this.defaultCardData = defaultCardData
     }
     this.cards = this.createDeck(exportPath);
   }
 
-  private getFeatures(deckData: DeckData): ValidFeatures[] {
-    const features: ValidFeatures[] = [];
-    Object.keys(deckData).forEach((f: any) => {
-      const featureOptions = (deckData as any)[f];
-      if (typeof featureOptions === "undefined") {
-        return;
-      }
-      if (featureOptions.length !== this.numOptions) {
-        throw new Error(`
-          Invalid deck data.
-          All attributes must have ${this.numOptions} options.
-          ${f} has ${featureOptions.length} options.
-          type: ${typeof featureOptions}
-        `);
-      }
-      features.push(f);
-    });
-    return features;
-  }
+  // private getFeatures(deckData: DeckData): string[] {
+  //   const features: string[] = [];
+  //   Object.keys(deckData).forEach((f: any) => {
+  //     const featureOptions = (deckData as any)[f];
+  //     if (typeof featureOptions === "undefined") {
+  //       return;
+  //     }
+  //     if (featureOptions.length !== this.numOptions) {
+  //       throw new Error(`
+  //         Invalid deck data.
+  //         All attributes must have ${this.numOptions} options.
+  //         ${f} has ${featureOptions.length} options.
+  //         type: ${typeof featureOptions}
+  //       `);
+  //     }
+  //     features.push(f);
+  //   });
+  //   return features;
+  // }
 
   private listSymbols(cardData: CardData) {
     const symbolList: JSX.Element[] = [];
@@ -70,16 +71,17 @@ export default class GeometricDeckGenerator {
       const offset = cardData.numbers % 2 ? 0 : 1;
       const x = position[i + offset].x;
       const y = position[i + offset].y;
+      
       symbolList.push(
         <svg x={x} y={y} viewBox={VIEW_BOX} width={size} height={size} key={`${x}${y}`}>
           <g 
             stroke="none"
             strokeWidth="1"
-            fill={cardData.colors}
+            fill={(COLORS as any)[cardData.colors]}
             fillRule="evenodd"
             key={i}
           >
-            <path d={cardData.shapes} stroke={cardData.colors}></path>
+            <path d={(SHAPES as any)[cardData.shapes]} stroke={(COLORS as any)[cardData.colors]}></path>
           </g>
         </svg>
       );
@@ -92,7 +94,7 @@ export default class GeometricDeckGenerator {
     for (let i = 0; i < this.features.length; i++) {
       const feature = this.features[i];
       const optionValue = features[i];
-      const f = this.deckData[feature];
+      const f = this.metaData[feature];
       if (!f) {
         throw new Error(`Error attribute for ${feature} does not exist`);
       }

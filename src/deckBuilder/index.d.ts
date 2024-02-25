@@ -5,8 +5,6 @@ interface DeckData {
   numbers?: number[];
 }
 
-type ValidFeatures = 'colors' | 'numbers' | 'shapes';
-
 interface CardData {
   colors: string;
   shapes: string;

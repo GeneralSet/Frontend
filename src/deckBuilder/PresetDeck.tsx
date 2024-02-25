@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export interface DeckMetaData {
-  [feature: string]: string[]
+  [feature: string]: (string|number)[]
 }
 
 

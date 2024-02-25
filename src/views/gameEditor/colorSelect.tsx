@@ -19,8 +19,8 @@ export const ColorSelect = ({value, selection, onChange}: Props) => {
       >
         {Object.entries(COLORS).map(([name, color]) => (
           <option
-            disabled={selectionSet.has(color)}
-            value={color}
+            disabled={selectionSet.has(name)}
+            value={name}
             style={{backgroundColor: color}}
             key={name}
           >

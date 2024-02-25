@@ -1,11 +1,10 @@
 import { Actions } from './actions';
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
-import { COLORS } from './gameEditor/utils';
-import { SHAPES } from 'deckBuilder/features/shapes';
+import { DeckMetaData } from 'deckBuilder/PresetDeck';
 
-export const DECK_DATA: DeckData = {
-  shapes: [SHAPES["Three Quarter Circle"], SHAPES["Semi Circle"], SHAPES["Quarter Circle"]],
-  colors: [COLORS.Red, COLORS.Yellow, COLORS.Blue],
+export const DECK_DATA: DeckMetaData = {
+  shapes: ["Three Quarter Circle", "Semi Circle", "Quarter Circle"],
+  colors: ["Red", "Yellow", "Blue"],
   numbers: [9, 3, 4],
 };
 

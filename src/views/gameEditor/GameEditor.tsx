@@ -16,8 +16,8 @@ import { DECK_DATA } from "views/reducers";
 import { SHAPES } from "deckBuilder/features/shapes";
 
 export const DECK_DEFAULTS: CardData = {
-  colors: "#000",
-  shapes: SHAPES["Semi Circle"],
+  colors: "black",
+  shapes: "Semi Circle",
   numbers: 1
 };
 
@@ -27,7 +27,7 @@ export const GameEditor = () => {
     (state: ReduxState) => state.singlePlayer.deck
   );
   const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
-  const [deckData, setDeckData] = useState(globalDeck.deckData || DECK_DATA);
+  const [deckData, setDeckData] = useState(globalDeck.metaData || DECK_DATA);
   const localDeck = new GeometricDeckGenerator(deckData, deckDefaults);
   const deck = localDeck.cards
   const numberOfCards = localDeck.numOptions;
@@ -37,7 +37,7 @@ export const GameEditor = () => {
 
   const onDeckDataChange = (
     cardNumber: number,
-    feature: ValidFeatures,
+    feature: string,
     value: string | number
   ) => {
     const values = deckData[feature];
@@ -51,7 +51,7 @@ export const GameEditor = () => {
   };
 
   const onFeatureSelect = (
-    feature: ValidFeatures,
+    feature: string,
     selected: boolean
   ) => {
     if (!selected) {

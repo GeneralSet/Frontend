@@ -17,11 +17,11 @@ export const SymbolSelect = ({value, selection, onChange}: Props) => {
         onChange={(e) => onChange(e.target.value)}
         value={value}
       >
-        {Object.entries(SHAPES).map(([name, shape]) => (
+        {Object.keys(SHAPES).map((name) => (
           <option
             disabled={selectionSet.has(name)}
-            value={shape}
-            key={shape}
+            value={name}
+            key={name}
           >
             {name}
           </option>
