@@ -109,7 +109,7 @@ const Game = () => {
           <Button onClick={restartGame}>Play Again</Button>
         </Modal.Footer>
       </Modal>
-      <button onClick={giveHint} className="btn btn-secondary">
+      <button onClick={giveHint} className="btn btn-secondary" style={{marginRight: "10px"}}>
         Hint
       </button>
       <RulesModal/>

@@ -74,9 +74,9 @@ export default class GeometricDeckGenerator {
         <svg x={x} y={y} viewBox={VIEW_BOX} width={size} height={size} key={`${x}${y}`}>
           <g 
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill={cardData.colors}
-            fill-rule="evenodd"
+            fillRule="evenodd"
             key={i}
           >
             <path d={cardData.shapes} stroke={cardData.colors}></path>

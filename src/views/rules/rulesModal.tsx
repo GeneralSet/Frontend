@@ -29,7 +29,7 @@ export const RulesModal = () => {
         for (let k = 0; k < deck.numOptions; k++) {
           const card = [];
           for (let x = 0; x < deck.features.length; x++) {
-              card.push((x == j) ? k : 0)
+              card.push((x === j) ? k : 0)
           }
           cards.push(card.join("_"));
         }
@@ -53,13 +53,13 @@ export const RulesModal = () => {
           <p>This deck contains {deck.features.length} features: {arrayToString(metaData.map(([f]) => f))}</p>
           <p>For each feature here are their options</p>
           <ul>
-          {metaData.map(([feature, options]) => 
-            <li>{feature}: {arrayToString(options)}</li>
+          {metaData.map(([feature, options], i) => 
+            <li key={i}>{feature}: {arrayToString(options)}</li>
           )}
           </ul>
           To make a valid set you must select {deck.numOptions} where for each feature the cars have all the same options or all different options.
           <h2>Examples</h2>
-          {examples().map((example) => <div style={{marginBottom: "10px"}}><PreviousSelection cards={example} message=""/></div>)}
+          {examples().map((example, i) => <div key={i} style={{marginBottom: "10px"}}><PreviousSelection cards={example} message=""/></div>)}
           {/* for each (feature * options) */}
             {/* for each option */}
 

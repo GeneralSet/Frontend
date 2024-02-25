@@ -2,7 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px;
+  /* padding: 5px; */
+  border: 0px;
+  border-radius: 4px;
 }
 
 .card.selected {
@@ -33,48 +35,6 @@
 }
 
 .card img {
+  border-radius: 4px;
   max-height: 15vh;
-}
-
-.game-selector .cards {
-  width: 125px;
-  height: 170px;
-  position: relative;
-  margin: 0 auto;
-}
-
-.game-selector .card {
-  position: absolute;
-  width: 65px;
-  padding: 10px;
-}
-
-.game-selector .card {
-  height: 45px;
-  display: flex;
-}
-
-.game-selector .card svg {
-  margin: 0px;
-  height: 35px;
-}
-
-.game-selector .card img {
-  height: 35px;
-}
-
-.game-selector .card:nth-child(1) {
-  left: 0px;
-  top: 0px;
-  transform: rotate(7deg);
-}
-.game-selector .card:nth-child(2) {
-  left: 50px;
-  top: 25px;
-  transform: rotate(-14deg);
-}
-.game-selector .card:nth-child(3) {
-  left: 1px;
-  top: 55px;
-  transform: rotate(26deg);
 }

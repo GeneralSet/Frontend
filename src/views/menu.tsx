@@ -8,6 +8,7 @@ import { getASet } from "./gameEditor/utils";
 import { Button } from "react-bootstrap";
 import { actions } from "views/actions";
 import PresetDeck from "deckBuilder/PresetDeck";
+import { PreviousSelection } from "components/game/previousSelection";
 
 interface GeneratedDeck {
   options: {[feature: string]: string[]};
@@ -38,34 +39,26 @@ export const Menu: React.FC = () => {
     dispatch(actions.updateDeck({deck: new PresetDeck(d.options, d.path, d.ext)}));
   }
 
-  console.log(deck);
-
   return (
     <>
-      <div className="game-selector">
-        <div className="cards">
-          {getASet(deck.numOptions, deck.features.length).map((id) => (
-            <Card key={id} selected={false} image={deck.cards[id]} />
-          ))}
-        </div>
-      </div>
+      <PreviousSelection cards={getASet(deck.numOptions, deck.features.length)} message=""/>
       <nav style={{ maxWidth: "350px", margin: "0 auto" }}>
         <Link
           to="/single_player"
           className="btn btn-warning"
-          style={{marginRight: "10px"}}
+          style={{marginTop: "10px"}}
         >
           Play
         </Link>
         <h3>Images</h3>
         {StableDiffusion.map(d => (
-          <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}}>
+          <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}} key={d.name}>
             {d.name}
           </Button>
         ))}
         <h3>Symbols</h3>
         {Legacy.map(d => (
-          <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}}>
+          <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}} key={d.name}>
             {d.name}
           </Button>
         ))}

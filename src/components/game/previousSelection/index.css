@@ -1,9 +1,17 @@
 .previous-selection .cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: inline-flex;
+  justify-content: center;
   background-color: rgba(0,0,0, 30%);
   padding: 3px;
   border-radius: 4px;
+}
+
+.previous-selection .card {
+  margin: 5px;
+}
+
+.previous-selection .card svg {
+  margin: 10px;
 }
 
 .previous-selection .card img,
