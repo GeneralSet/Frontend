@@ -27,13 +27,13 @@ export const NUMBERS = [1,2,3,4,5,6,7,8,9];
 
 
 const featureOptions = {
-  colors: Object.values(COLORS),
-  shapes: Object.values(SHAPES),
+  colors: Object.keys(COLORS),
+  shapes: Object.keys(SHAPES),
   numbers: NUMBERS
 }
 
-export const getAvailableValue = (feature: ValidFeatures, used: (string |number)[]) => {
-  const options = featureOptions[feature];
+export const getAvailableValue = (feature: string, used: (string |number)[]) => {
+  const options = (featureOptions as any)[feature];
   const difference = (options as string[]).filter(x => !used.includes(x));
   return difference[Math.floor(Math.random()*difference.length)];
 }
