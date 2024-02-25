@@ -10,24 +10,18 @@ import { SymbolSelect } from "./symbolSelect";
 import { NumberSelect } from "./numberSelect";
 import { ColorSelect } from "./colorSelect";
 import { CardSelector } from "./cardSelector";
-import { getAvailableValue } from "./utils";
+import { DEFAULT_CARD, getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
 import { DECK_DATA } from "views/reducers";
 import { RotationSelect } from "./rotationSelect";
-
-export const DECK_DEFAULTS: CardData = {
-  colors: "black",
-  shapes: "Semi Circle",
-  numbers: 1,
-  rotations: 0,
-};
+import { FilterSelect } from "./filterSelect";
 
 export const GameEditor = () => {
   const dispatch = useDispatch();
   const globalDeck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
-  const [deckDefaults, setDeckDefaults] = useState(DECK_DEFAULTS);
+  const [deckDefaults, setDeckDefaults] = useState(DEFAULT_CARD);
   const [deckData, setDeckData] = useState(globalDeck.metaData || DECK_DATA);
   const localDeck = new GeometricDeckGenerator(deckData, deckDefaults);
   const deck = localDeck.cards
@@ -123,6 +117,12 @@ export const GameEditor = () => {
             value={(deckData.rotations? deckData.rotations[card] : deckDefaults.rotations) as number}
             selection={(deckData.rotations || [deckDefaults.rotations]) as number[]}
             onChange={(value) => onDeckDataChange(card, "rotations", value)}
+          />
+          <EnableFeature feature="filters" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
+          <FilterSelect
+            value={(deckData.filters? deckData.filters[card] : deckDefaults.filters) as string}
+            selection={(deckData.filters || [deckDefaults.filters]) as string[]}
+            onChange={(value) => onDeckDataChange(card, "filters", value)}
           />
         </Modal.Body>
         <Modal.Footer>

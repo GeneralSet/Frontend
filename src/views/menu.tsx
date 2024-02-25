@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReduxState } from "reducers";
 import { GameEditor } from "./gameEditor/GameEditor";
-import { getASet } from "./gameEditor/utils";
+import { DEFAULT_CARD, getASet } from "./gameEditor/utils";
 import { Button } from "react-bootstrap";
 import { actions } from "views/actions";
 import PresetDeck from "deckBuilder/PresetDeck";
@@ -14,6 +14,7 @@ interface GeneratedDeck {
   options: {[feature: string]: (string | number)[]};
   path?: string;
   ext?: "svg" | "png";
+  defaultCardData?: CardData;
   name: string;
 }
 
@@ -32,7 +33,8 @@ const Legacy: GeneratedDeck[] = [
 
 const Symbols: GeneratedDeck[] = [
   {options: {"shapes": ['Circle - Quarter', 'Circle - Semi', 'Circle - Three Quarter'], "colors": ['Red', 'Olive', 'Blue',], "numbers": [3,6,9]}, name: "Circles"},
-  {options: {"shapes": ['Tetris - L Block', 'Tetris - S Block', 'Tetris - J Block', 'Tetris - T Block'], "colors": ['Blue', 'Green', 'Orange', 'Purple'], "rotations":[0,90,180,270]},  name: "Tetris"},
+  {options: {"shapes": ['Tetris - L Block', 'Tetris - S Block', 'Tetris - T Block'], "colors": ['Blue', 'Green', 'Purple'], "rotations":[0,90,180]},  name: "Tetris"},
+  {options: {"colors": ['Blue', 'Green', 'Purple'], "filters":["crinkle", "ink", "blur"], "numbers": [1,3,5]}, defaultCardData: {...DEFAULT_CARD, shapes: "Triangle"}, name: "Filters"},
 ]
 
 export const Menu: React.FC = () => {
@@ -45,7 +47,7 @@ export const Menu: React.FC = () => {
   }
 
   const setGeneratedDeck = (d: GeneratedDeck) => {
-    dispatch(actions.updateDeck({deck: new GeometricDeckGenerator(d.options)}));
+    dispatch(actions.updateDeck({deck: new GeometricDeckGenerator(d.options, d.defaultCardData)}));
   }
 
   return (

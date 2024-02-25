@@ -5,7 +5,7 @@ import { ReduxState } from "reducers";
 import { useSelector } from "react-redux";
 import { PreviousSelection } from "components/game/previousSelection";
 
-const arrayToString = (array: string[]) => {
+const arrayToString = (array: (string|number)[]) => {
   if (array.length < 2) {
     return array;
   }

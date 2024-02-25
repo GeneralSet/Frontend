@@ -4,6 +4,7 @@ interface DeckData {
   shapes?: string[];
   rotations?: number[];
   numbers?: number[];
+  filters?: string[];
 }
 
 interface CardData {
@@ -11,6 +12,7 @@ interface CardData {
   shapes: string;
   rotations: number;
   numbers: number;
+  filters: string;
 }
 
 interface FeatureDeck {
