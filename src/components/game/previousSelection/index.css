@@ -6,6 +6,7 @@
   border-radius: 4px;
 }
 
-.previous-selection .cards .card-image {
-  height: 30px;
+.previous-selection .card img,
+.previous-selection .card svg {
+  height: 8vh;
 }

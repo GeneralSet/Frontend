@@ -6,7 +6,7 @@
 }
 
 .card.selected {
-  background-color: #cecece;
+  filter: brightness(0.7);
 }
 
 .card.hint {
