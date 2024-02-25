@@ -3,17 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReduxState } from "reducers";
 import { GameEditor } from "./gameEditor/GameEditor";
-import Card from "components/game/card";
 import { getASet } from "./gameEditor/utils";
 import { Button } from "react-bootstrap";
 import { actions } from "views/actions";
 import PresetDeck from "deckBuilder/PresetDeck";
 import { PreviousSelection } from "components/game/previousSelection";
+import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 
 interface GeneratedDeck {
-  options: {[feature: string]: string[]};
-  path: string;
-  ext: "svg" | "png";
+  options: {[feature: string]: (string | number)[]};
+  path?: string;
+  ext?: "svg" | "png";
   name: string;
 }
 
@@ -30,13 +30,22 @@ const Legacy: GeneratedDeck[] = [
   {options: {"Animations": ['fade', 'corner', 'center'], "Color": ['red', 'purple', 'green'], "Number": ['one', 'two', 'tree'], "Shading": ['triangle', 'stripped', 'outlined']}, path: 'animations', ext: "svg", name: "Animations"},
 ]
 
+const Symbols: GeneratedDeck[] = [
+  {options: {"shapes": ['Circle - Quarter', 'Circle - Semi', 'Circle - Three Quarter'], "colors": ['Red', 'Olive', 'Blue',], "numbers": [3,6,9]}, name: "Circles"},
+  {options: {"shapes": ['Tetris - L Block', 'Tetris - S Block', 'Tetris - J Block', 'Tetris - T Block'], "colors": ['Blue', 'Green', 'Orange', 'Purple'], "rotations":[0,90,180,270]},  name: "Tetris"},
+]
+
 export const Menu: React.FC = () => {
   const dispatch = useDispatch();
 
   const deck = useSelector((state: ReduxState) => state.singlePlayer.deck);
 
   const setPreSetDeck = (d: GeneratedDeck) => {
-    dispatch(actions.updateDeck({deck: new PresetDeck(d.options, d.path, d.ext)}));
+    dispatch(actions.updateDeck({deck: new PresetDeck(d.options, d.path as string, d.ext as ("svg" | "png"))}));
+  }
+
+  const setGeneratedDeck = (d: GeneratedDeck) => {
+    dispatch(actions.updateDeck({deck: new GeometricDeckGenerator(d.options)}));
   }
 
   return (
@@ -56,9 +65,15 @@ export const Menu: React.FC = () => {
             {d.name}
           </Button>
         ))}
-        <h3>Symbols</h3>
+        <h3>Set Inspired</h3>
         {Legacy.map(d => (
           <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}} key={d.name}>
+            {d.name}
+          </Button>
+        ))}
+        <h3>Symbols</h3>
+        {Symbols.map(d => (
+          <Button variant="secondary" onClick={() => {setGeneratedDeck(d)}} style={{margin: "5px"}} key={d.name}>
             {d.name}
           </Button>
         ))}

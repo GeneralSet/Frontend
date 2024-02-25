@@ -3,7 +3,7 @@ import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import { DeckMetaData } from 'deckBuilder/PresetDeck';
 
 export const DECK_DATA: DeckMetaData = {
-  shapes: ["Three Quarter Circle", "Semi Circle", "Quarter Circle"],
+  shapes: ["Circle - Three Quarter", "Circle - Quarter", "Circle - Semi"],
   colors: ["Red", "Yellow", "Blue"],
   numbers: [9, 3, 4],
 };

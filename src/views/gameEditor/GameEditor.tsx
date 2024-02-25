@@ -13,12 +13,13 @@ import { CardSelector } from "./cardSelector";
 import { getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
 import { DECK_DATA } from "views/reducers";
-import { SHAPES } from "deckBuilder/features/shapes";
+import { RotationSelect } from "./rotationSelect";
 
 export const DECK_DEFAULTS: CardData = {
   colors: "black",
   shapes: "Semi Circle",
-  numbers: 1
+  numbers: 1,
+  rotations: 0,
 };
 
 export const GameEditor = () => {
@@ -63,7 +64,7 @@ export const GameEditor = () => {
       const temp: (string | number)[] = [];
       for (let i = 0; i < numberOfCards; i++) {
         if (i === card) {
-          temp.push(deckDefaults[feature])
+          temp.push((deckDefaults as any)[feature ])
         } else {
           temp.push(getAvailableValue(feature, temp))
 
@@ -101,21 +102,27 @@ export const GameEditor = () => {
           />
           <EnableFeature feature="shapes" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <SymbolSelect 
-            value={deckData.shapes? deckData.shapes[card] : deckDefaults.shapes}
-            selection={deckData.shapes || [deckDefaults.shapes]}
+            value={(deckData.shapes? deckData.shapes[card] : deckDefaults.shapes) as string}
+            selection={(deckData.shapes || [deckDefaults.shapes]) as string[]}
             onChange={(value) => onDeckDataChange(card, "shapes", value)}
           />
           <EnableFeature feature="colors" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <ColorSelect
-            value={deckData.colors? deckData.colors[card] : deckDefaults.colors}
-            selection={deckData.colors || [deckDefaults.colors]}
+            value={(deckData.colors? deckData.colors[card] : deckDefaults.colors) as string}
+            selection={(deckData.colors || [deckDefaults.colors]) as string[]}
             onChange={(value) => onDeckDataChange(card, "colors", value)}
           />
           <EnableFeature feature="numbers" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
           <NumberSelect
-            value={deckData.numbers? deckData.numbers[card] : deckDefaults.numbers}
-            selection={deckData.numbers || [deckDefaults.numbers]}
+            value={(deckData.numbers? deckData.numbers[card] : deckDefaults.numbers) as number}
+            selection={(deckData.numbers || [deckDefaults.numbers]) as number[]}
             onChange={(value) => onDeckDataChange(card, "numbers", value)}
+          />
+          <EnableFeature feature="rotations" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
+          <RotationSelect
+            value={(deckData.rotations? deckData.rotations[card] : deckDefaults.rotations) as number}
+            selection={(deckData.rotations || [deckDefaults.rotations]) as number[]}
+            onChange={(value) => onDeckDataChange(card, "rotations", value)}
           />
         </Modal.Body>
         <Modal.Footer>

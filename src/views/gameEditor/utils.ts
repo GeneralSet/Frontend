@@ -24,12 +24,14 @@ export const COLORS = {
 };
 
 export const NUMBERS = [1,2,3,4,5,6,7,8,9];
+export const ROTATIONS = [0,90,180,270];
 
 
 const featureOptions = {
   colors: Object.keys(COLORS),
   shapes: Object.keys(SHAPES),
-  numbers: NUMBERS
+  numbers: NUMBERS,
+  rotations: ROTATIONS,
 }
 
 export const getAvailableValue = (feature: string, used: (string |number)[]) => {

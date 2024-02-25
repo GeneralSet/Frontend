@@ -3,11 +3,12 @@ import Button from "react-bootstrap/Button";
 import Card from "components/game/card";
 import Form from "react-bootstrap/Form";
 import { getASet, getAvailableValue } from "./utils";
+import { DeckMetaData } from "deckBuilder/PresetDeck";
 
 interface Props {
   numberOfCards: number
-  deckData: DeckData
-  setDeckData: (value: DeckData) => void;
+  deckData: DeckMetaData
+  setDeckData: (value: DeckMetaData) => void;
   deck: FeatureDeck
   card: number;
   setCard: (value: number) => void;
@@ -30,7 +31,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
   const addCard = () => {
     const newDeckData: any = {...deckData};
     Object.keys(deckData).forEach(feature => {
-      newDeckData[feature].push(getAvailableValue(feature as ValidFeatures, newDeckData[feature]));
+      newDeckData[feature].push(getAvailableValue(feature, newDeckData[feature]));
     });
     const newCard = Object.values(newDeckData as DeckData)[0].length -1;
     setCard(newCard);

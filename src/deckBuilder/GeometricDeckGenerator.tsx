@@ -14,8 +14,9 @@ export default class GeometricDeckGenerator {
   numOptions: number;
   private defaultCardData: CardData = {
     colors: "#000",
-    shapes: SHAPES["Three Quarter Circle"],
-    numbers: 1
+    shapes: SHAPES["Circle - Three Quarter"],
+    numbers: 1,
+    rotations: 0
   };
   cards: FeatureDeck;
 
@@ -30,29 +31,9 @@ export default class GeometricDeckGenerator {
     this.cards = this.createDeck(exportPath);
   }
 
-  // private getFeatures(deckData: DeckData): string[] {
-  //   const features: string[] = [];
-  //   Object.keys(deckData).forEach((f: any) => {
-  //     const featureOptions = (deckData as any)[f];
-  //     if (typeof featureOptions === "undefined") {
-  //       return;
-  //     }
-  //     if (featureOptions.length !== this.numOptions) {
-  //       throw new Error(`
-  //         Invalid deck data.
-  //         All attributes must have ${this.numOptions} options.
-  //         ${f} has ${featureOptions.length} options.
-  //         type: ${typeof featureOptions}
-  //       `);
-  //     }
-  //     features.push(f);
-  //   });
-  //   return features;
-  // }
-
   private listSymbols(cardData: CardData) {
     const symbolList: JSX.Element[] = [];
-    const size = MAIN_VIEWPORT_SIZE / 3;
+    const size = (MAIN_VIEWPORT_SIZE / 3) - 5;
     const start = 0;
     const middle = MAIN_VIEWPORT_SIZE / 2 - size / 2;
     const end = MAIN_VIEWPORT_SIZE - size;
@@ -80,6 +61,7 @@ export default class GeometricDeckGenerator {
             fill={(COLORS as any)[cardData.colors]}
             fillRule="evenodd"
             key={i}
+            transform={`rotate(${cardData.rotations},${MAIN_VIEWPORT_SIZE / 2}, ${MAIN_VIEWPORT_SIZE / 2})`}
           >
             <path d={(SHAPES as any)[cardData.shapes]} stroke={(COLORS as any)[cardData.colors]}></path>
           </g>
