@@ -35,6 +35,8 @@ const Symbols: GeneratedDeck[] = [
   {options: {"shapes": ['Circle - Quarter', 'Circle - Semi', 'Circle - Three Quarter'], "colors": ['Red', 'Olive', 'Blue',], "numbers": [3,6,9]}, name: "Circles"},
   {options: {"shapes": ['Tetris - L Block', 'Tetris - S Block', 'Tetris - T Block'], "colors": ['Blue', 'Green', 'Purple'], "rotations":[0,90,180]},  name: "Tetris"},
   {options: {"colors": ['Blue', 'Green', 'Purple'], "filters":["crinkle", "ink", "blur"], "numbers": [1,3,5]}, defaultCardData: {...DEFAULT_CARD, shapes: "Triangle"}, name: "Filters"},
+  {options: {"shapes": ['Tracks - Deer', 'Tracks - Wolf', 'Tracks - Frog'], "colors": ['Brown', 'Green', 'Cyan'], "numbers":[2,5,8]},  name: "Tracks"},
+
 ]
 
 export const Menu: React.FC = () => {
