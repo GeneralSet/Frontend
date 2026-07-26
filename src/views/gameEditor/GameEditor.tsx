@@ -1,77 +1,93 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ReduxState } from "reducers";
 import { useSelector, useDispatch } from "react-redux";
 import "./gameEditor.css";
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
+import {
+  CardData,
+  DEFAULT_CARD,
+  FEATURE_NAMES,
+  FeatureName,
+  FeatureValue,
+  GeneratedDeckMetaData,
+  getAvailableValue,
+  getEnabledOptions,
+  isGeneratedMetaData,
+  setFeatureOptions,
+} from "deckBuilder/features";
 import { actions } from "views/actions";
-import { SymbolSelect } from "./symbolSelect";
-import { NumberSelect } from "./numberSelect";
-import { ColorSelect } from "./colorSelect";
+import { FeatureSelect } from "./featureSelect";
 import { CardSelector } from "./cardSelector";
-import { DEFAULT_CARD, getAvailableValue } from "./utils";
 import { EnableFeature } from "./enableFeature";
 import { DECK_DATA } from "views/reducers";
-import { RotationSelect } from "./rotationSelect";
-import { FilterSelect } from "./filterSelect";
 
 export const GameEditor = () => {
   const dispatch = useDispatch();
   const globalDeck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
-  const [deckDefaults, setDeckDefaults] = useState(DEFAULT_CARD);
-  const [deckData, setDeckData] = useState(globalDeck.metaData || DECK_DATA);
-  const localDeck = new GeometricDeckGenerator(deckData, deckDefaults);
-  const deck = localDeck.cards
+  const [deckDefaults, setDeckDefaults] = useState<CardData>(DEFAULT_CARD);
+  const [deckData, setDeckData] = useState<GeneratedDeckMetaData>(() =>
+    isGeneratedMetaData(globalDeck.metaData) ? globalDeck.metaData : DECK_DATA
+  );
+  const localDeck = useMemo(
+    () => new GeometricDeckGenerator(deckData, deckDefaults),
+    [deckData, deckDefaults]
+  );
+  const deck = localDeck.cards;
   const numberOfCards = localDeck.numOptions;
 
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
 
-  const onDeckDataChange = (
+  const onDeckDataChange = <F extends FeatureName>(
     cardNumber: number,
-    feature: string,
-    value: string | number
+    feature: F,
+    value: FeatureValue<F>
   ) => {
-    const values = deckData[feature];
-    if (Array.isArray(values)) {
-      const newArray = [...values];
-      newArray[cardNumber] = value;
-      setDeckData({ ...deckData, [feature]: newArray });
+    const values = getEnabledOptions(deckData, feature);
+    if (values) {
+      const newValues = [...values];
+      newValues[cardNumber] = value;
+      const newDeckData: GeneratedDeckMetaData = { ...deckData };
+      setFeatureOptions(newDeckData, feature, newValues);
+      setDeckData(newDeckData);
     } else {
-      setDeckDefaults({ ...deckDefaults, [feature]: value });
+      const newDefaults = { ...deckDefaults };
+      newDefaults[feature] = value;
+      setDeckDefaults(newDefaults);
     }
   };
 
-  const onFeatureSelect = (
-    feature: string,
-    selected: boolean
-  ) => {
+  const onFeatureSelect = <F extends FeatureName>(feature: F, selected: boolean) => {
     if (!selected) {
-      setDeckDefaults({ ...deckDefaults, [feature]: (deckData as any)[feature][card] });
-      const temp = { ...deckData };
-      delete temp[feature];
-      setDeckData(temp);
-    } else {
-      const temp: (string | number)[] = [];
-      for (let i = 0; i < numberOfCards; i++) {
-        if (i === card) {
-          temp.push((deckDefaults as any)[feature ])
-        } else {
-          temp.push(getAvailableValue(feature, temp))
-
-        }
+      const values = deckData[feature];
+      if (!values) {
+        return;
       }
-      setDeckData({ ...deckData, [feature]: temp});
+      const newDefaults: CardData = { ...deckDefaults };
+      newDefaults[feature] = values[card];
+      setDeckDefaults(newDefaults);
+      const newDeckData: GeneratedDeckMetaData = { ...deckData };
+      delete newDeckData[feature];
+      setDeckData(newDeckData);
+    } else {
+      const values: FeatureValue<F>[] = [];
+      for (let i = 0; i < numberOfCards; i++) {
+        values.push(i === card ? deckDefaults[feature] : getAvailableValue(feature, values));
+      }
+      const newDeckData: GeneratedDeckMetaData = { ...deckData };
+      setFeatureOptions(newDeckData, feature, values);
+      setDeckData(newDeckData);
     }
   };
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleSave = () => {
-    dispatch(actions.updateDeck({ deck: new GeometricDeckGenerator(deckData, deckDefaults)}));
+    dispatch(actions.updateDeck({ deck: new GeometricDeckGenerator(deckData, deckDefaults) }));
     setShow(false);
   };
 
@@ -94,36 +110,25 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
-          <EnableFeature feature="shapes" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
-          <SymbolSelect 
-            value={(deckData.shapes? deckData.shapes[card] : deckDefaults.shapes) as string}
-            selection={(deckData.shapes || [deckDefaults.shapes]) as string[]}
-            onChange={(value) => onDeckDataChange(card, "shapes", value)}
-          />
-          <EnableFeature feature="colors" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
-          <ColorSelect
-            value={(deckData.colors? deckData.colors[card] : deckDefaults.colors) as string}
-            selection={(deckData.colors || [deckDefaults.colors]) as string[]}
-            onChange={(value) => onDeckDataChange(card, "colors", value)}
-          />
-          <EnableFeature feature="numbers" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
-          <NumberSelect
-            value={(deckData.numbers? deckData.numbers[card] : deckDefaults.numbers) as number}
-            selection={(deckData.numbers || [deckDefaults.numbers]) as number[]}
-            onChange={(value) => onDeckDataChange(card, "numbers", value)}
-          />
-          <EnableFeature feature="rotations" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
-          <RotationSelect
-            value={(deckData.rotations? deckData.rotations[card] : deckDefaults.rotations) as number}
-            selection={(deckData.rotations || [deckDefaults.rotations]) as number[]}
-            onChange={(value) => onDeckDataChange(card, "rotations", value)}
-          />
-          <EnableFeature feature="filters" features={localDeck.features.length} deckData={deckData} onFeatureSelect={onFeatureSelect}/>
-          <FilterSelect
-            value={(deckData.filters? deckData.filters[card] : deckDefaults.filters) as string}
-            selection={(deckData.filters || [deckDefaults.filters]) as string[]}
-            onChange={(value) => onDeckDataChange(card, "filters", value)}
-          />
+          {FEATURE_NAMES.map((feature) => {
+            const values = deckData[feature];
+            return (
+              <React.Fragment key={feature}>
+                <EnableFeature
+                  feature={feature}
+                  features={localDeck.features.length}
+                  deckData={deckData}
+                  onFeatureSelect={onFeatureSelect}
+                />
+                <FeatureSelect
+                  feature={feature}
+                  value={values ? values[card] : deckDefaults[feature]}
+                  selection={values || [deckDefaults[feature]]}
+                  onChange={(value) => onDeckDataChange(card, feature, value)}
+                />
+              </React.Fragment>
+            );
+          })}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

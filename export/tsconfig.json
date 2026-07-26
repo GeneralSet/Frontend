@@ -21,9 +21,6 @@
     "jsx": "react",
     "experimentalDecorators": true,
   },
-  "files": [
-    "../src/deckBuilder/index.d.ts"
-  ],
   "include": ["../src"],
   "ts-node": {
     // Tell ts-node CLI to install the --loader automatically, explained below

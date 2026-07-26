@@ -1,12 +1,12 @@
-import { DeckMetaData } from "deckBuilder/PresetDeck";
+import { FeatureName, GeneratedDeckMetaData } from "deckBuilder/features";
 import React from "react";
 import Form from "react-bootstrap/Form";
 
 interface Props {
-  feature: string;
+  feature: FeatureName;
   features: number
-  deckData: DeckMetaData;
-  onFeatureSelect: (feature: string, enabled: boolean) => void; 
+  deckData: GeneratedDeckMetaData;
+  onFeatureSelect: (feature: FeatureName, enabled: boolean) => void;
 }
 
 export const EnableFeature = ({feature, features, deckData, onFeatureSelect}: Props) => {
@@ -21,6 +21,3 @@ export const EnableFeature = ({feature, features, deckData, onFeatureSelect}: Pr
     />
   );
 };
-
-
-// {localDeck.features.length > 1 ? () : null}

@@ -5,7 +5,7 @@ import { ReduxState } from "reducers";
 import { useSelector } from "react-redux";
 import { PreviousSelection } from "components/game/previousSelection";
 
-const arrayToString = (array: (string|number)[]) => {
+const arrayToString = (array: readonly (string|number)[]) => {
   if (array.length < 2) {
     return array;
   }
@@ -54,7 +54,7 @@ export const RulesModal = () => {
           <p>For each feature here are their options</p>
           <ul>
           {metaData.map(([feature, options], i) => 
-            <li key={i}>{feature}: {arrayToString(options)}</li>
+            <li key={i}>{feature}: {arrayToString(options || [])}</li>
           )}
           </ul>
           To make a valid set you must select {deck.numOptions} where for each feature the cars have all the same options or all different options.

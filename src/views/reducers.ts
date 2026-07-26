@@ -1,14 +1,15 @@
 import { Actions } from './actions';
 import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
-import { DeckMetaData } from 'deckBuilder/PresetDeck';
+import { GeneratedDeckMetaData } from 'deckBuilder/features';
+import { Deck } from 'deckBuilder/types';
 
-export const DECK_DATA: DeckMetaData = {
+export const DECK_DATA: GeneratedDeckMetaData = {
   shapes: ["Circle - Three Quarter", "Circle - Quarter", "Circle - Semi"],
   colors: ["Red", "Yellow", "Blue"],
   numbers: [9, 3, 4],
 };
 
-export const initialState = {
+export const initialState: { deck: Deck } = {
   deck: new GeometricDeckGenerator(DECK_DATA)
 };
 

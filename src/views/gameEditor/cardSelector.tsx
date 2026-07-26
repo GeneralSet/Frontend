@@ -2,13 +2,18 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "components/game/card";
 import Form from "react-bootstrap/Form";
-import { getASet, getAvailableValue } from "./utils";
-import { DeckMetaData } from "deckBuilder/PresetDeck";
+import { getASet } from "./utils";
+import {
+  GeneratedDeckMetaData,
+  addCardOptions,
+  removeCardOptions,
+} from "deckBuilder/features";
+import { FeatureDeck } from "deckBuilder/types";
 
 interface Props {
   numberOfCards: number
-  deckData: DeckMetaData
-  setDeckData: (value: DeckMetaData) => void;
+  deckData: GeneratedDeckMetaData
+  setDeckData: (value: GeneratedDeckMetaData) => void;
   deck: FeatureDeck
   card: number;
   setCard: (value: number) => void;
@@ -17,24 +22,17 @@ interface Props {
 
 export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, setCard}: Props) => {
   const removeCard = (index: number) => {
-    const newDeckData: any = {...deckData};
-    Object.keys(deckData).forEach((feature) => {
-      newDeckData[feature].splice(index, 1);
-    });
-    const lastCard = Object.values(newDeckData as DeckData)[0].length -1;
+    const newDeckData = removeCardOptions(deckData, index);
+    const lastCard = numberOfCards - 2;
     if (card >= lastCard) {
-      setCard(lastCard);
+      setCard(Math.max(lastCard, 0));
     }
     setDeckData(newDeckData);
   }
 
   const addCard = () => {
-    const newDeckData: any = {...deckData};
-    Object.keys(deckData).forEach(feature => {
-      newDeckData[feature].push(getAvailableValue(feature, newDeckData[feature]));
-    });
-    const newCard = Object.values(newDeckData as DeckData)[0].length -1;
-    setCard(newCard);
+    const newDeckData = addCardOptions(deckData);
+    setCard(numberOfCards);
     setDeckData(newDeckData);
   }
 
@@ -47,7 +45,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
       {getASet(numberOfCards, numFeatures).map((id, index) => (
         <div key={index}>
         <div className="cardSelector-container">
-        {numberOfCards > 2 ? 
+        {numberOfCards > 2 ?
           <Button variant="link" className="cardSelector-remove" onClick={() => removeCard(index)}>
             x
           </Button>
@@ -61,7 +59,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
         </div>
       </div>
       ))}
-      {numberOfCards < 4 ? 
+      {numberOfCards < 4 ?
       <Button variant="link" className="cardSelector-add" onClick={addCard}>
         <Card
           selected={false}

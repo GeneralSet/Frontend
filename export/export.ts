@@ -1,43 +1,52 @@
-
+import * as fs from "fs";
+import * as ReactDOMServer from "react-dom/server";
 import GeometricDeckGenerator from "../src/deckBuilder/GeometricDeckGenerator";
+import { GeneratedDeckMetaData } from "../src/deckBuilder/features";
 import { getPermutations, isSet } from "./utils";
-const fs = require('fs')
-// const GeneralSet =
-//   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
-const deck1 = {
-  unicode: ["★", "✚", "⎈"],
-  colors: ["#e6194B", "#3cb44b", "#ffe119"],
-  numbers: [1, 2, 3],
-};
-const deck2 = {
-  unicode: ["▲", "■", "⬥"],
-  colors: ["#4363d8", "#f58231", "#911eb4"],
-  numbers: [4, 5, 6],
-};
-const deck3 = {
-  unicode: ["●", "⬟", "⬢"],
-  colors: ["#42d4f4", "#f032e6", "#bfef45"],
-  numbers: [7, 8, 9],
-};
+const decks: { path: string; metaData: GeneratedDeckMetaData }[] = [
+  {
+    path: "./decks/1/",
+    metaData: {
+      shapes: ["Circle - Quarter", "Circle - Semi", "Circle - Three Quarter"],
+      colors: ["Red", "Green", "Yellow"],
+      numbers: [1, 2, 3],
+    },
+  },
+  {
+    path: "./decks/2/",
+    metaData: {
+      shapes: ["Tetris - L Block", "Tetris - S Block", "Tetris - T Block"],
+      colors: ["Blue", "Orange", "Purple"],
+      numbers: [4, 5, 6],
+    },
+  },
+  {
+    path: "./decks/3/",
+    metaData: {
+      shapes: ["Tracks - Deer", "Tracks - Wolf", "Tracks - Frog"],
+      colors: ["Cyan", "Magenta", "Lime"],
+      numbers: [7, 8, 9],
+    },
+  },
+];
 
-new GeometricDeckGenerator(deck1, undefined, "./decks/1/")
-new GeometricDeckGenerator(deck2, undefined, "./decks/2/")
-const deck = new GeometricDeckGenerator(deck3, undefined, "./decks/3/")
-
-
-// GeneralSet.then(({Set}: any) => {
-//   const set = Set.new(
-//     3,
-//     3,
-//     9
-//   )
-  const allSelections = getPermutations(Object.keys(deck.cards), 3);
-  const isSetLookup: {[x:string]: boolean} = {}
-  allSelections.forEach((selection) => {
-    isSetLookup[selection.join(',')] = isSet(selection)
-    // console.log(set.is_set(selection.join(',')));
+const exportDeck = ({ path, metaData }: typeof decks[number], index: number) => {
+  const deck = new GeometricDeckGenerator(metaData, undefined, { idPrefix: `deck${index}` });
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+  Object.keys(deck.cards).forEach((id) => {
+    fs.writeFileSync(`${path}${id}.svg`, ReactDOMServer.renderToStaticMarkup(deck.cards[id]));
   });
-  fs.writeFile('./decks/isSetLookup.json', JSON.stringify(isSetLookup), ()=> null);
-// });
+  return deck;
+};
 
+const [, , lastDeck] = decks.map(exportDeck);
+
+const allSelections = getPermutations(Object.keys(lastDeck.cards), 3);
+const isSetLookup: { [x: string]: boolean } = {};
+allSelections.forEach((selection) => {
+  isSetLookup[selection.join(",")] = isSet(selection);
+});
+fs.writeFile("./decks/isSetLookup.json", JSON.stringify(isSetLookup), () => null);
