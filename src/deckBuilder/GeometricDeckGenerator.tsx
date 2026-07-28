@@ -1,119 +1,84 @@
 import * as React from "react";
-import * as ReactDOMServer from "react-dom/server";
-import { SHAPES, VIEW_BOX } from "./features/shapes";
-import { DeckMetaData } from "./PresetDeck";
-import { COLORS, DEFAULT_CARD } from "views/gameEditor/utils";
-import { filters } from "./features/filters";
-var fs = require("fs");
+import { CardSvg } from "./CardSvg";
+import {
+  CardData,
+  DEFAULT_CARD,
+  FeatureName,
+  GeneratedDeckMetaData,
+  isFeatureName,
+} from "./features";
+import { Deck, FeatureDeck } from "./types";
 
-export const MAIN_VIEWPORT_SIZE = 120;
+export { MAIN_VIEWPORT_SIZE } from "./CardSvg";
 
-export default class GeometricDeckGenerator {
-  metaData: DeckMetaData;
-  // deckData: DeckData;
+let instanceCounter = 0;
+
+/**
+ * Builds the full cartesian-product deck for the given metadata. Card ids are
+ * underscore-joined option indices ("0_1_2") in metadata key order — a
+ * contract shared with the set engine and pre-rendered preset decks, so both
+ * must stay stable. Rendering is delegated to `CardSvg`, which applies each
+ * feature only if the card's shape supports it.
+ */
+export default class GeometricDeckGenerator implements Deck {
+  metaData: GeneratedDeckMetaData;
   features: string[];
   numOptions: number;
-  private defaultCardData = DEFAULT_CARD;
   cards: FeatureDeck;
+  private defaults: CardData;
+  private idPrefix: string;
 
-  constructor(metaData: DeckMetaData, defaultCardData?: CardData, exportPath?: string) {
+  constructor(
+    metaData: GeneratedDeckMetaData,
+    defaultCardData?: Partial<CardData>,
+    options?: { idPrefix?: string }
+  ) {
     this.metaData = metaData;
-    this.numOptions = Object.values(metaData)[0].length;
     this.features = Object.keys(metaData);
-    if (defaultCardData) {
-      this.defaultCardData = defaultCardData
-    }
-    this.cards = this.createDeck(exportPath);
+    const optionLists = Object.values(metaData);
+    this.numOptions = optionLists[0] ? optionLists[0].length : 0;
+    this.defaults = { ...DEFAULT_CARD, ...defaultCardData };
+    this.idPrefix = (options && options.idPrefix) || `d${instanceCounter++}`;
+    this.cards = this.createDeck();
   }
 
-  private listSymbols(cardData: CardData) {
-    const symbolList: React.ReactNode[] = [];
-    const margin = 5;
-    const size = (MAIN_VIEWPORT_SIZE / 3) - margin;
-    const start = 0;
-    const middle = MAIN_VIEWPORT_SIZE / 2 - size / 2;
-    const end = MAIN_VIEWPORT_SIZE - size;
-    const position = [
-      { x: middle, y: middle },
-      { x: start, y: end },
-      { x: end, y: start },
-      { x: end, y: end },
-      { x: start, y: start },
-      { x: end, y: middle },
-      { x: start, y: middle },
-      { x: middle, y: start },
-      { x: middle, y: end },
-    ];
-    for (let i = 0; i < cardData.numbers; i++) {
-      const offset = cardData.numbers % 2 ? 0 : 1;
-      const x = position[i + offset].x;
-      const y = position[i + offset].y;
-      
-      symbolList.push(filters[cardData.filters](
-        <svg x={x} y={y} viewBox={VIEW_BOX} width={size} height={size} key={`${x}${y}`}>
-          <g 
-            stroke="none"
-            strokeWidth="1"
-            fill={(COLORS as any)[cardData.colors]}
-            fillRule="evenodd"
-            key={i}
-            transform={`rotate(${cardData.rotations},${MAIN_VIEWPORT_SIZE / 2}, ${MAIN_VIEWPORT_SIZE / 2})`}
-          >
-            <path d={(SHAPES as any)[cardData.shapes]} stroke={(COLORS as any)[cardData.colors]}></path>
-          </g>
-        </svg>
-      ));
+  private setFeature<F extends FeatureName>(
+    card: CardData,
+    feature: F,
+    optionIndex: number
+  ): void {
+    const options = this.metaData[feature];
+    if (!options) {
+      throw new Error(`Error attribute for ${feature} does not exist`);
     }
-    return symbolList;
+    card[feature] = options[optionIndex];
   }
 
-  private createSvg(features: number[]): JSX.Element {
-    const cardData = {...this.defaultCardData};
-    for (let i = 0; i < this.features.length; i++) {
-      const feature = this.features[i];
-      const optionValue = features[i];
-      const f = this.metaData[feature];
-      if (!f) {
-        throw new Error(`Error attribute for ${feature} does not exist`);
+  private resolveCard(optionIndexes: number[]): CardData {
+    const card: CardData = { ...this.defaults };
+    this.features.forEach((feature, i) => {
+      if (isFeatureName(feature)) {
+        this.setFeature(card, feature, optionIndexes[i]);
       }
-      (cardData as any)[feature] = f[optionValue] ;
-    }
-    console.log(cardData, this.features)
-
-    return (
-      <svg
-        height="100%"
-        width="100%"
-        viewBox={`0 0 ${MAIN_VIEWPORT_SIZE} ${MAIN_VIEWPORT_SIZE}`}
-        xmlns="http://www.w3.org/2000/svg"
-        key={features.join('_')}
-      >
-        {this.listSymbols(cardData as CardData)}
-      </svg>
-    );
+    });
+    return card;
   }
 
-  private createDeck(exportPath?: string): FeatureDeck {
+  private createDeck(): FeatureDeck {
     const deck: FeatureDeck = {};
     const indexes: number[] = [];
-    const looper = (loopNumber: number) => {  
+    const looper = (loopNumber: number) => {
       for (indexes[loopNumber] = 0; indexes[loopNumber] < this.numOptions; indexes[loopNumber]++) {
-         if (loopNumber < this.features.length - 1) {
+        if (loopNumber < this.features.length - 1) {
           looper(loopNumber + 1);
-         } else {
-          const id = indexes.join('_');
-          const symbol = this.createSvg(indexes);
-          if (exportPath) {
-            const svg = ReactDOMServer.renderToStaticMarkup(symbol);
-            if (!fs.existsSync(exportPath)) {
-              fs.mkdirSync(exportPath);
-            }
-            fs.writeFile(`${exportPath}${id}.svg`, svg, () => null);
-          }
-          deck[id] = symbol;
-         }
+        } else {
+          const id = indexes.join("_");
+          deck[id] = (
+            <CardSvg key={id} cardId={`${this.idPrefix}-${id}`} card={this.resolveCard(indexes)} />
+          );
+        }
       }
-    }
+    };
     looper(0);
     return deck;
   }

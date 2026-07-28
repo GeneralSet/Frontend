@@ -1,8 +1,7 @@
-import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
-import PresetDeck from "deckBuilder/PresetDeck";
+import { Deck } from "deckBuilder/types";
 
 interface Payload {
-  deck: GeometricDeckGenerator | PresetDeck,
+  deck: Deck,
 }
 type UpdateDeck = { type: 'UPDATE_DECK', payload: Payload };
 function updateDeck(payload: Payload): UpdateDeck {
@@ -10,7 +9,7 @@ function updateDeck(payload: Payload): UpdateDeck {
 }
 
 export type Actions = (
-  UpdateDeck 
+  UpdateDeck
 );
 
 export const actions = {

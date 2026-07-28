@@ -14,10 +14,6 @@ interface User {
   points: number;
 }
 
-interface FeatureDeck {
-  [feature: string]: JSX.Element;
-}
-
 declare module 'set';
 // declare module '@giantmachines/redux-websocket';
 
