@@ -3,18 +3,22 @@ import Card from "components/game/card";
 import "./index.css";
 import { useSelector } from "react-redux";
 import { ReduxState } from "reducers";
+import { Deck } from "deckBuilder/types";
 
 interface Props {
   board: string[];
   selected: string[];
   hint?: string[];
   onSelect: (id: string) => void;
+  /** Overrides the redux-selected deck (used by modes with a fixed deck). */
+  deck?: Deck;
 }
 
 export const Board = (props: Props) => {
-  const customDeck = useSelector(
+  const reduxDeck = useSelector(
     (state: ReduxState) => state.singlePlayer.deck
   );
+  const customDeck = props.deck ?? reduxDeck;
 
   return (
     <div className="board container">

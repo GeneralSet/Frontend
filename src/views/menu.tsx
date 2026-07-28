@@ -70,6 +70,13 @@ export const Menu: React.FC = () => {
         >
           Play
         </Link>
+        <Link
+          to="/daily"
+          className="btn btn-primary"
+          style={{marginTop: "10px", marginLeft: "10px"}}
+        >
+          Daily Puzzle
+        </Link>
         <h3>Images</h3>
         {StableDiffusion.map(d => (
           <Button variant="secondary" onClick={() => {setPreSetDeck(d)}} style={{margin: "5px"}} key={d.name}>
