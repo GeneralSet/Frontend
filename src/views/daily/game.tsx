@@ -5,7 +5,7 @@ import { PreviousSelection } from "components/game/previousSelection";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Set } from "set/pkg/set";
-import { createDailyDeck } from "daily/deck";
+import { getPuzzleForDate } from "daily/schedule";
 import { getDateKey, msUntilNextMidnight } from "daily/date";
 import {
   computeScore,
@@ -28,12 +28,15 @@ const GeneralSet =
   process.env.NODE_ENV !== "test" ? import("set/pkg/set") : ({} as any);
 
 const DailyGame = () => {
-  const deck = useMemo(() => createDailyDeck(), []);
+  const [dateKey, setDateKey] = useState<string>(() => getDateKey(new Date()));
+  // The scheduled puzzle for the day (or the default deck when none is
+  // defined) decides the deck and therefore the engine's dimensions.
+  const puzzle = useMemo(() => getPuzzleForDate(dateKey), [dateKey]);
+  const deck = useMemo(() => puzzle.createDeck(), [puzzle]);
   const features = deck.features.length;
   const options = deck.numOptions;
   const boardSize = features * options;
 
-  const [dateKey, setDateKey] = useState<string>(() => getDateKey(new Date()));
   // Today's saved progress, read once on mount. The engine's shuffle can't be
   // restored, so a reload deals a new board — but time and penalties resume,
   // so reloading never improves a score.
@@ -73,7 +76,9 @@ const DailyGame = () => {
     GeneralSet.then(({ Set }: any) => {
       setSet(Set.new(features, options, boardSize));
     });
-  }, [features, options, boardSize, completed]);
+    // dateKey is a dependency so switching to a new day's puzzle deals a
+    // fresh game even when the new deck has the same dimensions.
+  }, [dateKey, features, options, boardSize, completed]);
 
   useEffect(() => {
     if (completed || newDayAvailable) {
@@ -145,9 +150,8 @@ const DailyGame = () => {
     setShowResults(false);
     setNewDayAvailable(false);
     setCopied(null);
-    GeneralSet.then(({ Set }: any) => {
-      setSet(Set.new(features, options, boardSize));
-    });
+    // the engine effect re-runs off the dateKey change and deals the new
+    // day's puzzle with its own deck dimensions
   };
 
   if (!set && !completed) {
@@ -308,6 +312,10 @@ const DailyGame = () => {
                 <tr>
                   <td style={{ textAlign: "left" }}>Daily Puzzle</td>
                   <td>{dateKey}</td>
+                </tr>
+                <tr>
+                  <td style={{ textAlign: "left" }}>Deck</td>
+                  <td>{puzzle.name}</td>
                 </tr>
                 <tr>
                   <td style={{ textAlign: "left" }}>Time</td>
