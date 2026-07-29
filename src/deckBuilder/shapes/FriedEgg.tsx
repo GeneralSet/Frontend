@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ShapeDefinition, ShapeProps } from "../types";
 
-const YOLK_OFFSETS: Record<number, [number, number][]> = {
+const YOLK_OFFSETS: Record<number, number[][]> = {
   1: [[60, 60]],
   2: [[42, 55], [78, 65]],
   3: [[40, 45], [70, 40], [58, 78]],
