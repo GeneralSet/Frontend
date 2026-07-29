@@ -17,6 +17,7 @@ const LEGACY_SHAPE_NAMES = [
   "Tracks - Deer",
   "Tracks - Wolf",
   "Tracks - Frog",
+  "Fried Egg",
 ];
 
 test("shape registry keeps the legacy shape names", () => {
