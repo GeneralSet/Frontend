@@ -7,9 +7,10 @@ interface Props {
   features: number
   deckData: GeneratedDeckMetaData;
   onFeatureSelect: (feature: FeatureName, enabled: boolean) => void;
+  disabled?: boolean;
 }
 
-export const EnableFeature = ({feature, features, deckData, onFeatureSelect}: Props) => {
+export const EnableFeature = ({feature, features, deckData, onFeatureSelect, disabled}: Props) => {
   const checked = Array.isArray(deckData[feature]);
   return (
     <Form.Switch
@@ -17,7 +18,7 @@ export const EnableFeature = ({feature, features, deckData, onFeatureSelect}: Pr
       onChange={(e) => onFeatureSelect(feature, e.target.checked )}
       checked={checked}
       style={{float:"right"}}
-      disabled={checked && features <= 1}
+      disabled={(checked && features <= 1) || disabled}
     />
   );
 };

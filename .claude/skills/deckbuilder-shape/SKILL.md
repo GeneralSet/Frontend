@@ -150,9 +150,15 @@ order:
    ```ts
    export const YOLKS = [1, 2, 3] as const;
    // in FeatureOptionMap: yolks: (typeof YOLKS)[number];
-   // in FEATURES: yolks: { label: "Yolks", options: YOLKS },
+   // in FEATURES: yolks: { label: "Yolks", options: YOLKS, requiresShapeSupport: true },
    // in DEFAULT_CARD: yolks: 1,
    ```
+   `requiresShapeSupport: true` marks this as a shape-only custom feature
+   (no universal neutral value) — `GameEditor.tsx` reads this flag generically
+   to grey out the feature's controls in the editor until every card in the
+   deck uses a shape that declares support for it, via
+   `shapes/index.ts`'s `shapeSupportsFeature`. Omit it for features that
+   default to full support (like `rotations`/`filters`/`patterns`/`colors`).
 3. **`CardSvg.tsx`** — resolve and pass it through, same shape as
    `resolveRotation`:
    ```ts
@@ -173,9 +179,10 @@ order:
    same principle as `patterns` falling back to `"solid"`.
 4. **`shapes/<YourShape>.tsx`** — as in step 2, declare `supports: { yolks: [...] }`
    and read the prop.
-5. Nothing else — `featureSelect.tsx` and `GameEditor.tsx` iterate
-   `FEATURE_NAMES` generically, so the new feature appears in the editor
-   automatically. Don't touch those files.
+5. Nothing else in the editor itself — `featureSelect.tsx` and `GameEditor.tsx`
+   iterate `FEATURE_NAMES` generically, and the `requiresShapeSupport` flag
+   from step 2 is all that's needed for the editor to grey out this
+   feature's controls until every card qualifies. Don't touch those files.
 6. **Grep for hand-built `CardData` object literals in tests** (e.g.
    `__tests__/cardSvg.test.tsx`'s `const CARD: CardData = {...}`). Unlike
    `GeneratedDeckMetaData` (all fields optional), `CardData` requires every

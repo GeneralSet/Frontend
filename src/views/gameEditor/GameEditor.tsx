@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ReduxState } from "reducers";
@@ -9,6 +9,7 @@ import {
   CardData,
   DEFAULT_CARD,
   FEATURE_NAMES,
+  FEATURES,
   FeatureName,
   FeatureValue,
   GeneratedDeckMetaData,
@@ -17,6 +18,8 @@ import {
   isGeneratedMetaData,
   setFeatureOptions,
 } from "deckBuilder/features";
+import { ShapeName, shapeSupportsFeature } from "deckBuilder/shapes";
+import { ShapeFeatureSupport } from "deckBuilder/types";
 import { actions } from "views/actions";
 import { FeatureSelect } from "./featureSelect";
 import { CardSelector } from "./cardSelector";
@@ -41,6 +44,26 @@ export const GameEditor = () => {
 
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
+
+  const shapeValues = getEnabledOptions(deckData, "shapes");
+  const shapesInPlay: ShapeName[] = shapeValues
+    ? (shapeValues as ShapeName[]).slice(0, numberOfCards)
+    : Array(numberOfCards).fill(deckDefaults.shapes as ShapeName);
+
+  const isFeatureLocked = (feature: FeatureName): boolean =>
+    !!FEATURES[feature].requiresShapeSupport &&
+    !shapesInPlay.every((shape) => shapeSupportsFeature(shape, feature as keyof ShapeFeatureSupport));
+
+  useEffect(() => {
+    const toClear = FEATURE_NAMES.filter((feature) => isFeatureLocked(feature) && deckData[feature]);
+    if (toClear.length === 0) {
+      return;
+    }
+    const next = { ...deckData };
+    toClear.forEach((feature) => delete next[feature]);
+    setDeckData(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deckData, shapesInPlay.join(",")]);
 
   const onDeckDataChange = <F extends FeatureName>(
     cardNumber: number,
@@ -112,6 +135,7 @@ export const GameEditor = () => {
           />
           {FEATURE_NAMES.map((feature) => {
             const values = deckData[feature];
+            const locked = isFeatureLocked(feature);
             return (
               <React.Fragment key={feature}>
                 <EnableFeature
@@ -119,12 +143,14 @@ export const GameEditor = () => {
                   features={localDeck.features.length}
                   deckData={deckData}
                   onFeatureSelect={onFeatureSelect}
+                  disabled={locked}
                 />
                 <FeatureSelect
                   feature={feature}
                   value={values ? values[card] : deckDefaults[feature]}
                   selection={values || [deckDefaults[feature]]}
                   onChange={(value) => onDeckDataChange(card, feature, value)}
+                  disabled={locked}
                 />
               </React.Fragment>
             );

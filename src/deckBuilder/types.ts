@@ -56,7 +56,7 @@ export interface ShapeFeatureSupport {
    */
   colors?: 1 | 2 | 3;
   /**
-   * true/undefined = all yolk counts, false = none (always 1), or the exact
+   * true = all yolk counts, false/undefined = none (always 1), or the exact
    * subset of counts the shape supports. Unlike rotation there's no universal
    * neutral yolk count, so unsupported always falls back to 1.
    */

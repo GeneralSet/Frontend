@@ -14,6 +14,7 @@ interface Props<F extends FeatureName> {
   value: FeatureValue<F>;
   selection: readonly FeatureValue<F>[];
   onChange: (value: FeatureValue<F>) => void;
+  disabled?: boolean;
 }
 
 const optionStyle = (feature: FeatureName, option: string | number) =>
@@ -26,6 +27,7 @@ export const FeatureSelect = <F extends FeatureName>({
   value,
   selection,
   onChange,
+  disabled,
 }: Props<F>) => {
   const selectionSet = new Set(selection);
   return (
@@ -34,6 +36,7 @@ export const FeatureSelect = <F extends FeatureName>({
       <Form.Select
         onChange={(e) => onChange(coerceFeatureValue(feature, e.target.value))}
         value={value}
+        disabled={disabled}
       >
         {getFeatureOptions(feature).map((option) => (
           <option
