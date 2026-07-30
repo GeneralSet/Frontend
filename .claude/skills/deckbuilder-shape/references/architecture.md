@@ -39,5 +39,20 @@ while — this is a snapshot, not a guarantee.
   over the flag, not hardcoded to any one feature name — see
   `views/gameEditor/__tests__/GameEditor.test.tsx` for the behavior this
   guarantees.
+- **Symbols render tiny.** `CardSvg` places each symbol in a
+  `SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - 5 = 35` unit box inside the 120-unit
+  card viewport — a 0.29x downscale of the shape's own `0 0 120 120` space —
+  and `src/components/game/card/index.css` caps the card at `max-height: 10vh`,
+  so a card is ~90px (~60px on a short window) and a symbol lands near 26 device
+  pixels. Combined scale from shape units to screen pixels: **~0.22x**. This is
+  the fact `references/iconography.md` exists to address, and why
+  `definePathShape`'s `strokeWidth="1"` is effectively invisible.
 - Test runner is CRA/Jest (`yarn test` / `npm test`, both wrap
-  `react-app-rewired test`).
+  `react-app-rewired test`). Tests assert markup, never appearance — the visual
+  gate is `yarn render:shape "<name>"` (`scripts/render-shape.mjs`), which
+  renders a shape through the real `CardSvg` with Playwright and writes a PNG.
+- The production build runs ESLint through `@typescript-eslint/parser@2.24.0`
+  (pinned by `react-scripts@3.4.4`), which crashes on TS tuple-array type
+  annotations like `[number, number][]`. Neither `yarn test` nor `tsc --noEmit`
+  catches it; it fails only in `yarn build` / the Netlify check. Use
+  `number[][]` instead (see commit `d8701ac`).
