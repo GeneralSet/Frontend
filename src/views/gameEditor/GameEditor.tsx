@@ -13,13 +13,18 @@ import {
   FeatureName,
   FeatureValue,
   GeneratedDeckMetaData,
-  getAvailableValue,
+  assignDistinctValues,
   getEnabledOptions,
   isGeneratedMetaData,
   setFeatureOptions,
 } from "deckBuilder/features";
-import { ShapeName, shapeSupportsFeature } from "deckBuilder/shapes";
-import { ShapeFeatureSupport } from "deckBuilder/types";
+import {
+  canShapeFillDeck,
+  canShapesSupplyFeature,
+  collapseToShape,
+  getSupportedFeatureValues,
+} from "deckBuilder/deckRules";
+import { ShapeName } from "deckBuilder/shapes";
 import { actions } from "views/actions";
 import { FeatureSelect } from "./featureSelect";
 import { CardSelector } from "./cardSelector";
@@ -50,9 +55,12 @@ export const GameEditor = () => {
     ? (shapeValues as ShapeName[]).slice(0, numberOfCards)
     : Array(numberOfCards).fill(deckDefaults.shapes as ShapeName);
 
+  // A shape-only feature is offered when the shapes in play can give every
+  // card its own value of it — a feature that runs out mid-deck could not tell
+  // the cards apart.
   const isFeatureLocked = (feature: FeatureName): boolean =>
     !!FEATURES[feature].requiresShapeSupport &&
-    !shapesInPlay.every((shape) => shapeSupportsFeature(shape, feature as keyof ShapeFeatureSupport));
+    !canShapesSupplyFeature(shapesInPlay, feature, numberOfCards);
 
   useEffect(() => {
     const toClear = FEATURE_NAMES.filter((feature) => isFeatureLocked(feature) && deckData[feature]);
@@ -72,6 +80,19 @@ export const GameEditor = () => {
   ) => {
     const values = getEnabledOptions(deckData, feature);
     if (values) {
+      if (feature === "shapes" && values[cardNumber] !== value && values.includes(value)) {
+        // Picking a symbol another card already wears only makes sense for a
+        // shape carrying its own feature, and that feature then takes over the
+        // symbol's job of telling the cards apart — for the whole deck.
+        const collapsed = collapseToShape(
+          { deckData, deckDefaults },
+          (value as unknown) as ShapeName,
+          numberOfCards
+        );
+        setDeckDefaults(collapsed.deckDefaults);
+        setDeckData(collapsed.deckData);
+        return;
+      }
       const newValues = [...values];
       newValues[cardNumber] = value;
       const newDeckData: GeneratedDeckMetaData = { ...deckData };
@@ -97,21 +118,12 @@ export const GameEditor = () => {
       delete newDeckData[feature];
       setDeckData(newDeckData);
     } else {
-      // The currently-selected card keeps the shared default; every other
-      // card gets a random still-unused option. The default is reserved
-      // up front so a later slot can never collide with it (getAvailableValue
-      // only knows to avoid values already in `assigned`).
-      const assigned: FeatureValue<F>[] = [deckDefaults[feature]];
-      const values: FeatureValue<F>[] = [];
-      for (let i = 0; i < numberOfCards; i++) {
-        if (i === card) {
-          values.push(deckDefaults[feature]);
-        } else {
-          const value = getAvailableValue(feature, assigned);
-          values.push(value);
-          assigned.push(value);
-        }
-      }
+      // A shape-only feature can only hand out what its shape draws, so it
+      // takes its values in order. Everywhere else the currently-selected card
+      // keeps the shared default and every other card gets a still-unused option.
+      const values = FEATURES[feature].requiresShapeSupport
+        ? getSupportedFeatureValues(shapesInPlay, feature).slice(0, numberOfCards)
+        : assignDistinctValues(feature, numberOfCards, deckDefaults[feature], card);
       const newDeckData: GeneratedDeckMetaData = { ...deckData };
       setFeatureOptions(newDeckData, feature, values);
       setDeckData(newDeckData);
@@ -159,6 +171,16 @@ export const GameEditor = () => {
                   value={values ? values[card] : deckDefaults[feature]}
                   selection={values || [deckDefaults[feature]]}
                   onChange={(value) => onDeckDataChange(card, feature, value)}
+                  options={
+                    FEATURES[feature].requiresShapeSupport
+                      ? getSupportedFeatureValues(shapesInPlay, feature)
+                      : undefined
+                  }
+                  canRepeat={
+                    feature === "shapes"
+                      ? (option) => canShapeFillDeck((option as unknown) as ShapeName, numberOfCards)
+                      : undefined
+                  }
                 />
               </React.Fragment>
             );

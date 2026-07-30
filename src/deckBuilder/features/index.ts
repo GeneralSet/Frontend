@@ -102,6 +102,32 @@ export function getAvailableValue<F extends FeatureName>(
 }
 
 /**
+ * `count` distinct options for a feature, one per card. `keep` pins a value to
+ * index `keepIndex` — the shared default of a feature being switched on — and
+ * is reserved up front so no later slot can collide with it (getAvailableValue
+ * only knows to avoid values it has already been told about).
+ */
+export function assignDistinctValues<F extends FeatureName>(
+  feature: F,
+  count: number,
+  keep?: FeatureValue<F>,
+  keepIndex = 0
+): FeatureValue<F>[] {
+  const assigned: FeatureValue<F>[] = keep === undefined ? [] : [keep];
+  const values: FeatureValue<F>[] = [];
+  for (let i = 0; i < count; i++) {
+    if (keep !== undefined && i === keepIndex) {
+      values.push(keep);
+    } else {
+      const value = getAvailableValue(feature, assigned);
+      values.push(value);
+      assigned.push(value);
+    }
+  }
+  return values;
+}
+
+/**
  * Assign one feature's option list on deck metadata. TypeScript cannot check
  * writes through a generic key on an optional mapped type directly, so every
  * metadata write funnels through this setter's re-keyed view.

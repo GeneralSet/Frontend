@@ -93,6 +93,14 @@ Features are data-driven from `features/index.ts`: add the option type to
 `FeatureOptionMap`, a row to `FEATURES`, a default to `DEFAULT_CARD`, and
 teach `CardSvg` how to apply it. The editor UI picks it up automatically.
 
+A feature marked `requiresShapeSupport` belongs to the shapes that declare it
+in `supports` rather than to every deck — the fried egg's yolk count is the
+first. `deckRules.ts` derives the consequences generically: such a shape may be
+repeated across cards, and picking it a second time collapses the deck onto
+that one symbol so its own feature does the varying instead; the feature's
+option count then caps how many cards the deck can hold. A shape declaring no
+such feature can still only be used once per deck.
+
 ## Colors and patterns
 
 The palette lives in `features/colors.ts`. Each named color is a `ColorSet`

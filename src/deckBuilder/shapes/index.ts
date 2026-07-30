@@ -1,4 +1,4 @@
-import { ShapeDefinition, ShapeFeatureSupport } from "../types";
+import { ShapeDefinition } from "../types";
 import { CircleQuarter, CircleSemi, CircleThreeQuarter } from "./Circles";
 import { FriedEgg } from "./FriedEgg";
 import { TetrisJBlock, TetrisLBlock, TetrisSBlock, TetrisTBlock } from "./Tetris";
@@ -33,17 +33,3 @@ export const SHAPE_REGISTRY = defineShapes({
 export type ShapeName = keyof typeof SHAPE_REGISTRY;
 
 export const SHAPE_NAMES = Object.keys(SHAPE_REGISTRY) as ShapeName[];
-
-/**
- * Whether `shape` explicitly declares support for `feature` (true, or a
- * listed subset) — used to gate FeatureConfig.requiresShapeSupport features
- * in the editor. Meaningless (and unused) for features that don't set that
- * flag, since those default to full support when unspecified.
- */
-export const shapeSupportsFeature = (
-  shape: ShapeName,
-  feature: keyof ShapeFeatureSupport
-): boolean => {
-  const supported = SHAPE_REGISTRY[shape].supports?.[feature];
-  return supported === true || Array.isArray(supported);
-};
