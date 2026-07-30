@@ -7,14 +7,13 @@
 }
 
 .previous-selection .card {
-  margin: 5px;
+  margin: 3px;
 }
 
-.previous-selection .card svg {
-  margin: 10px;
+.previous-selection .card-content > svg {
+  width: min(14vw, 10vh);
 }
 
-.previous-selection .card img,
-.previous-selection .card svg {
+.previous-selection .card img {
   height: 8vh;
 }

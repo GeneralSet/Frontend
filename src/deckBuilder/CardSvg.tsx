@@ -9,8 +9,8 @@ import { Rotation, ShapeFeatureSupport } from "./types";
 export const MAIN_VIEWPORT_SIZE = 120;
 
 const DEFAULT_SHAPE_VIEW_BOX = "0 0 120 120";
-const SYMBOL_MARGIN = 5;
-const SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - SYMBOL_MARGIN;
+const SYMBOL_MARGIN = 2;
+export const SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - SYMBOL_MARGIN;
 
 /** The nine symbol slots on a card, center first so odd counts stay centered. */
 const POSITIONS = (() => {

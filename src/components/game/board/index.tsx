@@ -25,7 +25,7 @@ export const Board = (props: Props) => {
       {props.board.map((id: string) => {
         return (
           <button
-            className="btn btn-link m-1 p-0"
+            className="btn btn-link m-0 p-0"
             onClick={() => props.onSelect(id)}
             key={id}
           >

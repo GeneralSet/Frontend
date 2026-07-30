@@ -5,24 +5,25 @@
 deliberately not being restyled — they are what the rules exist to improve on, not the
 pattern to copy.
 
-## Why: a symbol is ~26 device pixels
+## Why: a symbol is ~27 device pixels on a phone
 
-Three scale reductions stack between the coordinates you type and what a player sees:
+Two scale reductions stack between the coordinates you type and what a player sees:
 
 | Step | Where | Effect |
 | --- | --- | --- |
-| Shape space → symbol box | `CardSvg.tsx` — `SYMBOL_SIZE = 120/3 - 5 = 35` | **0.29x** |
-| Card viewport → card element | typical card ≈ 90px for a 120-unit viewport | **0.75x** |
-| Combined | | **≈0.22x** |
+| Shape space → symbol box | `CardSvg.tsx` — `SYMBOL_SIZE = 120/3 - 2 = 38` | **0.317x** |
+| Card viewport → card element | phone card ≈ 90px for a 120-unit viewport | **0.75x** |
+| Combined | | **≈0.23x** |
 
-Plus `src/components/game/card/index.css` caps the card at `max-height: 10vh`, so on a
-short window a card is ~60px and a symbol lands near **20px**.
+`src/components/game/card/index.css` sizes the card at `min(26vw, 20vh)`, so the card
+tracks the viewport: ~86px on a 330px-wide phone (symbol ≈ **27px**) up to ~180px on
+desktop (symbol ≈ **57px**). Design against the phone figure — it is the one that hurts.
 
-Concretely, in the default `0 0 120 120` shape space:
+Concretely, in the default `0 0 120 120` shape space, at a 90px card:
 
-- `stroke-width="1"` (what `definePathShape` emits) → **0.22px**. Invisible.
-- `stroke-width="6"` → **1.3px**. The thinnest line that reliably survives.
-- An 8-unit detail → **1.7px**. About the floor for anything you want seen.
+- `stroke-width="1"` (what `definePathShape` emits) → **0.23px**. Invisible.
+- `stroke-width="6"` → **1.4px**. The thinnest line that reliably survives.
+- An 8-unit detail → **1.8px**. About the floor for anything you want seen.
 
 Set is a game of spotting differences fast. A symbol that needs squinting is a broken
 symbol, no matter how good it looks zoomed in.

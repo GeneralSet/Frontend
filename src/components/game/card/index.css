@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 5px; */
+  padding: 3px;
   border: 0px;
   border-radius: 4px;
 }
@@ -29,12 +29,25 @@
   display: flex;
 }
 
-.card svg {
-  margin: 20px;
-  max-height: 10vh;
+/*
+ * Cards are sized to fill the board's three columns. `height: auto` lets the
+ * 0 0 120 120 viewBox keep the card square; the vh term caps growth on desktop.
+ * These win over the width="100%" height="100%" presentation attributes CardSvg
+ * emits.
+ *
+ * Must stay a child selector: CardSvg nests one <svg> per symbol inside the root
+ * one, and a descendant selector would resize those too — in user units, so each
+ * symbol would swell to fill the whole card.
+ */
+.card-content > svg {
+  display: block;
+  width: min(26vw, 20vh);
+  height: auto;
+  margin: 0;
 }
 
 .card img {
   border-radius: 4px;
-  max-height: 15vh;
+  max-width: min(26vw, 20vh);
+  max-height: min(26vw, 20vh);
 }

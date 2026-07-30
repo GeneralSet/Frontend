@@ -42,14 +42,15 @@ while — this is a snapshot, not a guarantee.
   hardcoded to any one feature or shape name — see
   `views/gameEditor/__tests__/GameEditor.test.tsx` and
   `deckBuilder/__tests__/deckRules.test.ts` for the behavior this guarantees.
-- **Symbols render tiny.** `CardSvg` places each symbol in a
-  `SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - 5 = 35` unit box inside the 120-unit
-  card viewport — a 0.29x downscale of the shape's own `0 0 120 120` space —
-  and `src/components/game/card/index.css` caps the card at `max-height: 10vh`,
-  so a card is ~90px (~60px on a short window) and a symbol lands near 26 device
-  pixels. Combined scale from shape units to screen pixels: **~0.22x**. This is
-  the fact `references/iconography.md` exists to address, and why
-  `definePathShape`'s `strokeWidth="1"` is effectively invisible.
+- **Symbols render small.** `CardSvg` places each symbol in a
+  `SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - 2 = 38` unit box inside the 120-unit
+  card viewport — a 0.317x downscale of the shape's own `0 0 120 120` space —
+  and `src/components/game/card/index.css` sizes the card at
+  `min(26vw, 20vh)`, so a card is ~86px on a 330px-wide phone (~180px on
+  desktop) and a symbol lands near 27 device pixels at the small end. Combined
+  scale from shape units to screen pixels on a phone: **~0.23x**. This is the
+  fact `references/iconography.md` exists to address, and why `definePathShape`'s
+  `strokeWidth="1"` is effectively invisible.
 - Test runner is CRA/Jest (`yarn test` / `npm test`, both wrap
   `react-app-rewired test`). Tests assert markup, never appearance — the visual
   gate is `yarn render:shape "<name>"` (`scripts/render-shape.mjs`), which
