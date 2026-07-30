@@ -60,6 +60,33 @@ That's it — the shape shows up in the editor's Symbol list, `ShapeName` and
 registry's integrity. Registry keys are stored in saved deck metadata, so
 renaming one is a breaking change.
 
+## Legibility
+
+`CardSvg` fits each symbol into a 35-unit box in the 120-unit card viewport, and
+a card renders at roughly 90px — so a symbol reaches the player at about **26
+device pixels**. Shapes have to be drawn for that size. New shapes should:
+
+- Outline everything with one uniform
+  `stroke="#000000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"`.
+  (`definePathShape`'s `strokeWidth="1"` works out to 0.22px on a card.)
+- Layer base fills, outlines, and highlights into separate `<g>` groups, keeping
+  the resolved `fill` paint on the base layer so patterns have room to read.
+- Favor `<circle>`/`<ellipse>`/`<rect>` and `M`/`L`/`Q`/`T` paths over cubic
+  Béziers, and never paste traced paths with hundreds of points.
+- Fill the viewBox but inset ~6 units so the stroke isn't clipped, and keep every
+  detail above ~8 units.
+
+To see what a shape actually looks like on a card:
+
+```bash
+yarn render:shape "Circle - Semi"
+```
+
+That renders the shape through `CardSvg` with Playwright at real card sizes
+across every option it supports, checks for blank output, viewBox clipping, and
+strokes too thin to survive the downscale, and writes a PNG to open. Full
+rationale in `.claude/skills/deckbuilder-shape/references/iconography.md`.
+
 ## Adding a feature
 
 Features are data-driven from `features/index.ts`: add the option type to
