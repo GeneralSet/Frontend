@@ -18,6 +18,7 @@
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "render:shape": "node .claude/skills/deckbuilder-shape/scripts/render-shape.mjs"
   },
   "eslintConfig": {
