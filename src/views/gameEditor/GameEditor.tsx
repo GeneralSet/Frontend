@@ -97,9 +97,20 @@ export const GameEditor = () => {
       delete newDeckData[feature];
       setDeckData(newDeckData);
     } else {
+      // The currently-selected card keeps the shared default; every other
+      // card gets a random still-unused option. The default is reserved
+      // up front so a later slot can never collide with it (getAvailableValue
+      // only knows to avoid values already in `assigned`).
+      const assigned: FeatureValue<F>[] = [deckDefaults[feature]];
       const values: FeatureValue<F>[] = [];
       for (let i = 0; i < numberOfCards; i++) {
-        values.push(i === card ? deckDefaults[feature] : getAvailableValue(feature, values));
+        if (i === card) {
+          values.push(deckDefaults[feature]);
+        } else {
+          const value = getAvailableValue(feature, assigned);
+          values.push(value);
+          assigned.push(value);
+        }
       }
       const newDeckData: GeneratedDeckMetaData = { ...deckData };
       setFeatureOptions(newDeckData, feature, values);
@@ -133,9 +144,8 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
-          {FEATURE_NAMES.map((feature) => {
+          {FEATURE_NAMES.filter((feature) => !isFeatureLocked(feature)).map((feature) => {
             const values = deckData[feature];
-            const locked = isFeatureLocked(feature);
             return (
               <React.Fragment key={feature}>
                 <EnableFeature
@@ -143,14 +153,12 @@ export const GameEditor = () => {
                   features={localDeck.features.length}
                   deckData={deckData}
                   onFeatureSelect={onFeatureSelect}
-                  disabled={locked}
                 />
                 <FeatureSelect
                   feature={feature}
                   value={values ? values[card] : deckDefaults[feature]}
                   selection={values || [deckDefaults[feature]]}
                   onChange={(value) => onDeckDataChange(card, feature, value)}
-                  disabled={locked}
                 />
               </React.Fragment>
             );

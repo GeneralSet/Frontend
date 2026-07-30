@@ -155,8 +155,8 @@ order:
    ```
    `requiresShapeSupport: true` marks this as a shape-only custom feature
    (no universal neutral value) — `GameEditor.tsx` reads this flag generically
-   to grey out the feature's controls in the editor until every card in the
-   deck uses a shape that declares support for it, via
+   to hide the feature's controls entirely in the editor until every card in
+   the deck uses a shape that declares support for it, via
    `shapes/index.ts`'s `shapeSupportsFeature`. Omit it for features that
    default to full support (like `rotations`/`filters`/`patterns`/`colors`).
 3. **`CardSvg.tsx`** — resolve and pass it through, same shape as
@@ -181,8 +181,8 @@ order:
    and read the prop.
 5. Nothing else in the editor itself — `featureSelect.tsx` and `GameEditor.tsx`
    iterate `FEATURE_NAMES` generically, and the `requiresShapeSupport` flag
-   from step 2 is all that's needed for the editor to grey out this
-   feature's controls until every card qualifies. Don't touch those files.
+   from step 2 is all that's needed for the editor to hide this feature's
+   controls until every card qualifies. Don't touch those files.
 6. **Grep for hand-built `CardData` object literals in tests** (e.g.
    `__tests__/cardSvg.test.tsx`'s `const CARD: CardData = {...}`). Unlike
    `GeneratedDeckMetaData` (all fields optional), `CardData` requires every

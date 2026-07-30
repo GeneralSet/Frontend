@@ -30,12 +30,14 @@ while — this is a snapshot, not a guarantee.
   `views/gameEditor/GameEditor.tsx`) iterates `FEATURE_NAMES` generically and
   needs no changes when a feature is added — confirmed by reading both files.
   If the new feature is a shape-only custom feature (`requiresShapeSupport:
-  true` in its `FEATURES` entry, e.g. `yolks`), `GameEditor.tsx` also greys
-  out that feature's `EnableFeature` switch and `FeatureSelect` dropdown
-  until every card in the deck resolves to a shape whose `supports` declares
-  it (via `shapes/index.ts`'s `shapeSupportsFeature`), and auto-clears any
-  per-card override the moment that stops being true (e.g. a card's shape is
-  edited away). This is generic over the flag, not hardcoded to any one
-  feature name.
+  true` in its `FEATURES` entry, e.g. `yolks`), `GameEditor.tsx` also hides
+  that feature's `EnableFeature` switch and `FeatureSelect` dropdown entirely
+  (not just disables them) until every card in the deck resolves to a shape
+  whose `supports` declares it (via `shapes/index.ts`'s
+  `shapeSupportsFeature`), and auto-clears any per-card override the moment
+  that stops being true (e.g. a card's shape is edited away). This is generic
+  over the flag, not hardcoded to any one feature name — see
+  `views/gameEditor/__tests__/GameEditor.test.tsx` for the behavior this
+  guarantees.
 - Test runner is CRA/Jest (`yarn test` / `npm test`, both wrap
   `react-app-rewired test`).
