@@ -241,9 +241,10 @@ order:
    ```
    `requiresShapeSupport: true` marks this as a shape-only custom feature
    (no universal neutral value) — `GameEditor.tsx` reads this flag generically
-   to hide the feature's controls entirely in the editor until every card in
-   the deck uses a shape that declares support for it, via
-   `shapes/index.ts`'s `shapeSupportsFeature`. Omit it for features that
+   to hide the feature's controls entirely in the editor until the shapes in
+   the deck can give every card its own value of it, via `deckRules.ts`'s
+   `canShapesSupplyFeature`. The same flag lets a shape owning the feature be
+   repeated across cards (see `deckRules.ts`). Omit it for features that
    default to full support (like `rotations`/`filters`/`patterns`/`colors`).
 3. **`CardSvg.tsx`** — resolve and pass it through, same shape as
    `resolveRotation`:

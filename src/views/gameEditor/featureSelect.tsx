@@ -14,6 +14,16 @@ interface Props<F extends FeatureName> {
   value: FeatureValue<F>;
   selection: readonly FeatureValue<F>[];
   onChange: (value: FeatureValue<F>) => void;
+  /**
+   * The options to offer, when they are narrower than the feature's full list
+   * — a shape-only feature can only offer what the shapes in play can draw.
+   */
+  options?: readonly FeatureValue<F>[];
+  /**
+   * Whether an option another card already uses may be picked again. Cards
+   * have to differ in every varying feature, so by default they may not.
+   */
+  canRepeat?: (option: FeatureValue<F>) => boolean;
 }
 
 const optionStyle = (feature: FeatureName, option: string | number) =>
@@ -26,8 +36,12 @@ export const FeatureSelect = <F extends FeatureName>({
   value,
   selection,
   onChange,
+  options,
+  canRepeat,
 }: Props<F>) => {
   const selectionSet = new Set(selection);
+  const isTaken = (option: FeatureValue<F>) =>
+    selectionSet.has(option) && !(canRepeat && canRepeat(option));
   return (
     <>
       <Form.Label>{FEATURES[feature].label}</Form.Label>
@@ -35,9 +49,9 @@ export const FeatureSelect = <F extends FeatureName>({
         onChange={(e) => onChange(coerceFeatureValue(feature, e.target.value))}
         value={value}
       >
-        {getFeatureOptions(feature).map((option) => (
+        {(options || getFeatureOptions(feature)).map((option) => (
           <option
-            disabled={selectionSet.has(option)}
+            disabled={isTaken(option)}
             value={option}
             style={optionStyle(feature, option)}
             key={option}

@@ -32,13 +32,16 @@ while — this is a snapshot, not a guarantee.
   If the new feature is a shape-only custom feature (`requiresShapeSupport:
   true` in its `FEATURES` entry, e.g. `yolks`), `GameEditor.tsx` also hides
   that feature's `EnableFeature` switch and `FeatureSelect` dropdown entirely
-  (not just disables them) until every card in the deck resolves to a shape
-  whose `supports` declares it (via `shapes/index.ts`'s
-  `shapeSupportsFeature`), and auto-clears any per-card override the moment
-  that stops being true (e.g. a card's shape is edited away). This is generic
-  over the flag, not hardcoded to any one feature name — see
-  `views/gameEditor/__tests__/GameEditor.test.tsx` for the behavior this
-  guarantees.
+  (not just disables them) until the shapes in play can give every card its
+  own value of it (via `deckRules.ts`'s `canShapesSupplyFeature`), and
+  auto-clears any per-card override the moment that stops being true (e.g. a
+  card's shape is edited away). Owning such a feature is also what lets a
+  symbol repeat across cards: picking it twice collapses the deck onto that
+  one symbol and hands the varying job to its internal feature, which in turn
+  caps the card count (`deckRules.ts`). This is all generic over the flag, not
+  hardcoded to any one feature or shape name — see
+  `views/gameEditor/__tests__/GameEditor.test.tsx` and
+  `deckBuilder/__tests__/deckRules.test.ts` for the behavior this guarantees.
 - **Symbols render tiny.** `CardSvg` places each symbol in a
   `SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - 5 = 35` unit box inside the 120-unit
   card viewport — a 0.29x downscale of the shape's own `0 0 120 120` space —

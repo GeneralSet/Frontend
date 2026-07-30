@@ -8,6 +8,7 @@ import {
   addCardOptions,
   removeCardOptions,
 } from "deckBuilder/features";
+import { getMaxCards } from "deckBuilder/deckRules";
 import { FeatureDeck } from "deckBuilder/types";
 
 interface Props {
@@ -59,7 +60,7 @@ export const CardSelector = ({numberOfCards, setDeckData, deckData, deck, card, 
         </div>
       </div>
       ))}
-      {numberOfCards < 4 ?
+      {numberOfCards < getMaxCards(deckData) ?
       <Button variant="link" className="cardSelector-add" onClick={addCard}>
         <Card
           selected={false}
