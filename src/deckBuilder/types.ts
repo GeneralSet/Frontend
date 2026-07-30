@@ -28,6 +28,8 @@ export interface ShapeProps {
    * `url(#...)` reference when a pattern is active and the shape supports it.
    */
   fill: string;
+  /** Yolk count for shapes that declare `supports.yolks`. */
+  yolks?: 1 | 2 | 3;
 }
 
 /**
@@ -53,6 +55,12 @@ export interface ShapeFeatureSupport {
    * more colors than this fall back to solid.
    */
   colors?: 1 | 2 | 3;
+  /**
+   * true = all yolk counts, false/undefined = none (always 1), or the exact
+   * subset of counts the shape supports. Unlike rotation there's no universal
+   * neutral yolk count, so unsupported always falls back to 1.
+   */
+  yolks?: boolean | readonly (1 | 2 | 3)[];
 }
 
 /** A registered shape: a React component plus the features it supports. */

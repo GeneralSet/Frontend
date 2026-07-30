@@ -35,6 +35,7 @@ const CARD: CardData = {
   rotations: 90,
   filters: "shadow",
   patterns: "striped",
+  yolks: 1,
 };
 
 const renderCard = (card: CardData) =>

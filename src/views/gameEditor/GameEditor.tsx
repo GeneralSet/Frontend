@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ReduxState } from "reducers";
@@ -9,6 +9,7 @@ import {
   CardData,
   DEFAULT_CARD,
   FEATURE_NAMES,
+  FEATURES,
   FeatureName,
   FeatureValue,
   GeneratedDeckMetaData,
@@ -17,6 +18,8 @@ import {
   isGeneratedMetaData,
   setFeatureOptions,
 } from "deckBuilder/features";
+import { ShapeName, shapeSupportsFeature } from "deckBuilder/shapes";
+import { ShapeFeatureSupport } from "deckBuilder/types";
 import { actions } from "views/actions";
 import { FeatureSelect } from "./featureSelect";
 import { CardSelector } from "./cardSelector";
@@ -41,6 +44,26 @@ export const GameEditor = () => {
 
   const [show, setShow] = useState(false);
   const [card, setCard] = useState(0);
+
+  const shapeValues = getEnabledOptions(deckData, "shapes");
+  const shapesInPlay: ShapeName[] = shapeValues
+    ? (shapeValues as ShapeName[]).slice(0, numberOfCards)
+    : Array(numberOfCards).fill(deckDefaults.shapes as ShapeName);
+
+  const isFeatureLocked = (feature: FeatureName): boolean =>
+    !!FEATURES[feature].requiresShapeSupport &&
+    !shapesInPlay.every((shape) => shapeSupportsFeature(shape, feature as keyof ShapeFeatureSupport));
+
+  useEffect(() => {
+    const toClear = FEATURE_NAMES.filter((feature) => isFeatureLocked(feature) && deckData[feature]);
+    if (toClear.length === 0) {
+      return;
+    }
+    const next = { ...deckData };
+    toClear.forEach((feature) => delete next[feature]);
+    setDeckData(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deckData, shapesInPlay.join(",")]);
 
   const onDeckDataChange = <F extends FeatureName>(
     cardNumber: number,
@@ -74,9 +97,20 @@ export const GameEditor = () => {
       delete newDeckData[feature];
       setDeckData(newDeckData);
     } else {
+      // The currently-selected card keeps the shared default; every other
+      // card gets a random still-unused option. The default is reserved
+      // up front so a later slot can never collide with it (getAvailableValue
+      // only knows to avoid values already in `assigned`).
+      const assigned: FeatureValue<F>[] = [deckDefaults[feature]];
       const values: FeatureValue<F>[] = [];
       for (let i = 0; i < numberOfCards; i++) {
-        values.push(i === card ? deckDefaults[feature] : getAvailableValue(feature, values));
+        if (i === card) {
+          values.push(deckDefaults[feature]);
+        } else {
+          const value = getAvailableValue(feature, assigned);
+          values.push(value);
+          assigned.push(value);
+        }
       }
       const newDeckData: GeneratedDeckMetaData = { ...deckData };
       setFeatureOptions(newDeckData, feature, values);
@@ -110,7 +144,7 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
-          {FEATURE_NAMES.map((feature) => {
+          {FEATURE_NAMES.filter((feature) => !isFeatureLocked(feature)).map((feature) => {
             const values = deckData[feature];
             return (
               <React.Fragment key={feature}>

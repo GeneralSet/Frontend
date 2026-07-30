@@ -6,6 +6,7 @@ import { PATTERN_NAMES, PatternName } from "./patterns";
 
 export const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const ROTATIONS: readonly Rotation[] = [0, 90, 180, 270];
+export const YOLKS = [1, 2, 3] as const;
 
 /**
  * The features a generated deck can vary, mapped to their option value type.
@@ -20,6 +21,7 @@ interface FeatureOptionMap {
   rotations: Rotation;
   filters: FilterName;
   patterns: PatternName;
+  yolks: (typeof YOLKS)[number];
 }
 
 export type FeatureName = keyof FeatureOptionMap;
@@ -36,6 +38,14 @@ export type GeneratedDeckMetaData = { [F in FeatureName]?: FeatureValue<F>[] };
 export interface FeatureConfig<F extends FeatureName> {
   label: string;
   options: readonly FeatureValue<F>[];
+  /**
+   * True for shape-only custom features with no universal neutral value
+   * (see ShapeFeatureSupport's doc comments) — every card's shape must
+   * explicitly declare support before the editor lets this vary per card.
+   * Omit (false) for features that default to full support, like rotations/
+   * filters/patterns/colors.
+   */
+  requiresShapeSupport?: boolean;
 }
 
 /** Display label and full option list for every feature. */
@@ -46,6 +56,7 @@ export const FEATURES: { readonly [F in FeatureName]: FeatureConfig<F> } = {
   rotations: { label: "Rotation", options: ROTATIONS },
   filters: { label: "Filter", options: FILTER_NAMES },
   patterns: { label: "Pattern", options: PATTERN_NAMES },
+  yolks: { label: "Yolks", options: YOLKS, requiresShapeSupport: true },
 };
 
 export const FEATURE_NAMES = Object.keys(FEATURES) as FeatureName[];
@@ -65,6 +76,7 @@ export const DEFAULT_CARD: CardData = {
   rotations: 0,
   filters: "none",
   patterns: "solid",
+  yolks: 1,
 };
 
 export function getFeatureOptions<F extends FeatureName>(feature: F): readonly FeatureValue<F>[] {
