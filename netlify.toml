@@ -1,3 +1,9 @@
-# react-scripts 3.4 (webpack 4) cannot build on Node >= 17 (ERR_OSSL_EVP_UNSUPPORTED)
+# react-scripts 3.4 (webpack 4) hashes with MD4, which OpenSSL 3 on Node >= 17
+# rejects as ERR_OSSL_EVP_UNSUPPORTED; --openssl-legacy-provider re-enables it.
+# Node must be >= 18 because the playwright devDependency declares
+# engines.node >= 18, and yarn 1 fails the whole install on an engines mismatch
+# ("Found incompatible module.") rather than just warning. Both settings are
+# load-bearing — dropping either one breaks the deploy.
 [build.environment]
-  NODE_VERSION = "16"
+  NODE_VERSION = "20"
+  NODE_OPTIONS = "--openssl-legacy-provider"
