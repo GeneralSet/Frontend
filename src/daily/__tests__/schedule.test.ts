@@ -54,13 +54,23 @@ test("an undefined day resolves to null", () => {
 });
 
 test("getPuzzleForDate falls back to the default fixed deck", () => {
-  // the checked-in schedule starts empty, so any date gets the default
-  expect(Object.keys(DAILY_PUZZLE_SCHEDULE).length).toEqual(0);
   expect(getPuzzleForDate("2026-07-28")).toBe(DEFAULT_DAILY_PUZZLE);
 });
 
 test("the default puzzle builds the fixed 27-card deck", () => {
   const deck = DEFAULT_DAILY_PUZZLE.createDeck();
+  expect(deck.features.length).toEqual(3);
+  expect(Object.keys(deck.cards).length).toEqual(27);
+});
+
+test("National Egg Day is scheduled for June 3rd and recurs annually", () => {
+  expect(getPuzzleForDate("2026-06-03").name).toEqual("National Egg Day");
+  expect(getPuzzleForDate("2027-06-03").name).toEqual("National Egg Day");
+  expect(getPuzzleForDate("2025-06-03").name).not.toEqual("National Egg Day");
+});
+
+test("National Egg Day builds a 27-card deck of Fried Egg cards", () => {
+  const deck = DAILY_PUZZLE_SCHEDULE["2026-06-03"].createDeck();
   expect(deck.features.length).toEqual(3);
   expect(Object.keys(deck.cards).length).toEqual(27);
 });

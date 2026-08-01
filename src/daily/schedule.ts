@@ -1,4 +1,5 @@
 import { Deck } from "deckBuilder/types";
+import GeometricDeckGenerator from "deckBuilder/GeometricDeckGenerator";
 import { createDailyDeck } from "./deck";
 
 export interface DailyPuzzleDefinition {
@@ -57,7 +58,21 @@ export interface DailyPuzzleSchedule {
  *       ),
  *   },
  */
-export const DAILY_PUZZLE_SCHEDULE: DailyPuzzleSchedule = {};
+export const DAILY_PUZZLE_SCHEDULE: DailyPuzzleSchedule = {
+  "2026-06-03": {
+    name: "National Egg Day",
+    createDeck: () =>
+      new GeometricDeckGenerator(
+        {
+          numbers: [1, 2, 3],
+          yolks: [1, 2, 3],
+          colors: ["Yellow", "Orange", "Red"],
+        },
+        { shapes: "Fried Egg" },
+        { idPrefix: "daily-egg" }
+      ),
+  },
+};
 
 /** The deck used whenever no scheduled puzzle matches the date. */
 export const DEFAULT_DAILY_PUZZLE: DailyPuzzleDefinition = {
