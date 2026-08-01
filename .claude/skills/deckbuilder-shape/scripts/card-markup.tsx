@@ -13,15 +13,13 @@
  */
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
-import { CardSvg, MAIN_VIEWPORT_SIZE } from "../../../../src/deckBuilder/CardSvg";
+import { CardSvg, MAIN_VIEWPORT_SIZE, SYMBOL_SIZE } from "../../../../src/deckBuilder/CardSvg";
 import { CardData, DEFAULT_CARD, NUMBERS, ROTATIONS, YOLKS } from "../../../../src/deckBuilder/features";
 import { COLOR_SETS, ColorName, clampColorSet } from "../../../../src/deckBuilder/features/colors";
 import { PATTERN_DEFS, PATTERN_NAMES, PatternName } from "../../../../src/deckBuilder/features/patterns";
 import { SHAPE_NAMES, SHAPE_REGISTRY, ShapeName } from "../../../../src/deckBuilder/shapes";
 import { Rotation } from "../../../../src/deckBuilder/types";
 
-/** Mirrors CardSvg's own symbol box: 1/3 of the card viewport, less a margin. */
-const SYMBOL_SIZE = MAIN_VIEWPORT_SIZE / 3 - 5;
 const DEFAULT_VIEW_BOX = "0 0 120 120";
 
 /** Colors worth eyeballing: a mid hue, a dark hue, and pure black (the worst

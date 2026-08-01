@@ -25,9 +25,9 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, "../../../..");
 const MARKUP_SCRIPT = path.join(HERE, "card-markup.tsx");
 
-/** Card sizes to eyeball, bracketing the app's real `max-height: 10vh` card. */
-const TRUE_SIZES = [60, 90, 140];
-/** The size the checks are stated against — a typical real card. */
+/** Card sizes to eyeball, bracketing the app's real `min(26vw, 20vh)` card. */
+const TRUE_SIZES = [90, 130, 180];
+/** The size the checks are stated against — the phone card, the worst case. */
 const REFERENCE_CARD_PX = 90;
 const ZOOM_PX = 240;
 const VARIANT_PX = 90;
