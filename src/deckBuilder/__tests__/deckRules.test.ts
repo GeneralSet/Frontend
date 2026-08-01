@@ -42,8 +42,8 @@ const DECK: GeneratedDeckMetaData = {
   numbers: [9, 3, 4],
 };
 
-test("yolks is the only shape-only feature today", () => {
-  expect(SHAPE_ONLY_FEATURES).toEqual(["yolks"]);
+test("yolks and spires are the shape-only features today", () => {
+  expect(SHAPE_ONLY_FEATURES).toEqual(["yolks", "spires"]);
 });
 
 test("a shape owning no internal feature backs a single card", () => {

@@ -52,6 +52,15 @@ const resolveYolks = (
   return supported.includes(yolks as 1 | 2 | 3) ? yolks : supported[0];
 };
 
+const resolveSpires = (
+  supported: ShapeFeatureSupport["spires"],
+  spires: number
+): number => {
+  if (supported === false || supported === undefined) return 1;
+  if (supported === true) return spires;
+  return supported.includes(spires as 1 | 2 | 3) ? spires : supported[0];
+};
+
 interface Props {
   card: CardData;
   /** Document-unique id, used to namespace this card's SVG defs. */
@@ -73,6 +82,7 @@ export const CardSvg = ({ card, cardId }: Props) => {
   const filterName: FilterName = supports.filters === false ? "none" : card.filters;
   const rotation = resolveRotation(supports.rotations, card.rotations);
   const yolks = resolveYolks(supports.yolks, card.yolks);
+  const spires = resolveSpires(supports.spires, card.spires);
   let patternName: PatternName = supports.patterns === false ? "solid" : card.patterns;
   if (PATTERN_DEFS[patternName].colorsUsed > colorCount) {
     patternName = "solid";
@@ -98,7 +108,12 @@ export const CardSvg = ({ card, cardId }: Props) => {
             rotation ? `rotate(${rotation}, ${rotationCenter.x}, ${rotationCenter.y})` : undefined
           }
         >
-          <shape.Component colors={colors} fill={paint.fill} yolks={yolks as 1 | 2 | 3} />
+          <shape.Component
+            colors={colors}
+            fill={paint.fill}
+            yolks={yolks as 1 | 2 | 3}
+            spires={spires as 1 | 2 | 3}
+          />
         </g>
       </svg>
     );

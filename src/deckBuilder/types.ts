@@ -30,6 +30,8 @@ export interface ShapeProps {
   fill: string;
   /** Yolk count for shapes that declare `supports.yolks`. */
   yolks?: 1 | 2 | 3;
+  /** Spire count for shapes that declare `supports.spires`. */
+  spires?: 1 | 2 | 3;
 }
 
 /**
@@ -61,6 +63,13 @@ export interface ShapeFeatureSupport {
    * neutral yolk count, so unsupported always falls back to 1.
    */
   yolks?: boolean | readonly (1 | 2 | 3)[];
+  /**
+   * true = all spire counts, false/undefined = none (always 1), or the exact
+   * subset of counts the shape supports. Same fallback semantics as yolks:
+   * there's no universal neutral spire count, so unsupported always falls
+   * back to 1.
+   */
+  spires?: boolean | readonly (1 | 2 | 3)[];
 }
 
 /** A registered shape: a React component plus the features it supports. */
