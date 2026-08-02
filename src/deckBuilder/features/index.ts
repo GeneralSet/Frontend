@@ -7,6 +7,15 @@ import { PATTERN_NAMES, PatternName } from "./patterns";
 export const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const ROTATIONS: readonly Rotation[] = [0, 90, 180, 270];
 export const YOLKS = [1, 2, 3] as const;
+export const SCOOPS = [0, 1, 2, 3, 4] as const;
+export const TOPPINGS = [
+  "Chocolate Chips",
+  "Cherry",
+  "Rainbow Sprinkles",
+  "Twisty Pretzel",
+  "None",
+] as const;
+export const SAUCES = ["Chocolate", "Strawberry", "Toffee", "Pistachio", "None"] as const;
 
 /**
  * The features a generated deck can vary, mapped to their option value type.
@@ -22,6 +31,9 @@ interface FeatureOptionMap {
   filters: FilterName;
   patterns: PatternName;
   yolks: (typeof YOLKS)[number];
+  scoops: (typeof SCOOPS)[number];
+  topping: (typeof TOPPINGS)[number];
+  sauce: (typeof SAUCES)[number];
 }
 
 export type FeatureName = keyof FeatureOptionMap;
@@ -57,6 +69,9 @@ export const FEATURES: { readonly [F in FeatureName]: FeatureConfig<F> } = {
   filters: { label: "Filter", options: FILTER_NAMES },
   patterns: { label: "Pattern", options: PATTERN_NAMES },
   yolks: { label: "Yolks", options: YOLKS, requiresShapeSupport: true },
+  scoops: { label: "Scoops", options: SCOOPS, requiresShapeSupport: true },
+  topping: { label: "Topping", options: TOPPINGS, requiresShapeSupport: true },
+  sauce: { label: "Sauce", options: SAUCES, requiresShapeSupport: true },
 };
 
 export const FEATURE_NAMES = Object.keys(FEATURES) as FeatureName[];
@@ -77,6 +92,9 @@ export const DEFAULT_CARD: CardData = {
   filters: "none",
   patterns: "solid",
   yolks: 1,
+  scoops: 2,
+  topping: "None",
+  sauce: "None",
 };
 
 export function getFeatureOptions<F extends FeatureName>(feature: F): readonly FeatureValue<F>[] {

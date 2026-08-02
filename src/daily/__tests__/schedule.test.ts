@@ -74,3 +74,15 @@ test("National Egg Day builds a 27-card deck of Fried Egg cards", () => {
   expect(deck.features.length).toEqual(3);
   expect(Object.keys(deck.cards).length).toEqual(27);
 });
+
+test("National Ice Cream Day is scheduled for July 18th and recurs annually", () => {
+  expect(getPuzzleForDate("2026-07-18").name).toEqual("National Ice Cream Day");
+  expect(getPuzzleForDate("2027-07-18").name).toEqual("National Ice Cream Day");
+  expect(getPuzzleForDate("2025-07-18").name).not.toEqual("National Ice Cream Day");
+});
+
+test("National Ice Cream Day builds a 27-card deck of Sundae Glass cards", () => {
+  const deck = DAILY_PUZZLE_SCHEDULE["2026-07-18"].createDeck();
+  expect(deck.features.length).toEqual(3);
+  expect(Object.keys(deck.cards).length).toEqual(27);
+});

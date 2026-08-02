@@ -30,6 +30,12 @@ export interface ShapeProps {
   fill: string;
   /** Yolk count for shapes that declare `supports.yolks`. */
   yolks?: 1 | 2 | 3;
+  /** Scoop count for shapes that declare `supports.scoops`. */
+  scoops?: 0 | 1 | 2 | 3 | 4;
+  /** Topping for shapes that declare `supports.topping`. */
+  topping?: "Chocolate Chips" | "Cherry" | "Rainbow Sprinkles" | "Twisty Pretzel" | "None";
+  /** Sauce for shapes that declare `supports.sauce`. */
+  sauce?: "Chocolate" | "Strawberry" | "Toffee" | "Pistachio" | "None";
 }
 
 /**
@@ -61,6 +67,25 @@ export interface ShapeFeatureSupport {
    * neutral yolk count, so unsupported always falls back to 1.
    */
   yolks?: boolean | readonly (1 | 2 | 3)[];
+  /**
+   * true = all scoop counts, false/undefined = none (always 1), or the exact
+   * subset of counts the shape supports. No universal neutral scoop count
+   * (0 is a real, meaningful state, not a "don't care"), so unsupported
+   * always falls back to 1, same principle as yolks.
+   */
+  scoops?: boolean | readonly (0 | 1 | 2 | 3 | 4)[];
+  /**
+   * true = all toppings, false/undefined = none (always "None"), or the
+   * exact subset the shape supports. "None" is the universal neutral value,
+   * so unsupported falls back to "None".
+   */
+  topping?: boolean | readonly ("Chocolate Chips" | "Cherry" | "Rainbow Sprinkles" | "Twisty Pretzel" | "None")[];
+  /**
+   * true = all sauces, false/undefined = none (always "None"), or the exact
+   * subset the shape supports. "None" is the universal neutral value, so
+   * unsupported falls back to "None".
+   */
+  sauce?: boolean | readonly ("Chocolate" | "Strawberry" | "Toffee" | "Pistachio" | "None")[];
 }
 
 /** A registered shape: a React component plus the features it supports. */

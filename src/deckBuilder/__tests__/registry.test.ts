@@ -18,6 +18,11 @@ const LEGACY_SHAPE_NAMES = [
   "Tracks - Wolf",
   "Tracks - Frog",
   "Fried Egg",
+  "Ice Cream - Waffle Cone",
+  "Ice Cream - Sugar Cone",
+  "Ice Cream - Sundae Cup",
+  "Ice Cream - Sundae Glass",
+  "Ice Cream - Banana Split",
 ];
 
 test("shape registry keeps the legacy shape names", () => {
