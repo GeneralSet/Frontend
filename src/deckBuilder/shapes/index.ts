@@ -1,6 +1,7 @@
 import { ShapeDefinition } from "../types";
 import { CircleQuarter, CircleSemi, CircleThreeQuarter } from "./Circles";
 import { FriedEgg } from "./FriedEgg";
+import { Sandcastle } from "./Sandcastle";
 import { TetrisJBlock, TetrisLBlock, TetrisSBlock, TetrisTBlock } from "./Tetris";
 import { TracksDeer, TracksFrog, TracksWolf } from "./Tracks";
 import { Triangle } from "./Triangle";
@@ -28,6 +29,7 @@ export const SHAPE_REGISTRY = defineShapes({
   "Tracks - Wolf": TracksWolf,
   "Tracks - Frog": TracksFrog,
   "Fried Egg": FriedEgg,
+  "Sandcastle": Sandcastle,
 });
 
 export type ShapeName = keyof typeof SHAPE_REGISTRY;

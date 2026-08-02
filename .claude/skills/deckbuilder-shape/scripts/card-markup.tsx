@@ -14,7 +14,7 @@
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { CardSvg, MAIN_VIEWPORT_SIZE } from "../../../../src/deckBuilder/CardSvg";
-import { CardData, DEFAULT_CARD, NUMBERS, ROTATIONS, YOLKS } from "../../../../src/deckBuilder/features";
+import { CardData, DEFAULT_CARD, NUMBERS, ROTATIONS, SPIRES, YOLKS } from "../../../../src/deckBuilder/features";
 import { COLOR_SETS, ColorName, clampColorSet } from "../../../../src/deckBuilder/features/colors";
 import { PATTERN_DEFS, PATTERN_NAMES, PatternName } from "../../../../src/deckBuilder/features/patterns";
 import { SHAPE_NAMES, SHAPE_REGISTRY, ShapeName } from "../../../../src/deckBuilder/shapes";
@@ -83,9 +83,16 @@ const supportedYolks = (): (typeof YOLKS)[number][] => {
   return [...supports.yolks];
 };
 
+const supportedSpires = (): (typeof SPIRES)[number][] => {
+  if (supports.spires === false || supports.spires === undefined) return [1];
+  if (supports.spires === true) return [...SPIRES];
+  return [...supports.spires];
+};
+
 const rotations = supportedRotations();
 const patterns = supportedPatterns();
 const yolks = supportedYolks();
+const spires = supportedSpires();
 const numbers: (typeof NUMBERS)[number][] = [1, 2, 3];
 
 interface Variant {
@@ -107,6 +114,7 @@ const buildVariants = (): Variant[] => {
     rotations: rotations[0],
     patterns: patterns[0],
     yolks: yolks[0],
+    spires: spires[0],
   };
 
   const variants: Variant[] = [{ label: `${SAMPLE_COLORS[0]} · ${patterns[0]} · 1x`, card: base }];
@@ -125,6 +133,7 @@ const buildVariants = (): Variant[] => {
   rotations.slice(1).forEach((rotation) => push(`rotate ${rotation}°`, { rotations: rotation }));
   SAMPLE_COLORS.slice(1).forEach((color) => push(color, { colors: color }));
   yolks.slice(1).forEach((count) => push(`yolks: ${count}`, { yolks: count }));
+  spires.slice(1).forEach((count) => push(`spires: ${count}`, { spires: count }));
 
   // Then a few combinations, which is where clipping and overlap show up.
   SAMPLE_COLORS.slice(1).forEach((color) =>
@@ -151,7 +160,7 @@ const renderBareSymbol = (): string => {
     <svg viewBox={viewBox} xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
       {paint.defs && <defs>{paint.defs}</defs>}
       <g id="bare-symbol">
-        <shape.Component colors={colors} fill={paint.fill} yolks={yolks[0]} />
+        <shape.Component colors={colors} fill={paint.fill} yolks={yolks[0]} spires={spires[0]} />
       </g>
     </svg>
   );
@@ -165,7 +174,7 @@ process.stdout.write(
     colorCount,
     symbolSize: SYMBOL_SIZE,
     cardViewport: MAIN_VIEWPORT_SIZE,
-    axes: { numbers, patterns, rotations, colors: SAMPLE_COLORS, yolks },
+    axes: { numbers, patterns, rotations, colors: SAMPLE_COLORS, yolks, spires },
     bare: renderBareSymbol(),
     variants: buildVariants().map((variant, index) => ({
       label: variant.label,

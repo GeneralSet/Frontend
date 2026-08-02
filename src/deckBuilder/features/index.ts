@@ -7,6 +7,7 @@ import { PATTERN_NAMES, PatternName } from "./patterns";
 export const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const ROTATIONS: readonly Rotation[] = [0, 90, 180, 270];
 export const YOLKS = [1, 2, 3] as const;
+export const SPIRES = [1, 2, 3, 4] as const;
 
 /**
  * The features a generated deck can vary, mapped to their option value type.
@@ -22,6 +23,7 @@ interface FeatureOptionMap {
   filters: FilterName;
   patterns: PatternName;
   yolks: (typeof YOLKS)[number];
+  spires: (typeof SPIRES)[number];
 }
 
 export type FeatureName = keyof FeatureOptionMap;
@@ -57,6 +59,7 @@ export const FEATURES: { readonly [F in FeatureName]: FeatureConfig<F> } = {
   filters: { label: "Filter", options: FILTER_NAMES },
   patterns: { label: "Pattern", options: PATTERN_NAMES },
   yolks: { label: "Yolks", options: YOLKS, requiresShapeSupport: true },
+  spires: { label: "Spires", options: SPIRES, requiresShapeSupport: true },
 };
 
 export const FEATURE_NAMES = Object.keys(FEATURES) as FeatureName[];
@@ -77,6 +80,7 @@ export const DEFAULT_CARD: CardData = {
   filters: "none",
   patterns: "solid",
   yolks: 1,
+  spires: 1,
 };
 
 export function getFeatureOptions<F extends FeatureName>(feature: F): readonly FeatureValue<F>[] {

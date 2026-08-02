@@ -36,6 +36,7 @@ const CARD: CardData = {
   filters: "shadow",
   patterns: "striped",
   yolks: 1,
+  spires: 1,
 };
 
 const renderCard = (card: CardData) =>

@@ -72,6 +72,19 @@ export const DAILY_PUZZLE_SCHEDULE: DailyPuzzleSchedule = {
         { idPrefix: "daily-egg" }
       ),
   },
+  "2026-08-01": {
+    name: "National Sand Castle Day",
+    createDeck: () =>
+      new GeometricDeckGenerator(
+        {
+          numbers: [1, 2, 3, 4],
+          spires: [1, 2, 3, 4],
+          colors: ["Beige", "Orange", "Brown", "Maroon"],
+        },
+        { shapes: "Sandcastle" },
+        { idPrefix: "daily-sandcastle" }
+      ),
+  },
 };
 
 /** The deck used whenever no scheduled puzzle matches the date. */
