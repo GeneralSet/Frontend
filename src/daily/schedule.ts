@@ -72,6 +72,19 @@ export const DAILY_PUZZLE_SCHEDULE: DailyPuzzleSchedule = {
         { idPrefix: "daily-egg" }
       ),
   },
+  "2026-07-18": {
+    name: "National Ice Cream Day",
+    createDeck: () =>
+      new GeometricDeckGenerator(
+        {
+          numbers: [1, 2, 3],
+          scoops: [1, 2, 3],
+          colors: ["Pink", "Brown", "Mint"],
+        },
+        { shapes: "Ice Cream - Sundae Glass", topping: "Cherry", sauce: "Chocolate" },
+        { idPrefix: "daily-icecream" }
+      ),
+  },
 };
 
 /** The deck used whenever no scheduled puzzle matches the date. */

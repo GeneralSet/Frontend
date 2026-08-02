@@ -52,6 +52,33 @@ const resolveYolks = (
   return supported.includes(yolks as 1 | 2 | 3) ? yolks : supported[0];
 };
 
+const resolveScoops = (
+  supported: ShapeFeatureSupport["scoops"],
+  scoops: number
+): number => {
+  if (supported === false || supported === undefined) return 1;
+  if (supported === true) return scoops;
+  return supported.includes(scoops as 0 | 1 | 2 | 3 | 4) ? scoops : supported[0];
+};
+
+const resolveTopping = (
+  supported: ShapeFeatureSupport["topping"],
+  topping: CardData["topping"]
+): CardData["topping"] => {
+  if (supported === false || supported === undefined) return "None";
+  if (supported === true) return topping;
+  return supported.includes(topping) ? topping : "None";
+};
+
+const resolveSauce = (
+  supported: ShapeFeatureSupport["sauce"],
+  sauce: CardData["sauce"]
+): CardData["sauce"] => {
+  if (supported === false || supported === undefined) return "None";
+  if (supported === true) return sauce;
+  return supported.includes(sauce) ? sauce : "None";
+};
+
 interface Props {
   card: CardData;
   /** Document-unique id, used to namespace this card's SVG defs. */
@@ -73,6 +100,9 @@ export const CardSvg = ({ card, cardId }: Props) => {
   const filterName: FilterName = supports.filters === false ? "none" : card.filters;
   const rotation = resolveRotation(supports.rotations, card.rotations);
   const yolks = resolveYolks(supports.yolks, card.yolks);
+  const scoops = resolveScoops(supports.scoops, card.scoops);
+  const topping = resolveTopping(supports.topping, card.topping);
+  const sauce = resolveSauce(supports.sauce, card.sauce);
   let patternName: PatternName = supports.patterns === false ? "solid" : card.patterns;
   if (PATTERN_DEFS[patternName].colorsUsed > colorCount) {
     patternName = "solid";
@@ -98,7 +128,14 @@ export const CardSvg = ({ card, cardId }: Props) => {
             rotation ? `rotate(${rotation}, ${rotationCenter.x}, ${rotationCenter.y})` : undefined
           }
         >
-          <shape.Component colors={colors} fill={paint.fill} yolks={yolks as 1 | 2 | 3} />
+          <shape.Component
+            colors={colors}
+            fill={paint.fill}
+            yolks={yolks as 1 | 2 | 3}
+            scoops={scoops as 0 | 1 | 2 | 3 | 4}
+            topping={topping}
+            sauce={sauce}
+          />
         </g>
       </svg>
     );
