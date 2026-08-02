@@ -77,9 +77,9 @@ export const DAILY_PUZZLE_SCHEDULE: DailyPuzzleSchedule = {
     createDeck: () =>
       new GeometricDeckGenerator(
         {
-          numbers: [1, 2, 3],
-          spires: [1, 2, 3],
-          colors: ["Beige", "Orange", "Brown"],
+          numbers: [1, 2, 3, 4],
+          spires: [1, 2, 3, 4],
+          colors: ["Beige", "Orange", "Brown", "Maroon"],
         },
         { shapes: "Sandcastle" },
         { idPrefix: "daily-sandcastle" }

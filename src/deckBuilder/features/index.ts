@@ -7,7 +7,7 @@ import { PATTERN_NAMES, PatternName } from "./patterns";
 export const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const ROTATIONS: readonly Rotation[] = [0, 90, 180, 270];
 export const YOLKS = [1, 2, 3] as const;
-export const SPIRES = [1, 2, 3] as const;
+export const SPIRES = [1, 2, 3, 4] as const;
 
 /**
  * The features a generated deck can vary, mapped to their option value type.

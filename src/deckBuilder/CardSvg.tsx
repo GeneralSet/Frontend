@@ -58,7 +58,7 @@ const resolveSpires = (
 ): number => {
   if (supported === false || supported === undefined) return 1;
   if (supported === true) return spires;
-  return supported.includes(spires as 1 | 2 | 3) ? spires : supported[0];
+  return supported.includes(spires as 1 | 2 | 3 | 4) ? spires : supported[0];
 };
 
 interface Props {
@@ -112,7 +112,7 @@ export const CardSvg = ({ card, cardId }: Props) => {
             colors={colors}
             fill={paint.fill}
             yolks={yolks as 1 | 2 | 3}
-            spires={spires as 1 | 2 | 3}
+            spires={spires as 1 | 2 | 3 | 4}
           />
         </g>
       </svg>
