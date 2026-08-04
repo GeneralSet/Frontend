@@ -68,3 +68,22 @@ test("color support clamps the set and downgrades color-hungry patterns", () => 
   const triangles = renderCard({ ...CARD, shapes: "Circle - Semi", patterns: "triangles" });
   expect(triangles).toContain('fill="#e6194B"');
 });
+
+test("without a capacity prop, a card sizes off its own shape count (Max Size)", () => {
+  const markup = ReactDOMServer.renderToStaticMarkup(
+    <CardSvg card={{ ...CARD, numbers: 1 }} cardId="test-0" />
+  );
+  expect(markup).toContain('width="115"');
+});
+
+test("a capacity prop sizes the card off that shared grid (Full Size)", () => {
+  const markup = ReactDOMServer.renderToStaticMarkup(
+    <CardSvg card={{ ...CARD, numbers: 3 }} cardId="test-0" capacity={9} />
+  );
+  expect(markup).toContain('width="35"');
+  expect(markup).not.toContain('width="115"');
+  // legacy center + first two corner slots for a 3-shape card
+  expect(markup).toContain('x="42.5" y="42.5"');
+  expect(markup).toContain('x="0" y="85"');
+  expect(markup).toContain('x="85" y="0"');
+});

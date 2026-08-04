@@ -24,6 +24,7 @@ test("card markup applies rotation, filter, and pattern", () => {
     {
       shapes: ["Tetris - L Block"],
       colors: ["Blue"],
+      numbers: [9],
       rotations: [90],
       filters: ["shadow"],
       patterns: ["striped"],
@@ -31,10 +32,10 @@ test("card markup applies rotation, filter, and pattern", () => {
     undefined,
     { idPrefix: "test" }
   );
-  const markup = ReactDOMServer.renderToStaticMarkup(deck.cards["0_0_0_0_0"]);
+  const markup = ReactDOMServer.renderToStaticMarkup(deck.cards["0_0_0_0_0_0"]);
   expect(markup).toContain("rotate(90, 60, 60)");
-  expect(markup).toContain('filter="url(#flt-test-0_0_0_0_0)"');
-  expect(markup).toContain('fill="url(#pat-test-0_0_0_0_0)"');
+  expect(markup).toContain('filter="url(#flt-test-0_0_0_0_0_0)"');
+  expect(markup).toContain('fill="url(#pat-test-0_0_0_0_0_0)"');
   expect(markup).toMatchSnapshot();
 });
 

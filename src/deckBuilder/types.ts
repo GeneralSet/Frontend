@@ -82,10 +82,22 @@ export interface DeckMetaData {
   [feature: string]: (string | number)[];
 }
 
+/**
+ * How CardSvg sizes shapes within a card. "full" sizes every card in the
+ * deck off the deck's largest `numbers` value, so shapes stay one uniform
+ * size across the whole deck. "max" sizes each card off its own count,
+ * independent of siblings, always filling as much of that card as its
+ * count allows.
+ */
+export type CardSizeMode = "full" | "max";
+
 /** The deck contract consumed by redux, the board, and the menu. */
 export interface Deck {
   metaData: { readonly [feature: string]: readonly (string | number)[] | undefined };
   features: string[];
   numOptions: number;
   cards: FeatureDeck;
+  /** Present on GeometricDeckGenerator decks; undefined on PresetDecks,
+   * which render pre-baked images and have no notion of shape sizing. */
+  cardSizeMode?: CardSizeMode;
 }

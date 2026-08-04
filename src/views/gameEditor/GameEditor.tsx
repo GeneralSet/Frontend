@@ -25,9 +25,11 @@ import {
   getSupportedFeatureValues,
 } from "deckBuilder/deckRules";
 import { ShapeName } from "deckBuilder/shapes";
+import { CardSizeMode } from "deckBuilder/types";
 import { actions } from "views/actions";
 import { FeatureSelect } from "./featureSelect";
 import { CardSelector } from "./cardSelector";
+import { CardSizeSelect } from "./cardSizeSelect";
 import { EnableFeature } from "./enableFeature";
 import { DECK_DATA } from "views/reducers";
 
@@ -40,9 +42,12 @@ export const GameEditor = () => {
   const [deckData, setDeckData] = useState<GeneratedDeckMetaData>(() =>
     isGeneratedMetaData(globalDeck.metaData) ? globalDeck.metaData : DECK_DATA
   );
+  const [cardSizeMode, setCardSizeMode] = useState<CardSizeMode>(
+    () => globalDeck.cardSizeMode || "full"
+  );
   const localDeck = useMemo(
-    () => new GeometricDeckGenerator(deckData, deckDefaults),
-    [deckData, deckDefaults]
+    () => new GeometricDeckGenerator(deckData, deckDefaults, { cardSizeMode }),
+    [deckData, deckDefaults, cardSizeMode]
   );
   const deck = localDeck.cards;
   const numberOfCards = localDeck.numOptions;
@@ -133,7 +138,11 @@ export const GameEditor = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const handleSave = () => {
-    dispatch(actions.updateDeck({ deck: new GeometricDeckGenerator(deckData, deckDefaults) }));
+    dispatch(
+      actions.updateDeck({
+        deck: new GeometricDeckGenerator(deckData, deckDefaults, { cardSizeMode }),
+      })
+    );
     setShow(false);
   };
 
@@ -156,6 +165,7 @@ export const GameEditor = () => {
             card={card}
             setCard={setCard}
           />
+          <CardSizeSelect value={cardSizeMode} onChange={setCardSizeMode} />
           {FEATURE_NAMES.filter((feature) => !isFeatureLocked(feature)).map((feature) => {
             const values = deckData[feature];
             return (
