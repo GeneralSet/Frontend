@@ -37,6 +37,13 @@ test("layoutCard(9, n) reproduces the legacy position table exactly", () => {
   }
 });
 
+test("a single shape is always dead center, even on a capacity grid with no true center cell", () => {
+  // capacity 5 resolves to a 2x3 grid, which has no cell centered on both
+  // axes — the nearest-cell selection alone would put a lone shape off-center.
+  expect(computeGrid(5)).toEqual({ cols: 2, rows: 3, cellSize: 35 });
+  expect(layoutCard(5, 1)).toEqual({ cellSize: 35, slots: [{ x: 42.5, y: 42.5 }] });
+});
+
 test("no two slots ever overlap, for any capacity/count combination", () => {
   for (let capacity = 1; capacity <= 9; capacity++) {
     for (let count = 1; count <= capacity; count++) {

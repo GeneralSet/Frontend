@@ -96,7 +96,10 @@ function distanceFromCenter(slot: GridSlot, cellSize: number): number {
  * builder's original fixed 3x3 layout exactly whenever the capacity
  * resolves to that grid (capacities 7-9); every other capacity uses an
  * evenly spaced grid, filled from the center outward, skipping the true
- * center cell for an even count the same way the legacy layout does.
+ * center cell for an even count the same way the legacy layout does. A
+ * single shape always sits dead center, regardless of the capacity grid's
+ * own shape (e.g. an even-columned grid has no cell that's exactly
+ * centered on both axes).
  *
  * Cells are disjoint axis-aligned boxes by construction — computeGrid only
  * ever picks a cellSize small enough that the per-axis pitch between
@@ -104,15 +107,23 @@ function distanceFromCenter(slot: GridSlot, cellSize: number): number {
  */
 export function layoutCard(capacity: number, count: number): { cellSize: number; slots: GridSlot[] } {
   const grid = computeGrid(capacity);
-  if (grid.cols === 3 && grid.rows === 3) {
+  const isLegacyGrid = grid.cols === 3 && grid.rows === 3;
+  const cellSize = isLegacyGrid ? LEGACY_CELL_SIZE : grid.cellSize;
+
+  if (count === 1) {
+    const center = (MAIN_VIEWPORT_SIZE - cellSize) / 2;
+    return { cellSize, slots: [{ x: center, y: center }] };
+  }
+
+  if (isLegacyGrid) {
     const offset = count % 2 ? 0 : 1;
-    return { cellSize: LEGACY_CELL_SIZE, slots: LEGACY_SLOTS.slice(offset, offset + count) };
+    return { cellSize, slots: LEGACY_SLOTS.slice(offset, offset + count) };
   }
 
   const slots = gridSlots(grid);
   const skipCenter = hasCenterCell(grid) && count % 2 === 0;
   const ordered = slots
-    .filter((slot) => !skipCenter || distanceFromCenter(slot, grid.cellSize) > 1e-6)
-    .sort((a, b) => distanceFromCenter(a, grid.cellSize) - distanceFromCenter(b, grid.cellSize));
-  return { cellSize: grid.cellSize, slots: ordered.slice(0, count) };
+    .filter((slot) => !skipCenter || distanceFromCenter(slot, cellSize) > 1e-6)
+    .sort((a, b) => distanceFromCenter(a, cellSize) - distanceFromCenter(b, cellSize));
+  return { cellSize, slots: ordered.slice(0, count) };
 }
